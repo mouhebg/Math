@@ -35,10 +35,16 @@ if (!response.ok) {
 }
 
 let html = await response.text();
-html = html.replace(
-  /((?:href|src)=["'])\/(?!\/)/g,
-  `$1${basePath}/`,
-);
+for (const publicPath of [
+  "assets/",
+  "worksheets/",
+  "favicon.svg",
+  "file.svg",
+  "globe.svg",
+  "window.svg",
+]) {
+  html = html.replaceAll(`/${publicPath}`, `${basePath}/${publicPath}`);
+}
 
 if (!html.includes(`${basePath}/assets/`)) {
   throw new Error("The rendered homepage does not reference the Pages asset path");
