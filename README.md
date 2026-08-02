@@ -80,4 +80,8 @@ npm run build:pages
 - `app/globals.css` contains the website design and responsive layout.
 - `public/worksheets/` contains the 32 exercise pages and downloadable ZIP file.
 - `scripts/build-pages.mjs` creates the static GitHub Pages version.
-- `.github/workflows/deploy-pages.yml` publishes updates automatihØ[K‚‚ˆÈÈ\Ş[Y[‚‘]™\H\]H\ÚYÈHXZ[˜œ˜[˜Ú\ÈZ[[™X›\ÚY]]ÛX]XØ[H›İYÚÚ]XˆYÙ\Ë‚
+- `.github/workflows/deploy-pages.yml` publishes updates automatically.
+
+## Deployment
+
+Every update pushed to the `main` branch is built and published automatically through GitHub Pages.
