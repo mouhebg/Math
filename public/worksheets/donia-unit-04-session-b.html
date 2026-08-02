@@ -218,7 +218,11 @@ body.answers-visible .pw .bot div:has(.inline-answer-value){background:#e7f5ed;b
 body{padding:18px;background:#edf1ec;}
 .worksheet-shell{max-width:900px;margin:0 auto;}
 .worksheet-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 auto 14px;padding:12px 14px;border:1.5px solid var(--ink);background:var(--card);}
-.worksheet-tools p{margin:0;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.breadcrumb a{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-weight:600;padding:2px 6px;border-radius:4px;transition:background .15s;}
+.breadcrumb a:hover{background:var(--teal-soft);color:var(--teal);}
+.breadcrumb .sep{color:var(--rule);font-size:13px;user-select:none;}
+.breadcrumb .current{color:var(--ink);font-weight:600;}
 .worksheet-actions{display:flex;gap:8px;flex-wrap:wrap;}
 .worksheet-actions button{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;}
 .worksheet-actions button.alt{background:transparent;color:var(--ink);}
@@ -235,7 +239,8 @@ body{padding:18px;background:#edf1ec;}
 <body>
 <div class="worksheet-shell">
  <header class="worksheet-tools">
-  <p>Donia's Math Home · Unit 04 · Session B</p>
+  
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg> Home</a><span class="sep" aria-hidden="true">›</span><span>Unit 04</span><span class="sep" aria-hidden="true">›</span><span class="current">Session B</span></nav>
   <div class="worksheet-actions">
    <button id="print-sheet">Print or save as PDF</button>
    <button class="alt" id="answers-toggle">Show answers</button>
