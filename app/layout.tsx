@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   description: "A calm, mastery-based Grade 2 home mathematics plan with 32 downloadable exercises.",
   other: {
     "codex-preview": "development",
+    viewport: "width=device-width, initial-scale=1",
   },
   icons: {
     icon: "/favicon.svg",

@@ -38,9 +38,6 @@ let html = await response.text();
 for (const publicPath of [
   "assets/",
   "favicon.svg",
-  "file.svg",
-  "globe.svg",
-  "window.svg",
 ]) {
   html = html.replaceAll(`/${publicPath}`, `${basePath}/${publicPath}`);
 }

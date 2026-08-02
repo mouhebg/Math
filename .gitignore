@@ -35,6 +35,10 @@ yarn-error.log*
 
 # typescript
 next-env.d.ts
+tsconfig.tsbuildinfo
+
+# vinext font cache
+.vinext/fonts/
 /dist/
 /pages-dist/
 /.wrangler/
