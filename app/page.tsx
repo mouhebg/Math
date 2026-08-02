@@ -15,8 +15,27 @@ const statusLabels: Record<SessionStatus, string> = {
   mastered: "Mastered",
 };
 
+const storageKeys = {
+  statuses: "mathnest-math-statuses",
+  progress: "mathnest-math-progress",
+  pending: "mathnest-math-sync-pending",
+  location: "mathnest-math-location",
+} as const;
+
+// Progress saved under the previous site name is still read once, then rewritten under the current keys.
+const legacyStorageKeys = {
+  statuses: "donia-math-statuses",
+  progress: "donia-math-progress",
+  pending: "donia-math-sync-pending",
+  location: "donia-math-location",
+} as const;
+
+function readStored(key: keyof typeof storageKeys) {
+  return window.localStorage.getItem(storageKeys[key]) ?? window.localStorage.getItem(legacyStorageKeys[key]);
+}
+
 function worksheetName(session: Session) {
-  return `donia-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
+  return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
 }
 
 function ArrowIcon() {
@@ -66,8 +85,8 @@ export default function Home() {
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       try {
-        const storedStatuses = window.localStorage.getItem("donia-math-statuses");
-        const legacyProgress = window.localStorage.getItem("donia-math-progress");
+        const storedStatuses = readStored("statuses");
+        const legacyProgress = readStored("progress");
         const nextStatuses: StatusMap = {};
 
         if (storedStatuses) {
@@ -84,11 +103,11 @@ export default function Home() {
 
         statusesRef.current = nextStatuses;
         setStatuses(nextStatuses);
-        const savedPending = window.localStorage.getItem("donia-math-sync-pending");
+        const savedPending = readStored("pending");
         if (savedPending) {
           pendingSyncRef.current = new Set(JSON.parse(savedPending) as string[]);
         }
-        const savedLocation = window.localStorage.getItem("donia-math-location");
+        const savedLocation = readStored("location");
         const location = savedLocation ? JSON.parse(savedLocation) as { part?: number; unit?: number } : null;
         if (
           location
@@ -201,14 +220,14 @@ export default function Home() {
           return;
         }
         for (const row of rowsToUpload) pending.delete(row.session_id);
-        window.localStorage.setItem("donia-math-sync-pending", JSON.stringify([...pending]));
+        window.localStorage.setItem(storageKeys.pending, JSON.stringify([...pending]));
       }
 
       if (preferencesResult.data) {
         setActivePart(preferencesResult.data.active_part);
         setOpenUnit(preferencesResult.data.open_unit);
       } else {
-        const savedLocation = window.localStorage.getItem("donia-math-location");
+        const savedLocation = readStored("location");
         const localLocation = savedLocation
           ? JSON.parse(savedLocation) as { part: number; unit: number }
           : { part: 0, unit: 1 };
@@ -234,9 +253,9 @@ export default function Home() {
   useEffect(() => {
     if (!ready) return;
     try {
-      window.localStorage.setItem("donia-math-statuses", JSON.stringify(statuses));
+      window.localStorage.setItem(storageKeys.statuses, JSON.stringify(statuses));
       window.localStorage.setItem(
-        "donia-math-progress",
+        storageKeys.progress,
         JSON.stringify(sessions.filter((session) => statuses[session.id] === "mastered").map((session) => session.id)),
       );
     } catch {
@@ -247,7 +266,7 @@ export default function Home() {
   useEffect(() => {
     if (!ready || openUnit === 0) return;
     try {
-      window.localStorage.setItem("donia-math-location", JSON.stringify({ part: activePart, unit: openUnit }));
+      window.localStorage.setItem(storageKeys.location, JSON.stringify({ part: activePart, unit: openUnit }));
     } catch {
       // Navigation still works normally when storage is unavailable.
     }
@@ -284,7 +303,7 @@ export default function Home() {
     setStatuses(next);
     pendingSyncRef.current.add(id);
     try {
-      window.localStorage.setItem("donia-math-sync-pending", JSON.stringify([...pendingSyncRef.current]));
+      window.localStorage.setItem(storageKeys.pending, JSON.stringify([...pendingSyncRef.current]));
     } catch {
       // The current visit still retains the change.
     }
@@ -302,7 +321,7 @@ export default function Home() {
           return;
         }
         pendingSyncRef.current.delete(id);
-        window.localStorage.setItem("donia-math-sync-pending", JSON.stringify([...pendingSyncRef.current]));
+        window.localStorage.setItem(storageKeys.pending, JSON.stringify([...pendingSyncRef.current]));
         setSyncState("synced");
       });
     }
@@ -352,14 +371,14 @@ export default function Home() {
     <main>
       <noscript>
         <div className="noscript-banner">
-          JavaScript is needed for progress tracking. You can still <a href="worksheets/donia-math-exercises.zip">download all exercises</a>.
+          JavaScript is needed for progress tracking. You can still <a href="worksheets/mathnest-math-exercises.zip">download all exercises</a>.
         </div>
       </noscript>
 
       <header className="site-header">
-        <a className="brand" href="#today" aria-label="Donia's Math Home">
-          <span className="brand-mark" aria-hidden="true">D</span>
-          <span><strong>Donia&apos;s</strong><small>Math Home</small></span>
+        <a className="brand" href="#today" aria-label="MathNest">
+          <span className="brand-mark" aria-hidden="true">M</span>
+          <span><strong>MathNest</strong><small>Grade 2 math</small></span>
         </a>
         <button
           className="menu-toggle"
@@ -429,7 +448,7 @@ export default function Home() {
             </aside>
           )}
         </div>
-        <a className="header-download" href="worksheets/donia-math-exercises.zip" download>
+        <a className="header-download" href="worksheets/mathnest-math-exercises.zip" download>
           <DownloadIcon /><span>Download all</span>
         </a>
       </header>
@@ -526,7 +545,7 @@ export default function Home() {
                         <span>Weekly rhythm</span>
                         <p>Teach Session A, pause for at least one day, then teach Session B. Repeat with new numbers if the move-on check is not yet secure.</p>
                         {unit.week === 1 && (
-                          <a href="worksheets/donia-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">Open the 2-minute warm-up card <ArrowIcon /></a>
+                          <a href="worksheets/mathnest-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">Open the 2-minute warm-up card <ArrowIcon /></a>
                         )}
                       </div>
 
@@ -606,7 +625,7 @@ export default function Home() {
       <section className="guide-section" id="parent-guide">
         <div className="section-heading">
           <div><p className="eyebrow">Parent guide</p><h2>Keep each lesson<br />small and successful.</h2></div>
-          <p>Twenty minutes is enough on most days. Finish earlier when Donia reaches a natural success, and return another day if frustration starts to rise.</p>
+          <p>Twenty minutes is enough on most days. Finish earlier when your child reaches a natural success, and return another day if frustration starts to rise.</p>
         </div>
 
         <div className="lesson-rhythm" aria-label="Suggested lesson timing">
@@ -637,9 +656,9 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="footer-brand"><span className="brand-mark">D</span><span><strong>Donia&apos;s Math Home</strong><small>Patient practice. Clear thinking.</small></span></div>
+        <div className="footer-brand"><span className="brand-mark">M</span><span><strong>MathNest</strong><small>Patient practice. Clear thinking.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
-        <div className="footer-actions"><a href="worksheets/donia-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
+        <div className="footer-actions"><a href="worksheets/mathnest-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
       </footer>
 
       <nav className="mobile-nav" aria-label="Mobile navigation">

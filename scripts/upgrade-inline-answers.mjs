@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 const worksheetDirectory = join(process.cwd(), 'public', 'worksheets');
 const worksheetFiles = readdirSync(worksheetDirectory)
-  .filter((name) => /^donia-unit-\d{2}-session-[ab]\.html$/.test(name))
+  .filter((name) => /^mathnest-unit-\d{2}-session-[ab]\.html$/.test(name))
   .sort();
 
 const answerStyles = `
