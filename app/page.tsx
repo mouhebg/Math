@@ -136,7 +136,7 @@ export default function Home() {
           <a href="#sessions">Sessions</a>
           <a href="#parent-guide">Parent guide</a>
         </nav>
-        <a className="small-download" href="/worksheets/donia-math-exercises.zip" download>
+        <a className="small-download" href="worksheets/donia-math-exercises.zip" download>
           Download all
         </a>
       </header>
@@ -150,7 +150,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <a className="primary-button" href="#sessions">Choose today&apos;s session</a>
-            <a className="text-button" href="/worksheets/donia-math-exercises.zip" download>Download all 32 exercises</a>
+            <a className="text-button" href="worksheets/donia-math-exercises.zip" download>Download all 32 exercises</a>
           </div>
           <div className="hero-rule">
             <span>One rule for every problem</span>
@@ -266,8 +266,8 @@ export default function Home() {
                         </div>
 
                         <div className="exercise-actions">
-                          <a href={`/worksheets/${filename}`} target="_blank" rel="noreferrer" aria-label={`Open Unit ${unit.week}, Session ${session.letter}`}>Open exercise ↗</a>
-                          <a className="save-exercise" href={`/worksheets/${filename}`} download aria-label={`Download Unit ${unit.week}, Session ${session.letter}`}>Download ↓</a>
+                          <a href={`worksheets/${filename}`} target="_blank" rel="noreferrer" aria-label={`Open Unit ${unit.week}, Session ${session.letter}`}>Open exercise ↗</a>
+                          <a className="save-exercise" href={`worksheets/${filename}`} download aria-label={`Download Unit ${unit.week}, Session ${session.letter}`}>Download ↓</a>
                           <button aria-pressed={isDone} onClick={() => toggle(session.id)} aria-label={`${isDone ? "Unmark" : "Mark"} Unit ${unit.week}, Session ${session.letter} as mastered`}>
                             <span className="check">{isDone ? "✓" : ""}</span>{isDone ? "Mastered" : "Mark mastered"}
                           </button>

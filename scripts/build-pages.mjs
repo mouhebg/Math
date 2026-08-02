@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -37,7 +37,6 @@ if (!response.ok) {
 let html = await response.text();
 for (const publicPath of [
   "assets/",
-  "worksheets/",
   "favicon.svg",
   "file.svg",
   "globe.svg",
@@ -49,8 +48,18 @@ for (const publicPath of [
 if (!html.includes(`${basePath}/assets/`)) {
   throw new Error("The rendered homepage does not reference the Pages asset path");
 }
-if (!html.includes(`${basePath}/worksheets/donia-math-exercises.zip`)) {
+if (!html.includes('href="worksheets/donia-math-exercises.zip"')) {
   throw new Error("The rendered homepage does not reference the exercise bundle");
+}
+if (html.includes('href="/worksheets/')) {
+  throw new Error("The rendered homepage contains a root-level worksheet link");
+}
+
+for (let unit = 1; unit <= 16; unit += 1) {
+  for (const session of ["a", "b"]) {
+    const filename = `donia-unit-${String(unit).padStart(2, "0")}-session-${session}.html`;
+    await access(join(outputDirectory, "worksheets", filename));
+  }
 }
 
 await writeFile(join(outputDirectory, "index.html"), html);
