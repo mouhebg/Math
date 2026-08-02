@@ -1,5 +1,5 @@
 {
-  "name": "donia-math-home",
+  "name": "mathnest",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -39,5 +39,5 @@
     "wrangler": "4.92.0"
   },
   "type": "module",
-  "displayName": "Donia's Grade 2 Math Home"
+  "displayName": "MathNest"
 }

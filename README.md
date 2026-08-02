@@ -1,8 +1,8 @@
-# Donia's Math Home
+# MathNest
 
 A calm, practical Grade 2 mathematics programme for home use. It includes sixteen units, two teaching sessions per unit, printable exercises, parent guidance, and a readiness check that tells you when to move on.
 
-**Live site:** https://mouhebg.github.io/Math/
+**Live site:** https://mathnest.ca
 
 ## What this is
 
@@ -54,7 +54,7 @@ A lesson takes about 20 to 25 minutes:
 - 6 minutes, modelling with objects
 - 8 minutes, the exercise
 - 5 minutes, a game or real-life example
-- 2 minutes, Donia explains her thinking
+- 2 minutes, your child explains her thinking
 
 The explanation at the end is an important diagnostic. "I counted" and "I knew 7 and 3 make 10" can produce the same answer, but they show different levels of understanding.
 
@@ -86,10 +86,10 @@ The matching database migration is stored in `supabase/migrations/`. Only the pu
 In the Supabase project's **Authentication → URL Configuration** screen, set both the Site URL and an allowed Redirect URL to:
 
 ```text
-https://mouhebg.github.io/Math/
+https://mathnest.ca
 ```
 
-This allows the passwordless email link to return safely to the published Math website. Email authentication and Magic Links must remain enabled.
+This allows the passwordless email link to return safely to the published MathNest website. Email authentication and Magic Links must remain enabled.
 
 ## Design standard
 
@@ -137,6 +137,30 @@ npm run build:pages
 ## Deployment
 
 Every push to `main` is built and published to GitHub Pages automatically.
+
+The site is served from the custom domain **mathnest.ca**. `scripts/build-pages.mjs` writes a
+`CNAME` file into every deployment, so the domain setting survives each publish, and it keeps
+asset links at the root instead of the `/Math/` repository sub-path.
+
+### DNS records at the registrar
+
+Point `mathnest.ca` at GitHub Pages with these records:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `mouhebg.github.io.` |
+
+The domain must use the registrar's own DNS zone. While it stays on the parking nameservers
+(`parking1.whc.ca`, `parking2.whc.ca`) these records cannot be added.
+
+After the records resolve, open **Settings → Pages** in the repository, confirm the custom
+domain reads `mathnest.ca`, and turn on **Enforce HTTPS** once the certificate is issued.
+
+To build for the repository sub-path again, set `SITE_DOMAIN=""` before `npm run build:pages`.
 
 ## Contributing
 

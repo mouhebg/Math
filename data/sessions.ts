@@ -19,7 +19,7 @@ export const phases = [
 ];
 
 export const sessions: Session[] = [
-  { id: "1A", unit: 1, letter: "A", title: "Bonds to ten", focus: "See ten as two parts and learn every partner pair.", activity: "Use ten frames, part-whole bars, and the rainbow of ten.", success: "Donia gives the partner of any number to 10 without counting up.", kind: "Core" },
+  { id: "1A", unit: 1, letter: "A", title: "Bonds to ten", focus: "See ten as two parts and learn every partner pair.", activity: "Use ten frames, part-whole bars, and the rainbow of ten.", success: "She gives the partner of any number to 10 without counting up.", kind: "Core" },
   { id: "1B", unit: 1, letter: "B", title: "Three story shapes", focus: "Find a missing whole, missing part, or missing start.", activity: "Draw the same part-whole box for six different stories.", success: "She decides what is missing without relying on keywords.", kind: "Core" },
   { id: "2A", unit: 2, letter: "A", title: "Tens and ones", focus: "Compose and decompose numbers to 200.", activity: "Build two-digit numbers and trade one ten for ten ones.", success: "She represents one number in two different ways.", kind: "Core" },
   { id: "2B", unit: 2, letter: "B", title: "Charts and order", focus: "Compare, order, and locate numbers to 200.", activity: "Explore neighbours on 100 and 200 charts.", success: "She explains why one number is greater than another.", kind: "Core" },
@@ -49,7 +49,7 @@ export const sessions: Session[] = [
   { id: "14B", unit: 14, letter: "B", title: "Odd, even, skip count", focus: "Recognize parity and count by useful intervals.", activity: "Pair counters, predict leftovers, then count by 2, 5, 10, and 25.", success: "She predicts odd or even before building the pairs.", kind: "Core" },
   { id: "15A", unit: 15, letter: "A", title: "Tally and graph", focus: "Collect, display, and interpret real data.", activity: "Ask a household question and build a bar graph.", success: "She answers comparison questions using her graph.", kind: "Core" },
   { id: "15B", unit: 15, letter: "B", title: "Patterns and chance", focus: "Describe pattern rules and probability words.", activity: "Continue growing patterns and discuss certain, possible, and impossible events.", success: "She states the rule rather than only the next number.", kind: "Core" },
-  { id: "16A", unit: 16, letter: "A", title: "Whole-course review", focus: "Show what is secure across the complete plan.", activity: "Complete a mixed, untimed review independently.", success: "Donia can name strengths and choose what to practise next.", kind: "Review" },
+  { id: "16A", unit: 16, letter: "A", title: "Whole-course review", focus: "Show what is secure across the complete plan.", activity: "Complete a mixed, untimed review independently.", success: "She can name strengths and choose what to practise next.", kind: "Review" },
   { id: "16B", unit: 16, letter: "B", title: "Five-minute clocks", focus: "Optional clock-reading extension.", activity: "Skip-count around a clock and set times to five minutes.", success: "She reads the minute hand without losing track of the hour.", kind: "Extension" },
 ];
 
