@@ -1,108 +1,83 @@
-# vinext-starter
+# Donia's Math Home
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+A calm, practical Grade 2 mathematics programme designed for homeschooling.
 
-## Prerequisites
+The programme contains 16 units, with two teaching sessions per unit. Every session includes a printable exercise, parent instructions, a learning goal, and a clear readiness check.
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+## Live Website
 
-## Sites Lifecycle
+[Open Donia's Math Home](https://mouhebg.github.io/Math/)
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
+## Programme Structure
 
-This starter does not use `wrangler.jsonc`.
+The 16 units are organised into four parts:
 
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout and then validates the Sites artifact. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
+1. **Number foundations**, Units 1 to 4
+2. **Taking numbers apart**, Units 5 to 8
+3. **Math in daily life**, Units 9 to 12
+4. **Groups and wider thinking**, Units 13 to 16
 
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
+Each unit contains:
 
-## Included Shape
+- Session A
+- Session B
+- Parent teaching instructions
+- A downloadable exercise
+- A "move on when" check
+- A mastery tracker stored on the device
 
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+## Worksheet Features
 
-## Workspace Auth Headers
+- 32 printable exercise pages
+- Individual exercise downloads
+- One ZIP file containing all exercises
+- Print or save as PDF
+- Green answers displayed inside available boxes and answer lines
+- A Hide answers button that removes the solutions
+- Exercise-specific guidance for the parent
 
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
+## Suggested Weekly Rhythm
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+Teach Session A first, leave at least one day for practice, then complete Session B. Repeat a session when the idea is still developing.
 
-Treat the full name as optional and fall back to email when it is absent:
+A typical lesson can take 20 to 25 minutes:
 
-```tsx
-import { headers } from "next/headers";
+- 3 minutes for an oral warm-up
+- 6 minutes for modelling with objects
+- 8 minutes for the exercise
+- 5 minutes for a game or real-life example
+- 2 minutes for Donia to explain her thinking
 
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
+## Run Locally
 
-  const displayName = fullName ?? email;
-  // ...
-}
+Requirements:
+
+- Node.js 22 or newer
+- npm
+
+Install and start the project:
+
+```bash
+npm ci
+npm run dev
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Run the validation checks:
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+```bash
+npm test
+```
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+Create the static GitHub Pages version:
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+```bash
+npm run build:pages
+```
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## Main Project Files
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Diagnostic Commands
-
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build and validate the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build, validate, and verify the rendered development-preview metadata
-- `npm run validate:artifact`: recheck an existing artifact's manifest and ESM `default.fetch` export
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-Use build and validation commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
-
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+- `app/page.tsx` contains the homepage and programme interface.
+- `app/globals.css` contains the website design and responsive layout.
+- `public/worksheets/` contains the 32 exercise pages and downloadable ZIP file.
+- `scripts/build-pages.mjs` creates the static GitHub Pages version.
+- `.github/workflows/deploy-pages.yml` publishes updates automatihÿ[KÇÇà»»\ﬁ[Y[ùÇë]ô\ûH\]H\⁄Y»HXZ[òúò[ò⁄\»ùZ[[ôXõ\⁄Y]]€X]Xÿ[Hõ›Y⁄⁄]XàYŸ\ÀÇ
