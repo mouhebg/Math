@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { phases, sessions, weeklyUnits, unitNames, type Session } from "@/data/sessions";
+import { supabase } from "@/lib/supabase";
 
 type SessionStatus = "not-started" | "practising" | "mastered";
 type StatusMap = Record<string, SessionStatus>;
+type SyncState = "local" | "syncing" | "synced" | "error";
 
 const statusLabels: Record<SessionStatus, string> = {
   "not-started": "Not started",
@@ -40,12 +43,25 @@ function GuideIcon() {
   return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 17a7 7 0 1 0-7-7m7-3v3l2 2" /><path d="M3 13v4h4" /></svg>;
 }
 
+function CloudIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 15.5h9a3.5 3.5 0 0 0 .5-7A5 5 0 0 0 5.4 7 4.3 4.3 0 0 0 5.5 15.5Z" /><path d="m8 11 2 2 3.5-4" /></svg>;
+}
+
 export default function Home() {
   const [statuses, setStatuses] = useState<StatusMap>({});
   const [activePart, setActivePart] = useState(0);
   const [openUnit, setOpenUnit] = useState(1);
   const [ready, setReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
+  const [syncState, setSyncState] = useState<SyncState>("local");
+  const [cloudLoaded, setCloudLoaded] = useState(false);
+  const statusesRef = useRef<StatusMap>({});
+  const pendingSyncRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -66,7 +82,12 @@ export default function Home() {
           for (const id of mastered) nextStatuses[id] = "mastered";
         }
 
+        statusesRef.current = nextStatuses;
         setStatuses(nextStatuses);
+        const savedPending = window.localStorage.getItem("donia-math-sync-pending");
+        if (savedPending) {
+          pendingSyncRef.current = new Set(JSON.parse(savedPending) as string[]);
+        }
         const savedLocation = window.localStorage.getItem("donia-math-location");
         const location = savedLocation ? JSON.parse(savedLocation) as { part?: number; unit?: number } : null;
         if (
@@ -98,6 +119,119 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    let active = true;
+
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!active) return;
+      const nextUser = data.session?.user ?? null;
+      setUser(nextUser);
+      setAuthReady(true);
+      if (!nextUser) {
+        setCloudLoaded(false);
+        setSyncState("local");
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return;
+      const nextUser = session?.user ?? null;
+      setUser(nextUser);
+      setAuthReady(true);
+      setCloudLoaded(false);
+      if (!nextUser) setSyncState("local");
+    });
+
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    statusesRef.current = statuses;
+  }, [statuses]);
+
+  useEffect(() => {
+    if (!ready || !authReady) return;
+    if (!user) return;
+
+    let cancelled = false;
+
+    async function loadCloudProgress() {
+      setSyncState("syncing");
+      const [progressResult, preferencesResult] = await Promise.all([
+        supabase.from("math_session_progress").select("session_id,status,updated_at").eq("user_id", user!.id),
+        supabase.from("math_preferences").select("active_part,open_unit").eq("user_id", user!.id).maybeSingle(),
+      ]);
+
+      if (cancelled) return;
+      if (progressResult.error || preferencesResult.error) {
+        setSyncState("error");
+        setAuthMessage("Your local progress is safe, but cloud sync could not connect.");
+        return;
+      }
+
+      const localStatuses = statusesRef.current;
+      const pending = pendingSyncRef.current;
+      const merged: StatusMap = { ...localStatuses };
+      const remoteIds = new Set<string>();
+
+      for (const row of progressResult.data ?? []) {
+        if (!["not-started", "practising", "mastered"].includes(row.status)) continue;
+        remoteIds.add(row.session_id);
+        if (!pending.has(row.session_id)) merged[row.session_id] = row.status as SessionStatus;
+      }
+
+      statusesRef.current = merged;
+      setStatuses(merged);
+
+      const rowsToUpload = Object.entries(merged)
+        .filter(([id]) => pending.has(id) || !remoteIds.has(id))
+        .map(([sessionId, status]) => ({
+          user_id: user!.id,
+          session_id: sessionId,
+          status,
+          updated_at: new Date().toISOString(),
+        }));
+
+      if (rowsToUpload.length) {
+        const { error } = await supabase.from("math_session_progress").upsert(rowsToUpload, { onConflict: "user_id,session_id" });
+        if (error) {
+          if (!cancelled) setSyncState("error");
+          return;
+        }
+        for (const row of rowsToUpload) pending.delete(row.session_id);
+        window.localStorage.setItem("donia-math-sync-pending", JSON.stringify([...pending]));
+      }
+
+      if (preferencesResult.data) {
+        setActivePart(preferencesResult.data.active_part);
+        setOpenUnit(preferencesResult.data.open_unit);
+      } else {
+        const savedLocation = window.localStorage.getItem("donia-math-location");
+        const localLocation = savedLocation
+          ? JSON.parse(savedLocation) as { part: number; unit: number }
+          : { part: 0, unit: 1 };
+        await supabase.from("math_preferences").upsert({
+          user_id: user!.id,
+          active_part: localLocation.part,
+          open_unit: localLocation.unit,
+          updated_at: new Date().toISOString(),
+        });
+      }
+
+      if (!cancelled) {
+        setCloudLoaded(true);
+        setSyncState("synced");
+        setAuthMessage("");
+      }
+    }
+
+    void loadCloudProgress();
+    return () => { cancelled = true; };
+  }, [authReady, ready, user]);
+
+  useEffect(() => {
     if (!ready) return;
     try {
       window.localStorage.setItem("donia-math-statuses", JSON.stringify(statuses));
@@ -117,7 +251,16 @@ export default function Home() {
     } catch {
       // Navigation still works normally when storage is unavailable.
     }
-  }, [activePart, openUnit, ready]);
+
+    if (user && cloudLoaded) {
+      void supabase.from("math_preferences").upsert({
+        user_id: user.id,
+        active_part: activePart,
+        open_unit: openUnit,
+        updated_at: new Date().toISOString(),
+      }).then(({ error }) => setSyncState(error ? "error" : "synced"));
+    }
+  }, [activePart, cloudLoaded, openUnit, ready, user]);
 
   const masteredCount = sessions.filter((session) => statuses[session.id] === "mastered").length;
   const practisingCount = sessions.filter((session) => statuses[session.id] === "practising").length;
@@ -136,7 +279,53 @@ export default function Home() {
   }
 
   function setStatus(id: string, status: SessionStatus) {
-    setStatuses((current) => ({ ...current, [id]: status }));
+    const next = { ...statusesRef.current, [id]: status };
+    statusesRef.current = next;
+    setStatuses(next);
+    pendingSyncRef.current.add(id);
+    try {
+      window.localStorage.setItem("donia-math-sync-pending", JSON.stringify([...pendingSyncRef.current]));
+    } catch {
+      // The current visit still retains the change.
+    }
+
+    if (user) {
+      setSyncState("syncing");
+      void supabase.from("math_session_progress").upsert({
+        user_id: user.id,
+        session_id: id,
+        status,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "user_id,session_id" }).then(({ error }) => {
+        if (error) {
+          setSyncState("error");
+          return;
+        }
+        pendingSyncRef.current.delete(id);
+        window.localStorage.setItem("donia-math-sync-pending", JSON.stringify([...pendingSyncRef.current]));
+        setSyncState("synced");
+      });
+    }
+  }
+
+  async function sendMagicLink(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) return;
+    setAuthMessage("Sending your secure sign-in link…");
+    const { error } = await supabase.auth.signInWithOtp({
+      email: normalizedEmail,
+      options: {
+        emailRedirectTo: `${window.location.origin}${window.location.pathname}`,
+      },
+    });
+    setAuthMessage(error ? error.message : "Check your email and open the sign-in link on this device.");
+  }
+
+  async function signOut() {
+    const { error } = await supabase.auth.signOut();
+    setAuthMessage(error ? error.message : "Signed out. Progress remains saved locally on this device.");
+    if (!error) setAuthOpen(false);
   }
 
   function choosePart(part: number) {
@@ -190,6 +379,56 @@ export default function Home() {
         <a className="header-progress" href="#progress" aria-label={`${progress}% of the programme mastered`}>
           <span><i style={{ width: `${progress}%` }} /></span><b>{progress}%</b>
         </a>
+        <div className="sync-menu">
+          <button
+            className={`sync-trigger sync-${syncState}`}
+            onClick={() => setAuthOpen(!authOpen)}
+            aria-expanded={authOpen}
+            aria-controls="sync-panel"
+          >
+            <CloudIcon />
+            <span>{user ? syncState === "syncing" ? "Syncing" : syncState === "error" ? "Sync issue" : "Synced" : "Sync progress"}</span>
+            {user && <i aria-hidden="true" />}
+          </button>
+
+          {authOpen && (
+            <aside className="sync-panel" id="sync-panel" aria-label="Progress synchronization">
+              {user ? (
+                <>
+                  <span className="sync-panel-kicker">Cloud sync is on</span>
+                  <h2>Your progress is protected.</h2>
+                  <p>Signed in as <strong>{user.email}</strong>. Use the same email on another device to continue there.</p>
+                  <div className={`sync-status-line sync-${syncState}`} aria-live="polite">
+                    <i />
+                    <span>{syncState === "syncing" ? "Saving changes…" : syncState === "error" ? "Local copy saved. Cloud will retry." : "Everything is up to date"}</span>
+                  </div>
+                  <button className="sign-out-button" onClick={signOut}>Sign out on this device</button>
+                </>
+              ) : (
+                <>
+                  <span className="sync-panel-kicker">Optional cloud backup</span>
+                  <h2>Continue on any device.</h2>
+                  <p>Enter your email. We will send a secure sign-in link, so there is no password to remember.</p>
+                  <form onSubmit={sendMagicLink}>
+                    <label htmlFor="sync-email">Email address</label>
+                    <input
+                      id="sync-email"
+                      type="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      placeholder="you@example.com"
+                      required
+                    />
+                    <button type="submit">Send sign-in link <ArrowIcon /></button>
+                  </form>
+                  <small>Your local progress will be combined with the cloud copy after you sign in.</small>
+                </>
+              )}
+              {authMessage && <p className="auth-message" aria-live="polite">{authMessage}</p>}
+            </aside>
+          )}
+        </div>
         <a className="header-download" href="worksheets/donia-math-exercises.zip" download>
           <DownloadIcon /><span>Download all</span>
         </a>

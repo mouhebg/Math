@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const developmentPreviewMeta =
@@ -29,5 +30,14 @@ test("renders development preview metadata", async () => {
     response.headers.get("content-type") ?? "",
     /^text\/html\b/i,
   );
-  assert.match(await response.text(), developmentPreviewMeta);
+  const html = await response.text();
+  assert.match(html, developmentPreviewMeta);
+  assert.match(html, /Sync progress/);
+  assert.match(html, /Today(?:&apos;|’|')s lesson/);
+});
+
+test("uses a publishable Supabase browser key", async () => {
+  const source = await readFile(new URL("../lib/supabase.ts", import.meta.url), "utf8");
+  assert.match(source, /sb_publishable_/);
+  assert.doesNotMatch(source, /service[_-]?role/i);
 });
