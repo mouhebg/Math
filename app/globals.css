@@ -25,11 +25,12 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 86px; }
-body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--font-ui), Arial, sans-serif; font-size: 16px; line-height: 1.55; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--font-sans), Arial, sans-serif; font-size: 16px; line-height: 1.55; }
 button, a, summary { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; font: inherit; }
 a { color: inherit; }
 svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+p, li { font-family: var(--font-serif), Georgia, serif; }
 a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
 
 .noscript-banner { padding: 14px 22px; border-bottom: 1px solid var(--coral); background: var(--coral-soft); color: var(--ink); text-align: center; }
@@ -111,7 +112,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 /* Shared */
 
 .eyebrow { margin: 0 0 13px; color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-h1, h2, h3 { font-family: var(--font-display), Georgia, serif; }
+h1, h2, h3, h4 { font-family: var(--font-sans), Arial, sans-serif; letter-spacing: -.035em; }
 .section-heading { display: grid; grid-template-columns: 1.1fr .7fr; gap: 60px; align-items: end; margin-bottom: 34px; }
 .section-heading h2 { margin: 0; font-size: clamp(40px, 4.6vw, 62px); font-weight: 600; letter-spacing: -.035em; line-height: .98; }
 .section-heading > p { max-width: 510px; margin: 0; color: var(--ink-soft); font-size: 16px; line-height: 1.65; }
@@ -243,7 +244,7 @@ h1 { margin: 0; font-size: clamp(58px, 7.4vw, 100px); font-weight: 600; letter-s
 .progress-section { padding: 90px max(22px, calc((100vw - 1180px) / 2)); background: var(--ink); color: #fff; }
 .progress-section .eyebrow { color: #78c1af; }
 .progress-overview { display: flex; flex-direction: column; align-items: flex-end; }
-.progress-overview strong { font-family: var(--font-display), Georgia, serif; font-size: 70px; font-weight: 600; line-height: .85; }
+.progress-overview strong { font-family: var(--font-sans), Arial, sans-serif; font-size: 70px; font-weight: 600; line-height: .85; letter-spacing: -.055em; }
 .progress-overview span { margin-top: 10px; color: #b7c5cd; font-size: 13px; }
 .unit-progress-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #38536b; border-radius: var(--radius-lg); overflow: hidden; }
 .unit-progress-grid button { display: grid; grid-template-columns: 35px 1fr auto; gap: 12px; align-items: center; min-height: 86px; padding: 16px; border: 0; border-right: 1px solid #38536b; border-bottom: 1px solid #38536b; background: transparent; color: #fff; text-align: left; cursor: pointer; }
@@ -262,9 +263,9 @@ h1 { margin: 0; font-size: clamp(58px, 7.4vw, 100px); font-weight: 600; letter-s
 .guide-section { padding: 90px max(22px, calc((100vw - 1180px) / 2)) 100px; background: var(--canvas); }
 .lesson-rhythm { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; }
 .lesson-rhythm div { position: relative; min-height: 148px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); overflow: hidden; }
-.lesson-rhythm div > span { position: absolute; top: 14px; right: 15px; color: var(--line); font-family: var(--font-display), Georgia, serif; font-size: 31px; }
-.lesson-rhythm strong { display: block; font-family: var(--font-display), Georgia, serif; font-size: 45px; font-weight: 600; line-height: 1; }
-.lesson-rhythm small { margin-left: 4px; color: var(--ink-soft); font-family: var(--font-ui), Arial, sans-serif; font-size: 10px; text-transform: uppercase; }
+.lesson-rhythm div > span { position: absolute; top: 14px; right: 15px; color: var(--line); font-family: var(--font-sans), Arial, sans-serif; font-size: 31px; }
+.lesson-rhythm strong { display: block; font-family: var(--font-sans), Arial, sans-serif; font-size: 45px; font-weight: 600; line-height: 1; letter-spacing: -.055em; }
+.lesson-rhythm small { margin-left: 4px; color: var(--ink-soft); font-family: var(--font-sans), Arial, sans-serif; font-size: 10px; text-transform: uppercase; }
 .lesson-rhythm p { margin: 30px 0 0; color: var(--ink-soft); font-size: 13px; font-weight: 700; }
 .guide-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 24px; }
 .guide-details details { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); overflow: hidden; }

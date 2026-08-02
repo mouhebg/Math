@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Archivo, Newsreader } from "next/font/google";
+import { DM_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-ui",
+const dmSans = DM_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
 const newsreader = Newsreader({
-  variable: "--font-display",
+  variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${archivo.variable} ${newsreader.variable} antialiased`}
+        className={`${dmSans.variable} ${newsreader.variable} antialiased`}
       >
         {children}
       </body>
