@@ -1,87 +1,127 @@
 # Donia's Math Home
 
-A calm, practical Grade 2 mathematics programme designed for homeschooling.
+A calm, practical Grade 2 mathematics programme for home use. It includes sixteen units, two teaching sessions per unit, printable exercises, parent guidance, and a readiness check that tells you when to move on.
 
-The programme contains 16 units, with two teaching sessions per unit. Every session includes a printable exercise, parent instructions, a learning goal, and a clear readiness check.
+**Live site:** https://mouhebg.github.io/Math/
 
-## Live Website
+## What this is
 
-[Open Donia's Math Home](https://mouhebg.github.io/Math/)
+This is a parent-run programme, not a worksheet dump. Each session focuses on one idea, one exercise, and one clear sign that the idea has landed. The worksheet shows what the child can already do. Short oral warm-ups build recall.
 
-## Programme Structure
+The sequence builds number relationships before asking the child to apply them. Bonds to ten come before larger facts, concrete models come before written procedures, and explanations matter more than speed.
 
-The 16 units are organised into four parts:
+## Programme structure
+
+The sixteen units sit in four parts:
 
 1. **Number foundations**, Units 1 to 4
 2. **Taking numbers apart**, Units 5 to 8
 3. **Math in daily life**, Units 9 to 12
 4. **Groups and wider thinking**, Units 13 to 16
 
-Each unit contains:
+Each unit contains Session A, Session B, parent instructions, a downloadable exercise, a move-on check, and a mastery tracker stored in the browser.
 
-- Session A
-- Session B
-- Parent teaching instructions
-- A downloadable exercise
-- A "move on when" check
-- A mastery tracker stored on the device
+### Unit map
 
-## Worksheet Features
+| Unit | Focus | Move on when |
+| --- | --- | --- |
+| 01 | Bonds to ten and part-whole thinking | She gives the partner of any number to 10 without counting up |
+| 02 | Place value to 200 | She represents and compares a number in more than one way |
+| 03 | Mental addition | She moves by tens and chooses an efficient strategy |
+| 04 | Addition within 100 | Her answer matches her estimate and concrete model |
+| 05 | Subtraction within 100 | She explains regrouping and checks by adding |
+| 06 | Choosing strategies | She selects and justifies an addition or subtraction method |
+| 07 | Fair sharing and halves | She connects equal sharing, doubles, and halves |
+| 08 | Two-digit halving | She splits tens and ones and models any remaining half |
+| 09 | Canadian money | She identifies coins and makes equivalent amounts |
+| 10 | Making change | She counts up and checks the change independently |
+| 11 | Reading clocks | She reads the hour correctly and explains quarter-hour times |
+| 12 | Apply and review | She applies money and time, and identifies what to practise next |
+| 13 | Equal groups and arrays | She finds totals without counting every object by ones |
+| 14 | Sharing, odd, and even | She checks equal shares and predicts odd or even |
+| 15 | Data, patterns, and chance | She interprets a graph and states a pattern rule |
+| 16 | Review and next steps | She names her strengths and chooses the next practice target |
 
-- 32 printable exercise pages
-- Individual exercise downloads
-- One ZIP file containing all exercises
-- Print or save as PDF
-- Green answers displayed inside available boxes and answer lines
-- A Hide answers button that removes the solutions
+The programme uses Ontario Grade 2 topics as a reference, but follows its own mastery sequence. It is not an official curriculum or a line-by-line implementation of provincial expectations.
+
+## Weekly rhythm
+
+Teach Session A first, leave at least one day for practice, then complete Session B. Repeat a session when the idea is still developing. Repeating is part of the programme.
+
+A lesson takes about 20 to 25 minutes:
+
+- 2 minutes, oral warm-up with no pencil
+- 6 minutes, modelling with objects
+- 8 minutes, the exercise
+- 5 minutes, a game or real-life example
+- 2 minutes, Donia explains her thinking
+
+The explanation at the end is an important diagnostic. "I counted" and "I knew 7 and 3 make 10" can produce the same answer, but they show different levels of understanding.
+
+## Worksheets
+
+- 32 printable session exercises
+- A two-minute Unit 1 warm-up card
+- Individual downloads and one ZIP bundle
+- Print or save as PDF from each page
+- Answers shown in green inside the available boxes and lines, hidden by default
+- A Hide answers control that removes the solutions again
 - Exercise-specific guidance for the parent
 
-## Suggested Weekly Rhythm
+Pages are designed for North American Letter paper, 8.5 by 11 inches. When printing on A4, choose "fit to page" in the print dialog.
 
-Teach Session A first, leave at least one day for practice, then complete Session B. Repeat a session when the idea is still developing.
+## Progress tracking
 
-A typical lesson can take 20 to 25 minutes:
+Mastery ticks are stored only in the current browser on the current device. They do not sync between devices and are removed if the site's browser data is cleared. No account is required.
 
-- 3 minutes for an oral warm-up
-- 6 minutes for modelling with objects
-- 8 minutes for the exercise
-- 5 minutes for a game or real-life example
-- 2 minutes for Donia to explain her thinking
+## Design standard
 
-## Run Locally
+The website and new learning resources share one visual system:
 
-Requirements:
+- Archivo for clear instructional text
+- Newsreader for lesson titles and learning hierarchy
+- DM Mono for labels, timing, status, and actions
+- Sage background, warm paper surfaces, dark navy actions, and green learning cues
+- Square corners, visible rules, and restrained colour
+- Print-friendly worksheets with answers hidden by default
+- Keyboard focus states, descriptive labels, and responsive layouts
 
-- Node.js 22 or newer
-- npm
+Shared website tokens live in `app/globals.css`. Printable resources keep their essential styles inline so downloaded files remain self-contained.
 
-Install and start the project:
+## Run locally
+
+Requirements: Node.js 22 or newer, and npm.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Run the validation checks:
+Run the checks:
 
 ```bash
 npm test
+npm run lint
 ```
 
-Create the static GitHub Pages version:
+Build the static GitHub Pages version:
 
 ```bash
 npm run build:pages
 ```
 
-## Main Project Files
+## Main project files
 
-- `app/page.tsx` contains the homepage and programme interface.
-- `app/globals.css` contains the website design and responsive layout.
-- `public/worksheets/` contains the 32 exercise pages and downloadable ZIP file.
-- `scripts/build-pages.mjs` creates the static GitHub Pages version.
-- `.github/workflows/deploy-pages.yml` publishes updates automatically.
+- `app/page.tsx`, the homepage and programme interface
+- `app/globals.css`, the shared website design system and responsive layout
+- `public/worksheets/`, the exercises, warm-up card, and downloadable ZIP
+- `scripts/build-pages.mjs`, the static Pages build
+- `.github/workflows/deploy-pages.yml`, automatic publishing
 
 ## Deployment
 
-Every update pushed to the `main` branch is built and published automatically through GitHub Pages.
+Every push to `main` is built and published to GitHub Pages automatically.
+
+## Contributing
+
+This is a personal family project. Issues and pull requests are not actively monitored.

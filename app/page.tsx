@@ -23,7 +23,7 @@ const phases = [
 ];
 
 const sessions: Session[] = [
-  { id: "1A", unit: 1, letter: "A", title: "Wholes and parts", focus: "Build and split numbers to 20 with counters.", activity: "Make 15 in several ways, then hide one part and find it.", success: "Donia names the whole and known part before calculating.", kind: "Core" },
+  { id: "1A", unit: 1, letter: "A", title: "Bonds to ten", focus: "See ten as two parts and learn every partner pair.", activity: "Use ten frames, part-whole bars, and the rainbow of ten.", success: "Donia gives the partner of any number to 10 without counting up.", kind: "Core" },
   { id: "1B", unit: 1, letter: "B", title: "Three story shapes", focus: "Find a missing whole, missing part, or missing start.", activity: "Draw the same part-whole box for six different stories.", success: "She decides what is missing without relying on keywords.", kind: "Core" },
   { id: "2A", unit: 2, letter: "A", title: "Tens and ones", focus: "Compose and decompose numbers to 200.", activity: "Build two-digit numbers and trade one ten for ten ones.", success: "She represents one number in two different ways.", kind: "Core" },
   { id: "2B", unit: 2, letter: "B", title: "Charts and order", focus: "Compare, order, and locate numbers to 200.", activity: "Explore neighbours on 100 and 200 charts.", success: "She explains why one number is greater than another.", kind: "Core" },
@@ -63,7 +63,7 @@ const weeklyUnits = Array.from({ length: 16 }, (_, index) => ({
 }));
 
 const unitNames = [
-  "Wholes and parts",
+  "Bonds to ten and part-whole thinking",
   "Place value to 200",
   "Mental addition",
   "Addition within 100",
@@ -88,19 +88,23 @@ export default function Home() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("donia-math-progress");
-    if (stored) {
-      try {
-        const saved = JSON.parse(stored) as string[];
-        setCompleted(saved);
-        const firstIncomplete = weeklyUnits.find((unit) => unit.sessions.some((session) => !saved.includes(session.id)));
-        if (firstIncomplete) {
-          setOpenUnit(firstIncomplete.week);
-          setActivePart(Math.floor((firstIncomplete.week - 1) / 4));
-        }
-      } catch { setCompleted([]); }
-    }
-    setReady(true);
+    const frame = window.requestAnimationFrame(() => {
+      const stored = window.localStorage.getItem("donia-math-progress");
+      if (stored) {
+        try {
+          const saved = JSON.parse(stored) as string[];
+          setCompleted(saved);
+          const firstIncomplete = weeklyUnits.find((unit) => unit.sessions.some((session) => !saved.includes(session.id)));
+          if (firstIncomplete) {
+            setOpenUnit(firstIncomplete.week);
+            setActivePart(Math.floor((firstIncomplete.week - 1) / 4));
+          }
+        } catch { setCompleted([]); }
+      }
+      setReady(true);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -143,17 +147,17 @@ export default function Home() {
 
       <section className="hero" id="top">
         <div className="hero-copy">
-          <p className="eyebrow">Grade 2 · Ontario · Home learning</p>
-          <h1>A calm, concrete math journey made for Donia.</h1>
+          <p className="eyebrow">Grade 2 // Home learning // 16 units</p>
+          <h1>One idea at a time. Understood, not rushed.</h1>
           <p className="hero-lede">
-            Sixteen flexible weeks, two short sessions each, and one printable exercise for every lesson. Move forward when the idea is secure, not simply because a new week begins.
+            A calm, concrete programme made for Donia. Two short sessions per unit, a printable exercise for every lesson, and a clear signal for when to move forward.
           </p>
           <div className="hero-actions">
             <a className="primary-button" href="#sessions">Choose today&apos;s session</a>
-            <a className="text-button" href="worksheets/donia-math-exercises.zip" download>Download all 32 exercises</a>
+            <a className="text-button" href="worksheets/donia-math-exercises.zip" download>Download the complete set</a>
           </div>
           <div className="hero-rule">
-            <span>One rule for every problem</span>
+            <span>The question to return to</span>
             <strong>What is the whole? What are the parts? Which one is missing?</strong>
           </div>
         </div>
@@ -241,7 +245,14 @@ export default function Home() {
 
                 {isOpen && <div className="unit-content">
                   <div className="unit-instruction">
-                    <span>Your weekly rhythm</span>
+                    <div>
+                      <span>Your weekly rhythm</span>
+                      {unit.week === 1 && (
+                        <a className="unit-resource" href="worksheets/donia-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">
+                          Open the 2-minute warm-up card ↗
+                        </a>
+                      )}
+                    </div>
                     <p>Teach Session A first. Leave at least one day before Session B. If Donia cannot meet the “move on when” check, repeat the activity with new numbers before continuing.</p>
                   </div>
                   <div className="exercise-pair">
@@ -291,7 +302,7 @@ export default function Home() {
           <p>Twenty to twenty-five minutes is enough on most days. Finish sooner when she reaches a natural success.</p>
         </div>
         <div className="rhythm">
-          <div><strong>3</strong><span>min</span><p>Oral warm-up</p></div>
+          <div><strong>2</strong><span>min</span><p>Oral warm-up</p></div>
           <div><strong>6</strong><span>min</span><p>Model with objects</p></div>
           <div><strong>8</strong><span>min</span><p>Exercise</p></div>
           <div><strong>5</strong><span>min</span><p>Game or real life</p></div>

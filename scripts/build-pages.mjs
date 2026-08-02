@@ -54,6 +54,9 @@ if (!html.includes('href="worksheets/donia-math-exercises.zip"')) {
 if (html.includes('href="/worksheets/')) {
   throw new Error("The rendered homepage contains a root-level worksheet link");
 }
+if (!html.includes('href="worksheets/donia-unit-01-warm-up-card.html"')) {
+  throw new Error("The rendered homepage does not reference the Unit 1 warm-up card");
+}
 
 for (let unit = 1; unit <= 16; unit += 1) {
   for (const session of ["a", "b"]) {
@@ -61,6 +64,8 @@ for (let unit = 1; unit <= 16; unit += 1) {
     await access(join(outputDirectory, "worksheets", filename));
   }
 }
+
+await access(join(outputDirectory, "worksheets", "donia-unit-01-warm-up-card.html"));
 
 await writeFile(join(outputDirectory, "index.html"), html);
 await writeFile(join(outputDirectory, "404.html"), html);
