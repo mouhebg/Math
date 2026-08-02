@@ -72,7 +72,24 @@ Pages are designed for North American Letter paper, 8.5 by 11 inches. When print
 
 ## Progress tracking
 
-Each session can be marked Not started, Practising, or Mastered. The homepage automatically recommends the next lesson, while the sixteen-unit progress map makes it easy to revisit any topic. The most recently opened unit and all learning states are stored only in the current browser on the current device. They do not sync between devices and are removed if the site's browser data is cleared. Existing mastery ticks from earlier versions are migrated automatically. No account is required.
+Each session can be marked Not started, Practising, or Mastered. The homepage automatically recommends the next lesson, while the sixteen-unit progress map makes it easy to revisit any topic. Progress is always stored locally first. A parent can optionally sign in through a passwordless Supabase email link to back up that progress and continue on another device. Existing mastery ticks from earlier versions are migrated automatically.
+
+Cloud synchronization uses two row-level secured tables:
+
+- `math_session_progress`, one row per user and session
+- `math_preferences`, the last opened part and unit
+
+The matching database migration is stored in `supabase/migrations/`. Only the publishable browser key is included in the application. No Supabase secret or service-role key is exposed.
+
+### One-time authentication setting
+
+In the Supabase project's **Authentication → URL Configuration** screen, set both the Site URL and an allowed Redirect URL to:
+
+```text
+https://mouhebg.github.io/Math/
+```
+
+This allows the passwordless email link to return safely to the published Math website. Email authentication and Magic Links must remain enabled.
 
 ## Design standard
 
