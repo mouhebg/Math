@@ -12,10 +12,10 @@ export type Session = {
 };
 
 export const phases = [
-  { name: "Number foundations", units: "Weeks 1 to 4", note: "Build meaning before procedures." },
-  { name: "Taking numbers apart", units: "Weeks 5 to 8", note: "Subtraction, sharing, and halves." },
-  { name: "Math in daily life", units: "Weeks 9 to 12", note: "Money, time, and planning." },
-  { name: "Groups and wider thinking", units: "Weeks 13 to 16", note: "Arrays, data, patterns, and review." },
+  { name: "Number foundations", units: "Units 1 to 4", note: "Build meaning before procedures." },
+  { name: "Taking numbers apart", units: "Units 5 to 8", note: "Subtraction, sharing, and halves." },
+  { name: "Math in daily life", units: "Units 9 to 12", note: "Money, time, and planning." },
+  { name: "Groups and wider thinking", units: "Units 13 to 16", note: "Arrays, data, patterns, and review." },
 ];
 
 export const sessions: Session[] = [

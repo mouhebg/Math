@@ -19,7 +19,7 @@ The sixteen units sit in four parts:
 3. **Math in daily life**, Units 9 to 12
 4. **Groups and wider thinking**, Units 13 to 16
 
-Each unit contains Session A, Session B, parent instructions, a downloadable exercise, a move-on check, and a mastery tracker stored in the browser.
+Each unit contains Session A, Session B, parent instructions, a downloadable exercise, a move-on check, and a three-state learning tracker stored in the browser.
 
 ### Unit map
 
@@ -72,17 +72,16 @@ Pages are designed for North American Letter paper, 8.5 by 11 inches. When print
 
 ## Progress tracking
 
-Mastery ticks are stored only in the current browser on the current device. They do not sync between devices and are removed if the site's browser data is cleared. No account is required.
+Each session can be marked Not started, Practising, or Mastered. The homepage automatically recommends the next lesson, while the sixteen-unit progress map makes it easy to revisit any topic. The most recently opened unit and all learning states are stored only in the current browser on the current device. They do not sync between devices and are removed if the site's browser data is cleared. Existing mastery ticks from earlier versions are migrated automatically. No account is required.
 
 ## Design standard
 
 The website and new learning resources share one visual system:
 
-- Archivo for clear instructional text
+- Archivo for clear instructional and interface text
 - Newsreader for lesson titles and learning hierarchy
-- DM Mono for labels, timing, status, and actions
-- Sage background, warm paper surfaces, dark navy actions, and green learning cues
-- Square corners, visible rules, and restrained colour
+- Warm ivory backgrounds, deep navy actions, green learning cues, and distinct part colours
+- Rounded cards, visible rules, and restrained shadows
 - Print-friendly worksheets with answers hidden by default
 - Keyboard focus states, descriptive labels, and responsive layouts
 

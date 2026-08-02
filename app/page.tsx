@@ -1,10 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { phases, sessions, weeklyUnits, unitNames } from "@/data/sessions";
+import { useEffect, useMemo, useState } from "react";
+import { phases, sessions, weeklyUnits, unitNames, type Session } from "@/data/sessions";
+
+type SessionStatus = "not-started" | "practising" | "mastered";
+type StatusMap = Record<string, SessionStatus>;
+
+const statusLabels: Record<SessionStatus, string> = {
+  "not-started": "Not started",
+  practising: "Practising",
+  mastered: "Mastered",
+};
+
+function worksheetName(session: Session) {
+  return `donia-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
+}
+
+function ArrowIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg>;
+}
+
+function DownloadIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 4-4m-4 4L6 8M4 16h12" /></svg>;
+}
+
+function BookIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H10v14H6.5A2.5 2.5 0 0 0 4 18.5v-14Zm12 0A2.5 2.5 0 0 0 13.5 2H10v14h3.5a2.5 2.5 0 0 1 2.5 2.5v-14Z" /></svg>;
+}
+
+function RouteIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="5" r="2" /><circle cx="15" cy="15" r="2" /><path d="M7 5h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3H8a3 3 0 0 0-3 3v0" /></svg>;
+}
+
+function ChartIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16V9m6 7V4m6 12v-5" /></svg>;
+}
+
+function GuideIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 17a7 7 0 1 0-7-7m7-3v3l2 2" /><path d="M3 13v4h4" /></svg>;
+}
 
 export default function Home() {
-  const [completed, setCompleted] = useState<string[]>([]);
+  const [statuses, setStatuses] = useState<StatusMap>({});
   const [activePart, setActivePart] = useState(0);
   const [openUnit, setOpenUnit] = useState(1);
   const [ready, setReady] = useState(false);
@@ -13,17 +50,47 @@ export default function Home() {
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       try {
-        const stored = window.localStorage.getItem("donia-math-progress");
-        if (stored) {
-          const saved = JSON.parse(stored) as string[];
-          setCompleted(saved);
-          const firstIncomplete = weeklyUnits.find((unit) => unit.sessions.some((session) => !saved.includes(session.id)));
-          if (firstIncomplete) {
-            setOpenUnit(firstIncomplete.week);
-            setActivePart(Math.floor((firstIncomplete.week - 1) / 4));
+        const storedStatuses = window.localStorage.getItem("donia-math-statuses");
+        const legacyProgress = window.localStorage.getItem("donia-math-progress");
+        const nextStatuses: StatusMap = {};
+
+        if (storedStatuses) {
+          const saved = JSON.parse(storedStatuses) as StatusMap;
+          for (const session of sessions) {
+            if (["not-started", "practising", "mastered"].includes(saved[session.id])) {
+              nextStatuses[session.id] = saved[session.id];
+            }
+          }
+        } else if (legacyProgress) {
+          const mastered = JSON.parse(legacyProgress) as string[];
+          for (const id of mastered) nextStatuses[id] = "mastered";
+        }
+
+        setStatuses(nextStatuses);
+        const savedLocation = window.localStorage.getItem("donia-math-location");
+        const location = savedLocation ? JSON.parse(savedLocation) as { part?: number; unit?: number } : null;
+        if (
+          location
+          && Number.isInteger(location.part)
+          && Number.isInteger(location.unit)
+          && location.part! >= 0
+          && location.part! <= 3
+          && location.unit! >= location.part! * 4 + 1
+          && location.unit! <= location.part! * 4 + 4
+        ) {
+          setActivePart(location.part!);
+          setOpenUnit(location.unit!);
+        } else {
+          const current = sessions.find((session) => nextStatuses[session.id] === "practising")
+            ?? sessions.find((session) => nextStatuses[session.id] !== "mastered");
+          if (current) {
+            setOpenUnit(current.unit);
+            setActivePart(Math.floor((current.unit - 1) / 4));
           }
         }
-      } catch { setCompleted([]); }
+      } catch {
+        setStatuses({});
+      }
       setReady(true);
     });
 
@@ -33,40 +100,77 @@ export default function Home() {
   useEffect(() => {
     if (!ready) return;
     try {
-      window.localStorage.setItem("donia-math-progress", JSON.stringify(completed));
-    } catch { /* storage full or unavailable */ }
-  }, [completed, ready]);
+      window.localStorage.setItem("donia-math-statuses", JSON.stringify(statuses));
+      window.localStorage.setItem(
+        "donia-math-progress",
+        JSON.stringify(sessions.filter((session) => statuses[session.id] === "mastered").map((session) => session.id)),
+      );
+    } catch {
+      // Local progress remains available for this visit when storage is unavailable.
+    }
+  }, [statuses, ready]);
 
-  const progress = Math.round((completed.length / sessions.length) * 100);
+  useEffect(() => {
+    if (!ready || openUnit === 0) return;
+    try {
+      window.localStorage.setItem("donia-math-location", JSON.stringify({ part: activePart, unit: openUnit }));
+    } catch {
+      // Navigation still works normally when storage is unavailable.
+    }
+  }, [activePart, openUnit, ready]);
+
+  const masteredCount = sessions.filter((session) => statuses[session.id] === "mastered").length;
+  const practisingCount = sessions.filter((session) => statuses[session.id] === "practising").length;
+  const progress = Math.round((masteredCount / sessions.length) * 100);
+  const programmeComplete = masteredCount === sessions.length;
+  const nextSession = useMemo(
+    () => sessions.find((session) => statuses[session.id] === "practising")
+      ?? sessions.find((session) => statuses[session.id] !== "mastered")
+      ?? sessions[sessions.length - 1],
+    [statuses],
+  );
   const visibleUnits = weeklyUnits.slice(activePart * 4, activePart * 4 + 4);
 
-  function toggle(id: string) {
-    setCompleted((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+  function getStatus(id: string): SessionStatus {
+    return statuses[id] ?? "not-started";
+  }
+
+  function setStatus(id: string, status: SessionStatus) {
+    setStatuses((current) => ({ ...current, [id]: status }));
   }
 
   function choosePart(part: number) {
+    const units = weeklyUnits.slice(part * 4, part * 4 + 4);
+    const firstCurrent = units.find((unit) => unit.sessions.some((session) => getStatus(session.id) !== "mastered"));
     setActivePart(part);
-    setOpenUnit(part * 4 + 1);
+    setOpenUnit(firstCurrent?.week ?? part * 4 + 1);
   }
 
-  function openPart(part: number) {
-    choosePart(part);
-    window.requestAnimationFrame(() => document.getElementById("sessions")?.scrollIntoView({ behavior: "smooth" }));
+  function openSession(session: Session) {
+    setActivePart(Math.floor((session.unit - 1) / 4));
+    setOpenUnit(session.unit);
+    window.requestAnimationFrame(() => document.getElementById("programme")?.scrollIntoView({ behavior: "smooth" }));
+  }
+
+  function startNextLesson() {
+    if (!programmeComplete && getStatus(nextSession.id) === "not-started") {
+      setStatus(nextSession.id, "practising");
+    }
+    openSession(nextSession);
   }
 
   return (
     <main>
       <noscript>
         <div className="noscript-banner">
-          This site requires JavaScript to track progress and navigate sessions.
-          You can still <a href="worksheets/donia-math-exercises.zip">download all exercises</a> directly.
+          JavaScript is needed for progress tracking. You can still <a href="worksheets/donia-math-exercises.zip">download all exercises</a>.
         </div>
       </noscript>
 
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Donia's Math Home">
-          <span className="brand-mark">D</span>
-          <span>Donia&apos;s Math Home</span>
+        <a className="brand" href="#today" aria-label="Donia's Math Home">
+          <span className="brand-mark" aria-hidden="true">D</span>
+          <span><strong>Donia&apos;s</strong><small>Math Home</small></span>
         </a>
         <button
           className="menu-toggle"
@@ -78,208 +182,233 @@ export default function Home() {
           <span className={`hamburger ${menuOpen ? "open" : ""}`} />
         </button>
         <nav id="main-nav" className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
-          <a href="#plan" onClick={() => setMenuOpen(false)}>The plan</a>
-          <a href="#sessions" onClick={() => setMenuOpen(false)}>Sessions</a>
+          <a href="#today" onClick={() => setMenuOpen(false)}>Today</a>
+          <a href="#programme" onClick={() => setMenuOpen(false)}>Programme</a>
+          <a href="#progress" onClick={() => setMenuOpen(false)}>Progress</a>
           <a href="#parent-guide" onClick={() => setMenuOpen(false)}>Parent guide</a>
         </nav>
-        <a className="small-download" href="worksheets/donia-math-exercises.zip" download>
-          Download all
+        <a className="header-progress" href="#progress" aria-label={`${progress}% of the programme mastered`}>
+          <span><i style={{ width: `${progress}%` }} /></span><b>{progress}%</b>
+        </a>
+        <a className="header-download" href="worksheets/donia-math-exercises.zip" download>
+          <DownloadIcon /><span>Download all</span>
         </a>
       </header>
 
-      <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow">Grade 2 // Home learning // 16 units</p>
-          <h1>One idea at a time. Understood, not rushed.</h1>
-          <p className="hero-lede">
-            A calm, concrete programme made for Donia. Two short sessions per unit, a printable exercise for every lesson, and a clear signal for when to move forward.
+      <section className="today-section" id="today">
+        <div className="today-copy">
+          <p className="eyebrow">Grade 2 home learning</p>
+          <h1>Small lessons.<br />Strong foundations.</h1>
+          <p className="today-lede">
+            A calm mathematics programme built around understanding. Two short sessions per unit, clear parent guidance, and no pressure to rush.
           </p>
-          <div className="hero-actions">
-            <a className="primary-button" href="#sessions">Choose today&apos;s session</a>
-            <a className="text-button" href="worksheets/donia-math-exercises.zip" download>Download the complete set</a>
-          </div>
-          <div className="hero-rule">
-            <span>The question to return to</span>
-            <strong>What is the whole? What are the parts? Which one is missing?</strong>
+          <div className="programme-summary" aria-label="Programme summary">
+            <span><strong>16</strong> units</span>
+            <span><strong>32</strong> sessions</span>
+            <span><strong>20</strong> min each</span>
           </div>
         </div>
-        <div className="progress-card" role="region" aria-label="Mastery progress">
-          <div className="progress-ring" style={{ "--progress": `${progress * 3.6}deg` } as React.CSSProperties}>
-            <div role="img" aria-label={`${completed.length} of 32 sessions mastered`}>
-              <strong aria-hidden="true">{completed.length}</strong>
-              <span aria-hidden="true">of 32</span>
-            </div>
-          </div>
-          <p className="progress-label">Sessions mastered</p>
-          <p>Progress is stored on this device. Repeating a session is part of the plan.</p>
-          <div className="mini-track" aria-hidden="true">
-            {sessions.map((session) => <span className={completed.includes(session.id) ? "done" : ""} key={session.id} />)}
-          </div>
-        </div>
-      </section>
 
-      <section className="section" id="plan">
-        <div className="section-heading">
-          <div><p className="eyebrow">The learning map</p><h2>Four parts, one connected story</h2></div>
-          <p>Plan for Session A and Session B each week. If an idea is still developing, repeat that week before moving forward.</p>
-        </div>
-        <div className="phase-grid">
-          {phases.map((phase, index) => (
-            <button className={`phase-card phase-${index + 1}`} onClick={() => openPart(index)} key={phase.name}>
-              <span>Part {index + 1}</span>
-              <h3>{phase.name}</h3>
-              <p>{phase.units}</p>
-              <small>{phase.note}</small>
-              <b>Open this part →</b>
-            </button>
-          ))}
-        </div>
-        <div className="mastery-grid">
-          <article><span>1</span><div><h3>Ready</h3><p>She explains the idea and completes the exercise with confidence. Continue.</p></div></article>
-          <article><span>2</span><div><h3>Developing</h3><p>She understands with help. Repeat using new numbers or a different game.</p></div></article>
-          <article><span>3</span><div><h3>Not yet</h3><p>Frustration is rising or the model is unclear. Return to the previous concrete step.</p></div></article>
-        </div>
-      </section>
-
-      <section className="section sessions-section" id="sessions">
-        <div className="section-heading">
-          <div><p className="eyebrow">The programme</p><h2>Part, Unit, then Exercise</h2></div>
-          <p>Follow the three levels below. Complete Session A and Session B inside a Unit, then continue to the next Unit.</p>
-        </div>
-
-        <div className="programme-key" aria-label="How to use the programme">
-          <div><span>1</span><p><b>Choose a Part</b><small>Four large stages</small></p></div>
-          <div><span>2</span><p><b>Open a Unit</b><small>One Unit per week</small></p></div>
-          <div><span>3</span><p><b>Teach two exercises</b><small>Session A and Session B</small></p></div>
-        </div>
-
-        <div className="part-selector" role="tablist" aria-label="Choose a programme part">
-          {phases.map((phase, index) => (
-            <button
-              className={`part-choice part-choice-${index + 1} ${activePart === index ? "active" : ""}`}
-              role="tab"
-              aria-selected={activePart === index}
-              onClick={() => choosePart(index)}
-              key={phase.name}
-            >
-              <span>Part {index + 1}</span>
-              <strong>{phase.name}</strong>
-              <small>{phase.units}</small>
-            </button>
-          ))}
-        </div>
-
-        <section className={`part-workspace part-workspace-${activePart + 1}`} role="tabpanel">
-          <header className="part-workspace-header">
-            <div><span>Part {activePart + 1} of 4</span><h3>{phases[activePart].name}</h3></div>
-            <p>{phases[activePart].note} Open one Unit below to see your instructions and Donia&apos;s exercises.</p>
+        <article className="next-lesson-card" aria-label="Today's lesson">
+          <header>
+            <span className="today-label">{programmeComplete ? "Programme complete" : "Today’s lesson"}</span>
+            <span className={`status-pill status-${getStatus(nextSession.id)}`}>{statusLabels[getStatus(nextSession.id)]}</span>
           </header>
+          <div className="lesson-position">
+            <span>Part {Math.floor((nextSession.unit - 1) / 4) + 1}</span>
+            <span>Unit {String(nextSession.unit).padStart(2, "0")}</span>
+            <span>Session {nextSession.letter}</span>
+          </div>
+          <h2>{programmeComplete ? "Choose what to revisit" : nextSession.title}</h2>
+          <p>{programmeComplete ? "All sessions are mastered. Open any unit below for a relaxed review." : nextSession.focus}</p>
+          <div className="lesson-meta"><span>About 20 minutes</span><span>{nextSession.kind}</span></div>
+          <div className="next-actions">
+            <button className="primary-action" onClick={startNextLesson}>
+              {programmeComplete ? "Open programme" : getStatus(nextSession.id) === "practising" ? "Continue lesson" : "Start lesson"}<ArrowIcon />
+            </button>
+            <a href={`worksheets/${worksheetName(nextSession)}`} target="_blank" rel="noreferrer">
+              <BookIcon /> Open worksheet
+            </a>
+          </div>
+        </article>
+      </section>
 
-          <div className="unit-list">
-          {visibleUnits.map((unit) => {
-            const completeCount = unit.sessions.filter((session) => completed.includes(session.id)).length;
-            const isOpen = openUnit === unit.week;
+      <section className="programme-section" id="programme">
+        <div className="section-heading">
+          <div><p className="eyebrow">Learning pathway</p><h2>See the whole journey.<br />Open only what you need.</h2></div>
+          <p>Choose a part, then open one unit. Session A comes first. Leave at least one day before Session B, and repeat whenever understanding is still developing.</p>
+        </div>
+
+        <div className="part-tabs" role="tablist" aria-label="Programme parts">
+          {phases.map((phase, index) => {
+            const partSessions = sessions.slice(index * 8, index * 8 + 8);
+            const partMastered = partSessions.filter((session) => getStatus(session.id) === "mastered").length;
             return (
-              <article className={`unit-accordion ${isOpen ? "open" : ""}`} key={unit.week}>
-                <button className="unit-toggle" onClick={() => setOpenUnit(isOpen ? 0 : unit.week)} aria-expanded={isOpen}>
-                  <span className="unit-number">Unit {String(unit.week).padStart(2, "0")}</span>
-                  <span className="unit-name">{unitNames[unit.week - 1]}</span>
-                  <span className="unit-progress">{completeCount}/2 complete</span>
-                  <span className="unit-arrow">{isOpen ? "−" : "+"}</span>
-                </button>
-
-                {isOpen && <div className="unit-content">
-                  <div className="unit-instruction">
-                    <div>
-                      <span>Your weekly rhythm</span>
-                      {unit.week === 1 && (
-                        <a className="unit-resource" href="worksheets/donia-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">
-                          Open the 2-minute warm-up card ↗
-                        </a>
-                      )}
-                    </div>
-                    <p>Teach Session A first. Leave at least one day before Session B. If Donia cannot meet the "move on when" check, repeat the activity with new numbers before continuing.</p>
-                  </div>
-                  <div className="exercise-pair">
-                  {unit.sessions.map((session) => {
-                    const filename = `donia-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
-                    const isDone = completed.includes(session.id);
-                    return (
-                      <section className={`exercise-card ${isDone ? "mastered" : ""}`} key={session.id}>
-                        <header className="exercise-header">
-                          <span className="session-letter">{session.letter}</span>
-                          <div>
-                            <span>Session {session.letter}</span>
-                            <h4>{session.title}</h4>
-                          </div>
-                          <span className={`kind kind-${session.kind.toLowerCase()}`}>{session.kind}</span>
-                        </header>
-
-                        <div className="parent-instructions">
-                          <div><span>Goal</span><p>{session.focus}</p></div>
-                          <div><span>What you do</span><p>{session.activity}</p></div>
-                          <div><span>Move on when</span><p>{session.success}</p></div>
-                        </div>
-
-                        <div className="exercise-actions">
-                          <a href={`worksheets/${filename}`} target="_blank" rel="noreferrer" aria-label={`Open Unit ${unit.week}, Session ${session.letter}`}>Open exercise ↗</a>
-                          <a className="save-exercise" href={`worksheets/${filename}`} download aria-label={`Download Unit ${unit.week}, Session ${session.letter}`}>Download ↓</a>
-                          <button aria-pressed={isDone} onClick={() => toggle(session.id)} aria-label={`${isDone ? "Unmark" : "Mark"} Unit ${unit.week}, Session ${session.letter} as mastered`}>
-                            <span className="check">{isDone ? "✓" : ""}</span>{isDone ? "Mastered" : "Mark mastered"}
-                          </button>
-                        </div>
-                      </section>
-                    );
-                  })}
-                  </div>
-                </div>
-                }
-              </article>
+              <button
+                className={`part-tab part-${index + 1} ${activePart === index ? "active" : ""}`}
+                role="tab"
+                aria-selected={activePart === index}
+                onClick={() => choosePart(index)}
+                key={phase.name}
+              >
+                <span className="part-index">{String(index + 1).padStart(2, "0")}</span>
+                <span className="part-name"><strong>{phase.name}</strong><small>{phase.units}</small></span>
+                <span className="part-score">{partMastered}/8</span>
+              </button>
             );
           })}
+        </div>
+
+        <div className={`part-panel part-panel-${activePart + 1}`} role="tabpanel">
+          <header className="part-panel-header">
+            <div><span>Part {activePart + 1} of 4</span><h3>{phases[activePart].name}</h3></div>
+            <p>{phases[activePart].note}</p>
+          </header>
+
+          <div className="unit-grid">
+            {visibleUnits.map((unit) => {
+              const unitMastered = unit.sessions.filter((session) => getStatus(session.id) === "mastered").length;
+              const unitPractising = unit.sessions.some((session) => getStatus(session.id) === "practising");
+              const isOpen = openUnit === unit.week;
+              return (
+                <article className={`unit-card ${isOpen ? "open" : ""}`} key={unit.week}>
+                  <button className="unit-summary" onClick={() => setOpenUnit(isOpen ? 0 : unit.week)} aria-expanded={isOpen}>
+                    <span className="unit-number">Unit {String(unit.week).padStart(2, "0")}</span>
+                    <span className="unit-title">{unitNames[unit.week - 1]}</span>
+                    <span className={`unit-state ${unitMastered === 2 ? "complete" : unitPractising ? "active" : ""}`}>
+                      {unitMastered === 2 ? "Mastered" : unitPractising ? "In progress" : `${unitMastered}/2 complete`}
+                    </span>
+                    <span className="unit-toggle-icon" aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="unit-detail">
+                      <div className="weekly-note">
+                        <span>Weekly rhythm</span>
+                        <p>Teach Session A, pause for at least one day, then teach Session B. Repeat with new numbers if the move-on check is not yet secure.</p>
+                        {unit.week === 1 && (
+                          <a href="worksheets/donia-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">Open the 2-minute warm-up card <ArrowIcon /></a>
+                        )}
+                      </div>
+
+                      <div className="session-grid">
+                        {unit.sessions.map((session) => {
+                          const currentStatus = getStatus(session.id);
+                          return (
+                            <section className={`session-card session-${currentStatus}`} key={session.id}>
+                              <header className="session-header">
+                                <span className="session-letter">{session.letter}</span>
+                                <div><span>Session {session.letter}</span><h4>{session.title}</h4></div>
+                                <span className={`kind kind-${session.kind.toLowerCase()}`}>{session.kind}</span>
+                              </header>
+
+                              <div className="instruction-list">
+                                <div><span>Goal</span><p>{session.focus}</p></div>
+                                <div><span>What you do</span><p>{session.activity}</p></div>
+                                <div><span>Move on when</span><p>{session.success}</p></div>
+                              </div>
+
+                              <div className="session-resources">
+                                <a className="open-resource" href={`worksheets/${worksheetName(session)}`} target="_blank" rel="noreferrer"><BookIcon />Open worksheet</a>
+                                <a href={`worksheets/${worksheetName(session)}`} download aria-label={`Download Unit ${unit.week}, Session ${session.letter}`}><DownloadIcon /><span>Download</span></a>
+                              </div>
+
+                              <fieldset className="status-control">
+                                <legend>Learning status</legend>
+                                {(["not-started", "practising", "mastered"] as SessionStatus[]).map((status) => (
+                                  <button
+                                    className={currentStatus === status ? "selected" : ""}
+                                    aria-pressed={currentStatus === status}
+                                    onClick={() => setStatus(session.id, status)}
+                                    key={status}
+                                  >
+                                    {status === "mastered" && <span aria-hidden="true">✓</span>}{statusLabels[status]}
+                                  </button>
+                                ))}
+                              </fieldset>
+                            </section>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </article>
+              );
+            })}
           </div>
-        </section>
+        </div>
       </section>
 
-      <section className="section parent-section" id="parent-guide">
+      <section className="progress-section" id="progress">
+        <div className="section-heading progress-heading">
+          <div><p className="eyebrow">Progress</p><h2>Understanding grows<br />one unit at a time.</h2></div>
+          <div className="progress-overview">
+            <strong>{progress}%</strong>
+            <span>{masteredCount} mastered{practisingCount ? `, ${practisingCount} practising` : ""}</span>
+          </div>
+        </div>
+
+        <div className="unit-progress-grid">
+          {weeklyUnits.map((unit) => {
+            const count = unit.sessions.filter((session) => getStatus(session.id) === "mastered").length;
+            return (
+              <button onClick={() => openSession(unit.sessions.find((session) => getStatus(session.id) !== "mastered") ?? unit.sessions[0])} key={unit.week}>
+                <span className="progress-unit-number">{String(unit.week).padStart(2, "0")}</span>
+                <span className="progress-unit-name">{unitNames[unit.week - 1]}</span>
+                <span className="session-dots" aria-label={`${count} of 2 sessions mastered`}>
+                  {unit.sessions.map((session) => <i className={`dot-${getStatus(session.id)}`} key={session.id} />)}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="guide-section" id="parent-guide">
         <div className="section-heading">
-          <div><p className="eyebrow">For the adult beside her</p><h2>A lesson should feel small</h2></div>
-          <p>Twenty to twenty-five minutes is enough on most days. Finish sooner when she reaches a natural success.</p>
+          <div><p className="eyebrow">Parent guide</p><h2>Keep each lesson<br />small and successful.</h2></div>
+          <p>Twenty minutes is enough on most days. Finish earlier when Donia reaches a natural success, and return another day if frustration starts to rise.</p>
         </div>
-        <div className="rhythm">
-          <div><strong>2</strong><span>min</span><p>Oral warm-up</p></div>
-          <div><strong>6</strong><span>min</span><p>Model with objects</p></div>
-          <div><strong>8</strong><span>min</span><p>Exercise</p></div>
-          <div><strong>5</strong><span>min</span><p>Game or real life</p></div>
-          <div><strong>2</strong><span>min</span><p>Donia explains</p></div>
+
+        <div className="lesson-rhythm" aria-label="Suggested lesson timing">
+          {[{ time: "2", label: "Warm up" }, { time: "6", label: "Model" }, { time: "8", label: "Exercise" }, { time: "5", label: "Play" }, { time: "2", label: "Explain" }].map((step, index) => (
+            <div key={step.label}><span>{index + 1}</span><strong>{step.time}<small>min</small></strong><p>{step.label}</p></div>
+          ))}
         </div>
-        <div className="guide-grid">
-          <article>
-            <h3>Keep</h3>
-            <ul><li>Objects and drawings within reach</li><li>Questions such as "show me how you know"</li><li>Untimed practice and playful fluency</li><li>One digit per square for written work</li></ul>
-          </article>
-          <article>
-            <h3>Pause</h3>
-            <ul><li>When the same misunderstanding repeats</li><li>When guessing replaces explaining</li><li>When frustration begins to rise</li><li>When the concrete model no longer makes sense</li></ul>
-          </article>
-          <article>
-            <h3>Remember</h3>
-            <ul><li>Finger counting is a valid temporary strategy</li><li>Wrong answers reveal where to teach</li><li>Extensions are optional, not tests</li><li>Confidence and understanding come before speed</li></ul>
-          </article>
+
+        <div className="guide-details">
+          <details open>
+            <summary><span>01</span><strong>What to keep nearby</strong><i /></summary>
+            <ul><li>Objects and drawings for modelling</li><li>Questions such as “show me how you know”</li><li>Untimed practice and playful fluency</li><li>One digit per square for written work</li></ul>
+          </details>
+          <details>
+            <summary><span>02</span><strong>When to pause</strong><i /></summary>
+            <ul><li>The same misunderstanding keeps returning</li><li>Guessing replaces explaining</li><li>Frustration begins to rise</li><li>The concrete model no longer makes sense</li></ul>
+          </details>
+          <details>
+            <summary><span>03</span><strong>What to remember</strong><i /></summary>
+            <ul><li>Finger counting can be a useful temporary strategy</li><li>Wrong answers reveal where to teach</li><li>Extensions are optional, not tests</li><li>Confidence and understanding come before speed</li></ul>
+          </details>
         </div>
+
         <div className="curriculum-note">
-          <div><span>Ontario alignment</span><h3>Core expectations and enrichment are clearly separated.</h3></div>
-          <p>
-            Grade 2 core work includes numbers to 200, addition and subtraction situations to 100, facts to 20, fair sharing, equal groups, patterns, data, measurement, and representing Canadian money. Making change, formal written algorithms, larger-number halving, and detailed clock reading are included only as optional extensions.
-          </p>
+          <div><span>Ontario alignment</span><h3>Core learning and optional enrichment are clearly separated.</h3></div>
+          <p>Grade 2 core work includes numbers to 200, addition and subtraction situations to 100, facts to 20, fair sharing, equal groups, patterns, data, measurement, and Canadian money. More advanced change, algorithms, halving, and clock reading remain optional extensions.</p>
         </div>
       </section>
 
       <footer>
-        <div><span className="brand-mark">D</span><strong>Donia&apos;s Math Home</strong></div>
-        <p>Built for patient practice, clear thinking, and the pleasure of finally understanding.</p>
-        <a href="#top">Back to top ↑</a>
+        <div className="footer-brand"><span className="brand-mark">D</span><span><strong>Donia&apos;s Math Home</strong><small>Patient practice. Clear thinking.</small></span></div>
+        <p>Built for the pleasure of finally understanding.</p>
+        <div className="footer-actions"><a href="worksheets/donia-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
       </footer>
+
+      <nav className="mobile-nav" aria-label="Mobile navigation">
+        <a href="#today"><BookIcon /><span>Today</span></a>
+        <a href="#programme"><RouteIcon /><span>Programme</span></a>
+        <a href="#progress"><ChartIcon /><span>Progress</span></a>
+        <a href="#parent-guide"><GuideIcon /><span>Guide</span></a>
+      </nav>
     </main>
   );
 }
