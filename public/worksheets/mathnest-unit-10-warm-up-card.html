@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 01 warm up card, MathNest</title>
+
+
+
+<style>
+  /* Thmanyah type system, matching the website. Worksheets keep their styles
+     inline so a downloaded file still looks right on its own. */
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/Ej0k3h4Mi5O7TSo2w2JaDCPRgvo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/3XGelYpTgxSxBXN4Oieg9Dt3bc.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:500 600;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/JUv6rms2ye2kYL3UI3O9YyExQcQ.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/ulQLGTktcl2Qq4AmD6RuVgELZKg.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/gUSrlMNsoOIspcnYhQl24uNZZo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400 600;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/AAY5hsAWwWmVC7qlScZUGjzCgE8.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/a9r2dKNoQcqFiTkwxTUnXgAfjws.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/pTIPpIhdyoUL1Tl7cDpv1Ze80uQ.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/oVoRwZKk5rDtzCpYG0Ol1gigl5s.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:500 600;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/kzVXDC4kJxZgS0rOVcbdPBBC5sw.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/e1GJ2wtz2b2fMo8i7AbRPck4Qo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+
+  :root{
+    --font-sans:"Thmanyah Sans";
+    --font-serif:"Thmanyah Serif Display";
+    --font-text:"Thmanyah Serif Text";
+  }
+
+  /* Thmanyah replaces the monospace faces that used to hold digits in line, so
+     columns of figures ask for tabular numerals explicitly. */
+  .vsum,.cell,.tally,.pricelist,.inline-answer-value,.writebox,.blank,.known,
+  .fact,.chain,.pw .top,.pw .bot div,.bar .whole,.bar .parts div,.clockwrap .cl,
+  .qnum,.readoff,.answers{font-variant-numeric:tabular-nums;}
+
+  :root{
+    --bg:#E6EBE1;
+    --paper:#FBFBF7;
+    --ink:#101A17;
+    --green:#1E6B52;
+    --navy:#141413;
+    --muted:#7C877F;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    margin:0;
+    padding:18px 14px 60px;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-sans),system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  .wrap{max-width:820px;margin:0 auto;}
+
+  .toolbar{
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    padding:18px;
+    margin-bottom:18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+.breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.breadcrumb a{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-weight:600;padding:2px 6px;border-radius:4px;transition:background .15s;}
+.breadcrumb a:hover{background:var(--teal-soft);color:var(--teal);}
+.breadcrumb .sep{color:var(--rule);font-size:13px;user-select:none;}
+.breadcrumb .current{color:var(--ink);font-weight:600;}
+
+  .btn{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:13px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    padding:13px 22px;
+    border:1.5px solid var(--navy);
+    background:var(--navy);
+    color:#fff;
+    cursor:pointer;
+  }
+
+  .btn:focus-visible{outline:3px solid var(--green);outline-offset:2px;}
+
+  .sheet{
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    padding:30px 26px 34px;
+  }
+
+  .eyebrow{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:13px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--green);
+    margin:0 0 6px;
+  }
+
+  h1{
+    font-family:var(--font-serif),Georgia,serif;
+    font-weight:700;
+    font-size:40px;
+    line-height:1.05;
+    margin:0 0 10px;
+  }
+
+  .lede{margin:0 0 22px;max-width:52ch;font-size:15.5px;}
+
+  hr.thick{border:0;border-top:2.5px solid var(--ink);margin:0 0 26px;}
+
+  .round{margin:0 0 26px;}
+
+  .roundhead{display:flex;gap:11px;align-items:baseline;margin-bottom:2px;}
+
+  .clock{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:13px;
+    color:var(--green);
+    letter-spacing:0.06em;
+    white-space:nowrap;
+  }
+
+  .roundhead h2{font-size:19px;margin:0;font-weight:700;}
+
+  .round p{margin:6px 0 0;max-width:56ch;font-size:15.5px;}
+
+  .facts{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(92px,1fr));
+    gap:8px;
+    margin-top:12px;
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:15px;
+  }
+
+  .facts div{
+    border:1.5px solid var(--ink);
+    padding:8px 4px;
+    text-align:center;
+    background:#fff;
+  }
+
+  .listen{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px;}
+
+  .listen th,.listen td{
+    border:1.5px solid var(--ink);
+    padding:9px 11px;
+    text-align:left;
+    vertical-align:top;
+  }
+
+  .listen th{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:11.5px;
+    letter-spacing:0.11em;
+    text-transform:uppercase;
+    font-weight:500;
+    background:#EEF1EA;
+  }
+
+  .callout{
+    border-left:4px solid var(--green);
+    padding:2px 0 2px 16px;
+    margin:14px 0 0;
+  }
+
+  .callout p{margin:0 0 6px;font-size:15.5px;}
+
+  .callout p:last-child{margin-bottom:0;}
+
+  .fr{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:14px;
+    background:#EEF1EA;
+    border:1.5px solid #C7CFC6;
+    padding:14px 16px;
+    margin-top:14px;
+  }
+
+  .fr div{margin-bottom:6px;}
+
+  .fr div:last-child{margin-bottom:0;}
+
+  .log{width:100%;border-collapse:collapse;margin-top:12px;}
+
+  .log th,.log td{border:1.5px solid var(--ink);text-align:center;}
+
+  .log th{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:11px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    font-weight:500;
+    padding:8px 2px;
+    background:#EEF1EA;
+  }
+
+  .log td{height:38px;}
+
+  .log td.wk{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:12px;
+    width:74px;
+    background:#EEF1EA;
+  }
+
+  .kicker{
+    font-family:var(--font-serif),Georgia,serif;
+    font-size:21px;
+    font-weight:600;
+    margin:28px 0 0;
+    max-width:44ch;
+  }
+
+  .foot{
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    margin-top:22px;
+  }
+
+  @page{margin:14mm;}
+
+  @media print{
+    body{background:#fff;padding:0;font-size:11.5pt;}
+    .no-print{display:none !important;}
+    .sheet{border:0;padding:0;}
+    .round,.log,.listen{break-inside:avoid;page-break-inside:avoid;}
+    h1{font-size:30pt;}
+  }
+
+  @media (max-width:520px){
+    h1{font-size:31px;}
+    .sheet{padding:22px 16px 26px;}
+    .roundhead{flex-direction:column;gap:2px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar no-print">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg> Home</a><span class="sep" aria-hidden="true">&rsaquo;</span><span>Unit 10</span><span class="sep" aria-hidden="true">&rsaquo;</span><span class="current">Warm-up card</span></nav>
+    <button class="btn" id="printBtn" type="button">Print or save as PDF</button>
+  </div>
+  <div class="sheet">
+    <p class="eyebrow">Unit 10 // For the parent // Two minutes</p>
+    <h1>Before the sheet</h1>
+    <p class="lede">Everything here was taught in an earlier unit. That is the point: recall fades unless it is asked for again. Run this before the session, out loud, with no pencil. If an answer has gone, say it yourself and move on, then look at that unit again this week.</p>
+    <hr class="thick">
+    <div class="round">
+      <div class="roundhead"><span class="clock">00:00</span><h2>Say the rules once, then start</h2></div>
+      <p>&ldquo;A few quick questions from before. If you do not know one, say pass. Pass costs nothing.&rdquo; Keep it moving. Speed is not the goal, but hesitation tells you where to go back to.</p>
+    </div>
+    <div class="round">
+      <div class="roundhead"><span class="clock">0:00 to 1:30</span><h2>Round 1, look back</h2></div>
+      <p>Read the question. The answer is beside it, for you, not for the student.</p>
+      <table class="listen">
+        <tr><th>Ask</th><th>Answer</th><th>From</th></tr>
+        <tr><td class="wq">How many sides has a hexagon?</td><td class="wa">6</td><td class="wc">E1.1</td></tr>
+        <tr><td class="wq">Share 6 among 6. How many each?</td><td class="wa">1</td><td class="wc">B1.6</td></tr>
+        <tr><td class="wq">If 9 + 5 = 14, what is 14 minus 9?</td><td class="wa">5</td><td class="wc">B2.1</td></tr>
+        <tr><td class="wq">13 minus 5?</td><td class="wa">8</td><td class="wc">B2.2</td></tr>
+        <tr><td class="wq">47 + 3?</td><td class="wa">50</td><td class="wc">B2.3</td></tr>
+        <tr><td class="wq">45 + 40?</td><td class="wa">85</td><td class="wc">B2.4</td></tr>
+      </table>
+    </div>
+    <div class="round">
+      <div class="roundhead"><span class="clock">1:30 to 2:00</span><h2>Round 2, how did you know?</h2></div>
+      <p>Pick one the student answered quickly and ask how they knew. This is the whole diagnostic. &ldquo;I just knew it&rdquo; and &ldquo;I counted&rdquo; are the same answer with very different futures.</p>
+    </div>
+    <p class="ex-h" style="margin:18px 0 0"><b>Ontario Grade 2 revisited:</b> B1.6, B2.1, B2.2, B2.3, B2.4, E1.1</p>
+  </div>
+</div>
+<script>
+document.getElementById('printBtn').addEventListener('click', function () {
+  window.print();
+});
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@ nested routes, no dynamic segments, and no API endpoints.
 | --- | --- |
 | Rendered routes | 1 |
 | In-page sections | 3 |
-| Static HTML pages | 62 |
+| Static HTML pages | 85 |
 | Parts | 6 |
 | Units | 24 |
 | Sessions | 60 |
@@ -24,9 +24,9 @@ nested routes, no dynamic segments, and no API endpoints.
   #parent-guide
 
 /worksheets/
-  mathnest-unit-NN-session-X.html   60 session exercises
+  mathnest-unit-NN-session-X.html     60 session exercises
+  mathnest-unit-NN-warm-up-card.html  24 warm-up cards, one per unit
   mathnest-glossary-card.html
-  mathnest-unit-01-warm-up-card.html
   mathnest-math-exercises.zip       every exercise in one download
 
 public/
@@ -43,7 +43,7 @@ unknown path renders the app), `CNAME`, and `.nojekyll`. See `scripts/build-page
 | --- | --- | --- |
 | `unit-NN-session-X.html` | Session card, Open worksheet and Download | Its part is selected and its unit is expanded |
 | `unit-NN-session-X.html` | Today's lesson card, Open worksheet | Always, but only for the one recommended session |
-| `unit-01-warm-up-card.html` | Weekly rhythm note inside Unit 01 | Part 1 selected **and** Unit 01 expanded |
+| `unit-NN-warm-up-card.html` | Weekly rhythm note inside each unit | That unit is expanded |
 | `glossary-card.html` | Same idea, two names panel | Parent guide section |
 | `math-exercises.zip` | Header, footer, and the no-JavaScript banner | Always |
 
@@ -51,7 +51,6 @@ Outbound targets found in `app/page.tsx`:
 
 - `worksheets/mathnest-glossary-card.html`
 - `worksheets/mathnest-math-exercises.zip`
-- `worksheets/mathnest-unit-01-warm-up-card.html`
 
 ## Programme tree
 
@@ -126,6 +125,7 @@ Units 21 to 24, 12 sessions. Arrays, sharing, data, chance, and review.
 ## Notes
 
 - Every session resolves to a worksheet that exists on disk. `scripts/check-coverage.mjs` enforces this in CI.
-- There is no `sitemap.xml` and no `robots.txt`. For a one-route site the crawl benefit is small, but the 62 worksheet pages are indexable HTML that nothing currently points a crawler at.
-- The warm-up card is linked only from inside Unit 01, so reaching it takes three interactions. It is one of only two non-session resources in the programme.
+- There is no `sitemap.xml` and no `robots.txt`. For a one-route site the crawl benefit is small, but the 85 worksheet pages are indexable HTML that nothing currently points a crawler at.
+- Every unit links to its own warm-up card, 24 in total. Unit 01 drills the facts; the rest revisit expectations taught in earlier units, which is the only place the programme deliberately returns to old ground.
+- Anything first taught in the final unit has no later card to appear on, so D2.1 and D2.2 are taught once and never revisited. That is the running order, not a gap in the schedule.
 
