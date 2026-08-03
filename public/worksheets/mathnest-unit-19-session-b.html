@@ -222,6 +222,8 @@ body.answers-visible .pw .bot div:has(.inline-answer-value){background:#eef1e8;b
   .sheet{padding:0 16px 60px;}
   .ws{padding:20px 16px 24px;}
   .qg.c3,.qg.c4{grid-template-columns:repeat(2,1fr);}
+  /* One column, so a label is never split from its own blank. */
+  .qg.c2{grid-template-columns:1fr;}
   .clocks{grid-template-columns:repeat(2,1fr);}
   .pricelist{grid-template-columns:repeat(2,1fr);}
 }
