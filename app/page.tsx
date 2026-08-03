@@ -393,9 +393,9 @@ export default function Home() {
       </noscript>
 
       <header className="site-header">
-        <a className="brand" href="#today" aria-label="MathNest">
+        <a className="brand" href="#today" aria-label="MathNest, Where Numbers Grow">
           <span className="brand-mark"><MathNestMark /></span>
-          <span><strong>MathNest</strong><small>Grade 2 math</small></span>
+          <span><strong>MathNest</strong><small>Where Numbers Grow</small></span>
         </a>
         <button
           className="menu-toggle"
