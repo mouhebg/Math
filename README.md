@@ -1,6 +1,6 @@
 # MathNest
 
-A calm, practical Grade 2 mathematics programme for home use. It includes sixteen units, thirty-four teaching sessions, printable exercises, parent guidance, and a readiness check that tells you when to move on.
+A calm, practical Grade 2 mathematics programme for home use. It includes twenty-four units, sixty teaching sessions, printable exercises, parent guidance, and a readiness check that tells you when to move on. Every specific expectation in the Ontario 2020 Grade 2 mathematics curriculum has at least one session, and sessions that go beyond Grade 2 are labelled as extensions.
 
 **Live site:** https://mathnest.ca
 
@@ -12,35 +12,65 @@ The sequence builds number relationships before asking the child to apply them. 
 
 ## Programme structure
 
-The sixteen units sit in four parts:
+The twenty-four units sit in six parts:
 
 1. **Number foundations**, Units 1 to 4
 2. **Taking numbers apart**, Units 5 to 8
-3. **Math in daily life**, Units 9 to 12
-4. **Groups and wider thinking**, Units 13 to 16
+3. **Shape and space**, Units 9 to 12
+4. **Math in daily life**, Units 13 to 16
+5. **Patterns, equality and code**, Units 17 to 20
+6. **Groups, data and review**, Units 21 to 24
 
-Each unit contains Session A, Session B, parent instructions, a downloadable exercise, a move-on check, and a three-state learning tracker stored in the browser. Unit 1 carries two further sessions, C and D, covering the addition facts to 20.
+Each unit contains two to four sessions, parent instructions, a downloadable exercise, a move-on check, and a three-state learning tracker stored in the browser.
+
+## Curriculum coverage
+
+Every session in `data/sessions.ts` carries an `expectations` array holding the Ontario specific expectation codes it covers. `COVERAGE.md` is generated from that data and lists each of the thirty-nine Grade 2 expectations against the sessions that teach it.
+
+```bash
+node scripts/check-coverage.mjs   # fails on a missing expectation, worksheet, or mislabelled sheet
+node scripts/build-worksheets.mjs # generates any worksheet listed in content/worksheets.mjs
+node scripts/build-glossary.mjs   # rebuilds the English and French vocabulary card
+```
+
+`check-coverage.mjs` also verifies that each worksheet's printed header, page title, and element id match its filename, so renumbering a unit cannot silently leave a sheet labelled with its old number.
+
+## French immersion
+
+`public/worksheets/mathnest-glossary-card.html` is a printable card holding every term in the programme in English and French, grouped by part. It exists as a separate card rather than as French labels inside the worksheets, because half-translated worksheets teach two partial vocabularies instead of one bridge. Edit the term list in `scripts/build-glossary.mjs`.
+
+Sessions with an empty `expectations` array sit outside Grade 2 on purpose. Two-digit halving, making change, and clock reading are useful and worth teaching, but they are not what the child is assessed on, so they appear as extensions rather than core work.
+
+Curriculum source: https://www.dcp.edu.gov.on.ca/en/curriculum/elementary-mathematics/grades/g2-math
 
 ### Unit map
 
-| Unit | Focus | Move on when |
-| --- | --- | --- |
-| 01 | Bonds to ten and facts to 20 | The student adds past ten and says the total, not the leftover |
-| 02 | Place value to 200 | The student represents and compares a number in more than one way |
-| 03 | Mental addition | The student moves by tens and chooses an efficient strategy |
-| 04 | Addition within 100 | The student's answer matches the estimate and concrete model |
-| 05 | Subtraction within 100 | The student explains regrouping and checks by adding |
-| 06 | Choosing strategies | The student selects and justifies an addition or subtraction method |
-| 07 | Fair sharing and halves | The student connects equal sharing, doubles, and halves |
-| 08 | Two-digit halving | The student splits tens and ones and models any remaining half |
-| 09 | Canadian money | The student identifies coins and makes equivalent amounts |
-| 10 | Making change | The student counts up and checks the change independently |
-| 11 | Reading clocks | The student reads the hour correctly and explains quarter-hour times |
-| 12 | Apply and review | The student applies money and time, and identifies what to practise next |
-| 13 | Equal groups and arrays | The student finds totals without counting every object by ones |
-| 14 | Sharing, odd, and even | The student checks equal shares and predicts odd or even |
-| 15 | Data, patterns, and chance | The student interprets a graph and states a pattern rule |
-| 16 | Review and next steps | The student names personal strengths and chooses the next practice target |
+| Unit | Focus | Sessions | Ontario expectations |
+| --- | --- | --- | --- |
+| 01 | Bonds to ten and facts to 20 | 4 | B2.2, B2.1, B2.4, B2.3 |
+| 02 | Place value to 200 | 3 | B1.1, B1.2, B1.3, B1.4 |
+| 03 | Mental addition | 2 | B2.3 |
+| 04 | Addition within 100 | 2 | B1.1, B2.4 |
+| 05 | Subtraction within 100 | 2 | B1.1, B2.4, B2.1 |
+| 06 | Choosing strategies | 2 | B2.3, B2.1, B2.4 |
+| 07 | Fair sharing and halves | 2 | B1.6 |
+| 08 | Two-digit halving | 2 | extension or review |
+| 09 | Sorting two-dimensional shapes | 2 | E1.1 |
+| 10 | Composing shapes and congruence | 2 | E1.2, E1.3 |
+| 11 | Measuring length | 3 | E2.1, E2.2, E2.3 |
+| 12 | Maps, position and movement | 2 | E1.4, E1.5 |
+| 13 | Canadian money | 2 | F1.1 |
+| 14 | Making change | 2 | extension or review |
+| 15 | Duration and clocks | 4 | E2.4 |
+| 16 | Apply and review | 2 | C4, E2.4, F1.1 |
+| 17 | Patterns and rules | 3 | C1.1, C1.2, C1.3 |
+| 18 | Number patterns and equality | 2 | C1.4, C2.3 |
+| 19 | Balance and the missing number | 2 | C2.1, C2.2 |
+| 20 | Coding | 3 | C3.1, C3.2 |
+| 21 | Equal groups and arrays | 2 | B2.5 |
+| 22 | Sharing, thirds, odd and even | 3 | B1.6, B2.6, B1.7, B1.4, B1.5 |
+| 23 | Data | 4 | D1.1, D1.2, D1.3, D1.4, D1.5 |
+| 24 | Chance and review | 3 | D2.1, D2.2 |
 
 ### Facts to 20, inside Unit 1
 
