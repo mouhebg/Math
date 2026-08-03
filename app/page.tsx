@@ -475,10 +475,11 @@ export default function Home() {
         </a>
       </header>
 
+      <div className="today-shell">
       <section className="today-section" id="today">
         <div className="today-copy">
           <p className="eyebrow">Grade 2 home learning</p>
-          <h1>Small lessons.<br />Strong foundations.</h1>
+          <h1>Small lessons.<br />Strong <span className="accent">foundations.</span></h1>
           <p className="today-lede">
             A calm mathematics programme built around understanding. Short sessions, clear parent guidance, and no pressure to rush.
           </p>
@@ -487,6 +488,25 @@ export default function Home() {
             <span><strong>{sessions.length}</strong> sessions</span>
             <span><strong>20</strong> min each</span>
           </div>
+          <nav className="part-ribbon" aria-label="Programme parts">
+            {phases.map((phase, index) => {
+              const partSessions = weeklyUnits.slice(index * 4, index * 4 + 4).flatMap((unit) => unit.sessions);
+              const partMastered = partSessions.filter((session) => getStatus(session.id) === "mastered").length;
+              return (
+                <a
+                  className={`part-${index + 1}`}
+                  href="#programme"
+                  onClick={() => choosePart(index)}
+                  key={phase.name}
+                  aria-label={`${phase.name}, ${partMastered} of ${partSessions.length} sessions mastered`}
+                  title={phase.name}
+                >
+                  <i aria-hidden="true"><b style={{ width: `${(partMastered / partSessions.length) * 100}%` }} /></i>
+                  <span>Part {index + 1}</span>
+                </a>
+              );
+            })}
+          </nav>
         </div>
 
         <article className="next-lesson-card" aria-label="Today's lesson">
@@ -512,6 +532,7 @@ export default function Home() {
           </div>
         </article>
       </section>
+      </div>
 
       <section className="programme-section" id="programme">
         <div className="section-heading">
@@ -602,7 +623,7 @@ export default function Home() {
                                 <legend>Learning status</legend>
                                 {(["not-started", "practising", "mastered"] as SessionStatus[]).map((status) => (
                                   <button
-                                    className={currentStatus === status ? "selected" : ""}
+                                    className={`status-option status-option-${status}${currentStatus === status ? " selected" : ""}`}
                                     aria-pressed={currentStatus === status}
                                     onClick={() => setStatus(session.id, status)}
                                     key={status}
@@ -636,12 +657,20 @@ export default function Home() {
         <div className="unit-progress-grid">
           {weeklyUnits.map((unit) => {
             const count = unit.sessions.filter((session) => getStatus(session.id) === "mastered").length;
+            const complete = count === unit.sessions.length;
             return (
-              <button onClick={() => openSession(unit.sessions.find((session) => getStatus(session.id) !== "mastered") ?? unit.sessions[0])} key={unit.week}>
-                <span className="progress-unit-number">{String(unit.week).padStart(2, "0")}</span>
+              <button
+                className={`progress-unit part-${Math.floor((unit.week - 1) / 4) + 1}${complete ? " unit-complete" : ""}`}
+                onClick={() => openSession(unit.sessions.find((session) => getStatus(session.id) !== "mastered") ?? unit.sessions[0])}
+                key={unit.week}
+              >
+                <span className="progress-unit-head">
+                  <span className="progress-unit-number">UNIT {String(unit.week).padStart(2, "0")}</span>
+                  {complete && <span className="progress-unit-tick" aria-hidden="true">✓</span>}
+                </span>
                 <span className="progress-unit-name">{unitNames[unit.week - 1]}</span>
-                <span className="session-dots" aria-label={`${count} of ${unit.sessions.length} sessions mastered`}>
-                  {unit.sessions.map((session) => <i className={`dot-${getStatus(session.id)}`} key={session.id} />)}
+                <span className="progress-unit-bar" aria-label={`${count} of ${unit.sessions.length} sessions mastered`}>
+                  <i style={{ width: `${(count / unit.sessions.length) * 100}%` }} />
                 </span>
               </button>
             );
@@ -678,8 +707,10 @@ export default function Home() {
 
         <div className="curriculum-note">
           <div><span>For French immersion</span><h3>Same idea, two names.</h3></div>
-          <p>If she learns this in French at school, the concept is not the problem, the word is. Keep the vocabulary card on the table and say each term in both languages once as it comes up.</p>
-          <p><a href="worksheets/mathnest-glossary-card.html" target="_blank" rel="noreferrer">Open the English and French vocabulary card <ArrowIcon /></a></p>
+          <div>
+            <p>If she learns this in French at school, the concept is not the problem, the word is. Keep the vocabulary card on the table and say each term in both languages once as it comes up.</p>
+            <p><a href="worksheets/mathnest-glossary-card.html" target="_blank" rel="noreferrer">Open the English and French vocabulary card <ArrowIcon /></a></p>
+          </div>
         </div>
 
         <div className="curriculum-note">
