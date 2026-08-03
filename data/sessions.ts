@@ -3,7 +3,7 @@ export type SessionKind = "Core" | "Extension" | "Review";
 export type Session = {
   id: string;
   unit: number;
-  letter: "A" | "B";
+  letter: "A" | "B" | "C" | "D";
   title: string;
   focus: string;
   activity: string;
@@ -21,6 +21,8 @@ export const phases = [
 export const sessions: Session[] = [
   { id: "1A", unit: 1, letter: "A", title: "Bonds to ten", focus: "See ten as two parts and learn every partner pair.", activity: "Use ten frames, part-whole bars, and the rainbow of ten.", success: "She gives the partner of any number to 10 without counting up.", kind: "Core" },
   { id: "1B", unit: 1, letter: "B", title: "Three story shapes", focus: "Find a missing whole, missing part, or missing start.", activity: "Draw the same part-whole box for six different stories.", success: "She decides what is missing without relying on keywords.", kind: "Core" },
+  { id: "1C", unit: 1, letter: "C", title: "Doubles and near doubles", focus: "Use a known double to reach the pair beside it.", activity: "Build equal rows, learn the doubles to 10, then add or take away one.", success: "She names the double before she gives the answer.", kind: "Core" },
+  { id: "1D", unit: 1, letter: "D", title: "Cross the ten", focus: "Add past ten by making the ten first.", activity: "Move counters into a ten frame, then read the answer as ten and some ones.", success: "She says the total, not the leftover.", kind: "Core" },
   { id: "2A", unit: 2, letter: "A", title: "Tens and ones", focus: "Compose and decompose numbers to 200.", activity: "Build two-digit numbers and trade one ten for ten ones.", success: "She represents one number in two different ways.", kind: "Core" },
   { id: "2B", unit: 2, letter: "B", title: "Charts and order", focus: "Compare, order, and locate numbers to 200.", activity: "Explore neighbours on 100 and 200 charts.", success: "She explains why one number is greater than another.", kind: "Core" },
   { id: "3A", unit: 3, letter: "A", title: "Ten more, ten less", focus: "Use place value to move mentally by tens.", activity: "Move on a number chart, then repeat without the chart.", success: "She changes the tens while tracking what happens to the ones.", kind: "Core" },
@@ -59,7 +61,7 @@ export const weeklyUnits = Array.from({ length: 16 }, (_, index) => ({
 }));
 
 export const unitNames = [
-  "Bonds to ten and part-whole thinking",
+  "Bonds to ten and facts to 20",
   "Place value to 200",
   "Mental addition",
   "Addition within 100",
