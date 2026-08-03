@@ -24,10 +24,10 @@ const stripped = raw
   .replace(/^export /gm, "");
 
 const sessionDataModule = await import(
-  `data:text/javascript,${encodeURIComponent(`${stripped}\nexport { sessions, unitNames, phases, ontarioGrade2Expectations };`)}`
+  `data:text/javascript,${encodeURIComponent(`${stripped}\nexport { sessions, unitNames, phases, ontarioGrade2Expectations, ontarioGrade2OverallExpectations };`)}`
 );
 
-const { sessions, unitNames, phases, ontarioGrade2Expectations } = sessionDataModule;
+const { sessions, unitNames, phases, ontarioGrade2Expectations, ontarioGrade2OverallExpectations } = sessionDataModule;
 
 const pad = (n) => String(n).padStart(2, "0");
 const problems = [];
@@ -38,6 +38,29 @@ const rows = ontarioGrade2Expectations.map((expectation) => {
   if (covering.length === 0) problems.push(`No session covers ${expectation.code}`);
   return { ...expectation, sessions: covering.map((session) => session.id) };
 });
+
+// 1b. And the reverse: every code a session cites is a real expectation. Without
+// this the check only ever walked expectations to sessions, so a citation
+// pointing at nothing stayed invisible and never reached COVERAGE.md.
+const knownCodes = new Set([
+  ...ontarioGrade2Expectations.map((expectation) => expectation.code),
+  ...ontarioGrade2OverallExpectations.map((expectation) => expectation.code),
+]);
+for (const session of sessions) {
+  for (const code of session.expectations) {
+    if (!knownCodes.has(code)) {
+      problems.push(`${session.id} cites ${code}, which is not an Ontario Grade 2 expectation`);
+    }
+  }
+}
+
+const overallRows = ontarioGrade2OverallExpectations.map((expectation) => ({
+  ...expectation,
+  sessions: sessions.filter((session) => session.expectations.includes(expectation.code)).map((s) => s.id),
+}));
+for (const row of overallRows) {
+  if (row.sessions.length === 0) problems.push(`No session covers ${row.code}`);
+}
 
 // 2. Every session has a worksheet file, and that file agrees with its name.
 for (const session of sessions) {
@@ -89,6 +112,15 @@ for (const [strand, list] of byStrand) {
   }
   markdown += "\n";
 }
+
+markdown += "## Overall expectations\n\n";
+markdown += "Mathematical modelling has no specific expectations beneath it in the Ontario\n";
+markdown += "document, so it is listed here rather than counted among the specific ones.\n\n";
+markdown += "| Code | Expectation | Sessions |\n| --- | --- | --- |\n";
+for (const row of overallRows) {
+  markdown += `| ${row.code} | ${row.summary} | ${row.sessions.join(", ") || "**none**"} |\n`;
+}
+markdown += "\n";
 
 markdown += "## Sessions outside the Grade 2 expectations\n\n";
 markdown += "These are deliberate extensions or reviews, labelled as such in the interface.\n\n";
