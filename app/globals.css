@@ -120,6 +120,10 @@
   --purple-soft: #f1ecfd;
   --teal: #10786f;
   --teal-soft: #e4f2f0;
+  /* The logo's egg, mixed from the palette green so the mark cannot drift away
+     from the rest of the site. --shell is the broken pieces, a shade deeper. */
+  --egg: color-mix(in srgb, var(--green) 48%, white);
+  --shell: color-mix(in srgb, var(--green) 62%, white);
   /* Warm-tinted shadows. A neutral grey shadow on a cream ground reads as dirt. */
   --shadow-sm: 0 1px 2px rgb(84 62 32 / .07), 0 2px 6px rgb(84 62 32 / .05);
   --shadow-md: 0 2px 4px rgb(84 62 32 / .06), 0 12px 28px rgb(84 62 32 / .1);
@@ -172,11 +176,10 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
 }
 
 .brand { display: flex; align-items: center; gap: 9px; margin-right: auto; color: var(--navy); text-decoration: none; }
-.brand-mark { display: grid; flex: 0 0 36px; place-items: center; width: 36px; height: 36px; color: var(--blue); }
-.brand-mark .mathnest-mark { width: 36px; height: 36px; stroke-width: 2.1; }
-.brand-mark .mathnest-mark circle { fill: currentColor; stroke: none; }
-.brand-mark .mathnest-mark circle:nth-of-type(2) { fill: var(--yellow); }
-.brand-mark .mathnest-mark circle:nth-of-type(3) { fill: var(--green); }
+.brand-mark { display: grid; flex: 0 0 40px; place-items: center; width: 40px; height: 40px; color: var(--blue); }
+/* No stroke-width here: CSS beats the SVG's presentation attributes, and the
+   mark sets its own widths per shape. */
+.brand-mark .mathnest-mark { width: 40px; height: 40px; }
 .brand > span:last-child { display: flex; flex-direction: column; line-height: 1.12; }
 .brand strong { font-size: 20px; font-weight: 900; letter-spacing: -.02em; }
 .brand small { margin-top: 1px; color: var(--ink-soft); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
@@ -490,9 +493,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr auto; gap: 30px; align-it
 .footer-actions a { padding: 9px 15px; border: 1px solid rgb(255 255 255 / .2); border-radius: 99px; text-decoration: none; }
 .footer-actions a:hover { border-color: rgb(255 255 255 / .5); background: rgb(255 255 255 / .09); }
 .footer-brand { display: flex; align-items: center; gap: 12px; }
+/* The nest is currentColor, so it turns white against the navy footer. */
 .footer-brand .brand-mark { color: #fff; }
-.footer-brand .brand-mark .mathnest-mark circle:nth-of-type(2) { fill: var(--yellow); }
-.footer-brand .brand-mark .mathnest-mark circle:nth-of-type(3) { fill: #72bb82; }
 .footer-brand > span:last-child { display: flex; flex-direction: column; }
 .footer-brand small { margin-top: 3px; color: #b7c5cd; font-size: 11px; }
 footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
@@ -519,7 +521,7 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   /* Same reasoning as the bottom bar below: drop the blur on phones, where a
      translucent sticky bar costs a full-page repaint per scroll frame. */
   .site-header { min-height: 62px; padding: 8px 16px; background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .brand-mark { flex-basis: 36px; width: 36px; height: 36px; }
+  .brand-mark, .brand-mark .mathnest-mark { flex-basis: 38px; width: 38px; height: 38px; }
   .header-progress { display: none; }
   .sync-menu { margin-left: 0; }
   .sync-trigger { width: 42px; height: 42px; justify-content: center; padding: 0; }

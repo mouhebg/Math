@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mathnest.ca"),
-  title: "MathNest | Grade 2 math at home",
+  title: "MathNest | Where numbers grow",
   description: "A calm, mastery-based Grade 2 home mathematics plan with 34 downloadable exercises.",
   other: {
     "codex-preview": "development",
