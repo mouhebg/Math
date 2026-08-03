@@ -377,7 +377,7 @@ export default function Home() {
 
       <header className="site-header">
         <a className="brand" href="#today" aria-label="MathNest">
-          <span className="brand-mark" aria-hidden="true">M</span>
+          <span className="brand-mark" aria-hidden="true">MN</span>
           <span><strong>MathNest</strong><small>Grade 2 math</small></span>
         </a>
         <button
@@ -658,7 +658,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="footer-brand"><span className="brand-mark">M</span><span><strong>MathNest</strong><small>Patient practice. Clear thinking.</small></span></div>
+        <div className="footer-brand"><span className="brand-mark">MN</span><span><strong>MathNest</strong><small>Patient practice. Clear thinking.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
         <div className="footer-actions"><a href="worksheets/mathnest-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
       </footer>
