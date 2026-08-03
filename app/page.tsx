@@ -39,31 +39,44 @@ function worksheetName(session: Session) {
 }
 
 function ArrowIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
 }
 
 function DownloadIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 4-4m-4 4L6 8M4 16h12" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>;
 }
 
 function BookIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H10v14H6.5A2.5 2.5 0 0 0 4 18.5v-14Zm12 0A2.5 2.5 0 0 0 13.5 2H10v14h3.5a2.5 2.5 0 0 1 2.5 2.5v-14Z" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v18H7.5A3.5 3.5 0 0 0 4 23.5v-18Zm16 0A3.5 3.5 0 0 0 16.5 2H12v18h4.5a3.5 3.5 0 0 1 3.5 3.5v-18Z" /></svg>;
 }
 
 function RouteIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="5" r="2" /><circle cx="15" cy="15" r="2" /><path d="M7 5h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3H8a3 3 0 0 0-3 3v0" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M8.5 6H13a3 3 0 0 1 0 6h-2a3 3 0 0 0 0 6h4.5" /></svg>;
 }
 
 function ChartIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16V9m6 7V4m6 12v-5" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8m7 8V4m7 16v-11" /></svg>;
 }
 
 function GuideIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 17a7 7 0 1 0-7-7m7-3v3l2 2" /><path d="M3 13v4h4" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0-9-9m9-4v4l3 2" /><path d="M3 16v5h5" /></svg>;
 }
 
 function CloudIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 15.5h9a3.5 3.5 0 0 0 .5-7A5 5 0 0 0 5.4 7 4.3 4.3 0 0 0 5.5 15.5Z" /><path d="m8 11 2 2 3.5-4" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19h11a4 4 0 0 0 .6-8A6 6 0 0 0 6.4 9 5 5 0 0 0 6.5 19Z" /><path d="m9 14 2 2 4-5" /></svg>;
+}
+
+function MathNestMark() {
+  return (
+    <svg className="mathnest-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M6 11v8c0 9 6.3 15 14 15s14-6 14-15v-8" />
+      <path d="M10 15v4c0 6.2 4.5 10.5 10 10.5S30 25.2 30 19v-4" />
+      <path d="M14 19c0 3.8 2.7 6.5 6 6.5s6-2.7 6-6.5" />
+      <circle cx="14" cy="12" r="2.2" />
+      <circle cx="20" cy="9" r="2.2" />
+      <circle cx="26" cy="12" r="2.2" />
+    </svg>
+  );
 }
 
 export default function Home() {
@@ -377,7 +390,7 @@ export default function Home() {
 
       <header className="site-header">
         <a className="brand" href="#today" aria-label="MathNest">
-          <span className="brand-mark" aria-hidden="true">MN</span>
+          <span className="brand-mark"><MathNestMark /></span>
           <span><strong>MathNest</strong><small>Grade 2 math</small></span>
         </a>
         <button
@@ -658,7 +671,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="footer-brand"><span className="brand-mark">MN</span><span><strong>MathNest</strong><small>Patient practice. Clear thinking.</small></span></div>
+        <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Patient practice. Clear thinking.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
         <div className="footer-actions"><a href="worksheets/mathnest-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
       </footer>
