@@ -34,6 +34,7 @@ node scripts/check-coverage.mjs   # fails on a missing expectation, worksheet, o
 node scripts/build-worksheets.mjs # generates any worksheet listed in content/worksheets.mjs
 node scripts/build-glossary.mjs   # rebuilds the English and French vocabulary card
 node scripts/build-warmups.mjs    # rebuilds the per-unit warm-up cards from content/warmups.mjs
+node scripts/build-materials.mjs  # writes each session's "What you need" line onto its worksheet
 node scripts/build-sitemap.mjs    # rebuilds SITEMAP.md from the routes, sessions, and public files
 ```
 
@@ -132,6 +133,18 @@ A lesson takes about 20 to 25 minutes:
 - 2 minutes, the student explains the thinking behind an answer
 
 The explanation at the end is an important diagnostic. "I counted" and "I knew 7 and 3 make 10" can produce the same answer, but they show different levels of understanding.
+
+### You do not need to buy anything
+
+Nineteen sessions ask for something physical: counters to move, sticks to
+bundle, strips to fold. Each of those carries a `materials` line in
+`data/sessions.ts` naming what to use in household terms, and every one offers
+a way out for a parent who has none of it. Twenty dried beans, a jar of
+nickels, or pencil dots you can rub out will run the whole programme.
+
+That line appears twice: on the session card before the worksheet is opened,
+and at the top of the worksheet itself. `check-coverage.mjs` fails if the two
+disagree.
 
 ### The two minutes at the start
 

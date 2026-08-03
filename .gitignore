@@ -48,3 +48,7 @@ tsconfig.tsbuildinfo
 
 # generated build output
 dist/
+
+# Runtime noise the sites tooling drops inside the repo, including under public/,
+# which would otherwise be deployed with the site.
+.sites-runtime/
