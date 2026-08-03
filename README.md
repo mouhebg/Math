@@ -33,8 +33,28 @@ Mathematical modelling, C4, is an overall expectation with no specific expectati
 node scripts/check-coverage.mjs   # fails on a missing expectation, worksheet, or mislabelled sheet
 node scripts/build-worksheets.mjs # generates any worksheet listed in content/worksheets.mjs
 node scripts/build-glossary.mjs   # rebuilds the English and French vocabulary card
+node scripts/build-warmups.mjs    # rebuilds the per-unit warm-up cards from content/warmups.mjs
 node scripts/build-sitemap.mjs    # rebuilds SITEMAP.md from the routes, sessions, and public files
 ```
+
+### How much of each strand
+
+Coverage is not the same as depth, and the two are easy to confuse. Every
+expectation has a session, but the programme is deliberately deepest where
+arithmetic is: Number gets twenty-two sessions across thirteen expectations,
+while Data gets six across seven. Twenty-seven expectations are taught by a
+single session.
+
+Sequence matters more than that count suggests. Number is taught early and
+keeps resurfacing, so it has around twelve units of runway in which to come
+back. Data is taught in Units 23 and 24 and has almost none. This is why the
+warm-up cards exist, and why they cannot fix the last unit: nothing comes after
+it.
+
+Read the programme as one solid pass through Grade 2 with real depth on number,
+sitting alongside school rather than replacing it. Sixty sessions of twenty
+minutes is roughly twenty-two hours; a school year of Grade 2 mathematics is
+many times that.
 
 `SITEMAP.md` is the structure of the site in one page: the single route and its
 sections, the sixty-two static pages, where each one is linked from, and the
@@ -113,10 +133,25 @@ A lesson takes about 20 to 25 minutes:
 
 The explanation at the end is an important diagnostic. "I counted" and "I knew 7 and 3 make 10" can produce the same answer, but they show different levels of understanding.
 
+### The two minutes at the start
+
+Every unit has a warm-up card, and it is the only part of the programme that
+deliberately revisits old ground. Unit 1's card drills the facts, because
+nothing has been taught yet. Units 2 to 24 ask six questions about expectations
+taught in earlier units, chosen so that whatever has gone longest without being
+asked comes up next. Nothing on a card is new: it is all recall.
+
+This is where a single-session topic gets its second, fifth and tenth hearing.
+Run it out loud, with no pencil, before the session. Hesitation is the signal,
+not the score, and it tells you which unit to reopen this week.
+
+Edit the questions in `content/warmups.mjs`, then rerun `build-warmups.mjs`.
+The cards rebuild themselves around any change to the unit order.
+
 ## Worksheets
 
 - 60 printable session exercises, one for every session
-- A two-minute Unit 1 warm-up card
+- 24 two-minute warm-up cards, one for every unit
 - Individual downloads and one ZIP bundle
 - Print or save as PDF from each page
 - Answers shown in green inside the available boxes and lines, hidden by default

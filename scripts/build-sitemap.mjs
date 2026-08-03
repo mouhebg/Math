@@ -46,7 +46,12 @@ const publicRoot = readdirSync(join(root, "public"), { withFileTypes: true })
 const worksheetDir = join(root, "public", "worksheets");
 const worksheets = readdirSync(worksheetDir).filter((name) => name.endsWith(".html"));
 const sessionSheets = worksheets.filter((name) => /-session-[a-z]\.html$/.test(name));
-const otherSheets = worksheets.filter((name) => !/-session-[a-z]\.html$/.test(name)).sort();
+const warmUpCards = worksheets.filter((name) => /-warm-up-card\.html$/.test(name));
+// Grouped rather than listed one by one: twenty-four near-identical filenames
+// tell a reader less than a single line saying there is one per unit.
+const otherSheets = worksheets
+  .filter((name) => !/-session-[a-z]\.html$/.test(name) && !/-warm-up-card\.html$/.test(name))
+  .sort();
 
 const missing = sessions
   .map((session) => ({
@@ -91,7 +96,8 @@ put("/                                  app/page.tsx, the entire application");
 for (const anchor of anchors) put(`  #${anchor}`);
 put("");
 put("/worksheets/");
-put(`  mathnest-unit-NN-session-X.html   ${sessionSheets.length} session exercises`);
+put(`  mathnest-unit-NN-session-X.html     ${sessionSheets.length} session exercises`);
+put(`  mathnest-unit-NN-warm-up-card.html  ${warmUpCards.length} warm-up cards, one per unit`);
 for (const sheet of otherSheets) put(`  ${sheet}`);
 put("  mathnest-math-exercises.zip       every exercise in one download");
 put("");
@@ -109,7 +115,7 @@ put("| Destination | Linked from | Visible when |");
 put("| --- | --- | --- |");
 put("| `unit-NN-session-X.html` | Session card, Open worksheet and Download | Its part is selected and its unit is expanded |");
 put("| `unit-NN-session-X.html` | Today's lesson card, Open worksheet | Always, but only for the one recommended session |");
-put("| `unit-01-warm-up-card.html` | Weekly rhythm note inside Unit 01 | Part 1 selected **and** Unit 01 expanded |");
+put("| `unit-NN-warm-up-card.html` | Weekly rhythm note inside each unit | That unit is expanded |");
 put("| `glossary-card.html` | Same idea, two names panel | Parent guide section |");
 put("| `math-exercises.zip` | Header, footer, and the no-JavaScript banner | Always |");
 put();
@@ -160,8 +166,14 @@ put(
     "points a crawler at.",
 );
 put(
-  "- The warm-up card is linked only from inside Unit 01, so reaching it takes three " +
-    "interactions. It is one of only two non-session resources in the programme.",
+  `- Every unit links to its own warm-up card, ${warmUpCards.length} in total. Unit 01 drills the ` +
+    "facts; the rest revisit expectations taught in earlier units, which is the only " +
+    "place the programme deliberately returns to old ground.",
+);
+put(
+  "- Anything first taught in the final unit has no later card to appear on, so D2.1 " +
+    "and D2.2 are taught once and never revisited. That is the running order, not a gap " +
+    "in the schedule.",
 );
 put();
 

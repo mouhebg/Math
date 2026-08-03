@@ -584,9 +584,11 @@ export default function Home() {
                         <p>{unit.sessions.length > 2
                           ? "Teach one session at a time and in order, pausing at least a day between them. Repeat any session with new numbers if the move-on check is not yet secure."
                           : "Teach Session A, pause for at least one day, then teach Session B. Repeat with new numbers if the move-on check is not yet secure."}</p>
-                        {unit.week === 1 && (
-                          <a href="worksheets/mathnest-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">Open the 2-minute warm-up card <ArrowIcon /></a>
-                        )}
+                        {/* Every unit has a card now. Unit 1 drills the facts;
+                            the rest bring back what earlier units taught. */}
+                        <a href={`worksheets/mathnest-unit-${String(unit.week).padStart(2, "0")}-warm-up-card.html`} target="_blank" rel="noreferrer">
+                          Open the 2-minute warm-up card <ArrowIcon />
+                        </a>
                       </div>
 
                       <div className="session-grid">

@@ -85,6 +85,15 @@ for (const session of sessions) {
   }
 }
 
+// 2b. Every unit has a warm-up card, because the interface now links to one from
+// every unit. A missing file would be a dead link rather than a quiet omission.
+for (let unit = 1; unit <= unitNames.length; unit += 1) {
+  const card = `mathnest-unit-${pad(unit)}-warm-up-card.html`;
+  if (!existsSync(join(worksheetDir, card))) {
+    problems.push(`Missing warm-up card: ${card}. Run node scripts/build-warmups.mjs`);
+  }
+}
+
 // 3. Units and parts line up.
 if (unitNames.length !== phases.length * 4) {
   problems.push(`${unitNames.length} units do not divide into ${phases.length} parts of four.`);
