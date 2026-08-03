@@ -53,3 +53,18 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
   assert.match(css, /scroll-snap-type:\s*x proximity/);
   assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
 });
+
+test("uses the Thmanyah type system across the homepage", async () => {
+  const [css, layout] = await Promise.all([
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(css, /font-family:\s*"Thmanyah Sans"/);
+  assert.match(css, /font-family:\s*"Thmanyah Serif Display"/);
+  assert.match(css, /font-family:\s*"Thmanyah Serif Text"/);
+  assert.match(css, /--font-sans:\s*"Thmanyah Sans"/);
+  assert.match(css, /--font-serif:\s*"Thmanyah Serif Display"/);
+  assert.match(css, /--font-text:\s*"Thmanyah Serif Text"/);
+  assert.doesNotMatch(layout, /next\/font\/google/);
+});

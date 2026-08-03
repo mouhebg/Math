@@ -1,6 +1,97 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("https://framerusercontent.com/assets/Ej0k3h4Mi5O7TSo2w2JaDCPRgvo.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("https://framerusercontent.com/assets/3XGelYpTgxSxBXN4Oieg9Dt3bc.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500 600;
+}
+
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("https://framerusercontent.com/assets/JUv6rms2ye2kYL3UI3O9YyExQcQ.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700 800;
+}
+
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("https://framerusercontent.com/assets/ulQLGTktcl2Qq4AmD6RuVgELZKg.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  src: url("https://framerusercontent.com/assets/gUSrlMNsoOIspcnYhQl24uNZZo.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 600;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  src: url("https://framerusercontent.com/assets/AAY5hsAWwWmVC7qlScZUGjzCgE8.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700 800;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  src: url("https://framerusercontent.com/assets/a9r2dKNoQcqFiTkwxTUnXgAfjws.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("https://framerusercontent.com/assets/pTIPpIhdyoUL1Tl7cDpv1Ze80uQ.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("https://framerusercontent.com/assets/oVoRwZKk5rDtzCpYG0Ol1gigl5s.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500 600;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("https://framerusercontent.com/assets/kzVXDC4kJxZgS0rOVcbdPBBC5sw.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700 800;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("https://framerusercontent.com/assets/e1GJ2wtz2b2fMo8i7AbRPck4Qo.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 900;
+}
+
 :root {
+  --font-sans: "Thmanyah Sans";
+  --font-serif: "Thmanyah Serif Display";
+  --font-text: "Thmanyah Serif Text";
   --canvas: #f7f8fa;
   --surface: #ffffff;
   --surface-strong: #ffffff;
@@ -32,7 +123,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; font: inherit; }
 a { color: inherit; }
 svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-p, li { font-family: var(--font-sans), "Noto Sans", Helvetica, Arial, sans-serif; }
+p, li { font-family: var(--font-text), Georgia, serif; }
 a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #b5cefb; outline-offset: 2px; }
 
 .noscript-banner { padding: 14px 22px; border-bottom: 1px solid var(--coral); background: var(--coral-soft); color: var(--ink); text-align: center; }

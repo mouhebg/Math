@@ -1,18 +1,5 @@
 import type { Metadata } from "next";
-import { Lato, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
-
-const lato = Lato({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-});
-
-const sourceSerif = Source_Serif_4({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mathnest.ca"),
@@ -35,11 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${lato.variable} ${sourceSerif.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
