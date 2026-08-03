@@ -4,10 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Unit 01 warm up card, MathNest</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
 <style>
+  /* Thmanyah type system, matching the website. Worksheets keep their styles
+     inline so a downloaded file still looks right on its own. */
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/Ej0k3h4Mi5O7TSo2w2JaDCPRgvo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/3XGelYpTgxSxBXN4Oieg9Dt3bc.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:500 600;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/JUv6rms2ye2kYL3UI3O9YyExQcQ.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/ulQLGTktcl2Qq4AmD6RuVgELZKg.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/gUSrlMNsoOIspcnYhQl24uNZZo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400 600;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/AAY5hsAWwWmVC7qlScZUGjzCgE8.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/a9r2dKNoQcqFiTkwxTUnXgAfjws.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/pTIPpIhdyoUL1Tl7cDpv1Ze80uQ.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/oVoRwZKk5rDtzCpYG0Ol1gigl5s.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:500 600;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/kzVXDC4kJxZgS0rOVcbdPBBC5sw.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/e1GJ2wtz2b2fMo8i7AbRPck4Qo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+
+  :root{
+    --font-sans:"Thmanyah Sans";
+    --font-serif:"Thmanyah Serif Display";
+    --font-text:"Thmanyah Serif Text";
+  }
+
+  /* Thmanyah replaces the monospace faces that used to hold digits in line, so
+     columns of figures ask for tabular numerals explicitly. */
+  .vsum,.cell,.tally,.pricelist,.inline-answer-value,.writebox,.blank,.known,
+  .fact,.chain,.pw .top,.pw .bot div,.bar .whole,.bar .parts div,.clockwrap .cl,
+  .qnum,.readoff,.answers{font-variant-numeric:tabular-nums;}
+
   :root{
     --bg:#E6EBE1;
     --paper:#FBFBF7;
@@ -25,7 +51,7 @@
     padding:18px 14px 60px;
     background:var(--bg);
     color:var(--ink);
-    font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-family:var(--font-sans),system-ui,sans-serif;
     font-size:16px;
     line-height:1.5;
   }
@@ -43,14 +69,14 @@
     align-items:center;
     justify-content:space-between;
   }
-.breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
 .breadcrumb a{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-weight:600;padding:2px 6px;border-radius:4px;transition:background .15s;}
 .breadcrumb a:hover{background:var(--teal-soft);color:var(--teal);}
 .breadcrumb .sep{color:var(--rule);font-size:13px;user-select:none;}
 .breadcrumb .current{color:var(--ink);font-weight:600;}
 
   .btn{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:13px;
     letter-spacing:0.09em;
     text-transform:uppercase;
@@ -70,7 +96,7 @@
   }
 
   .eyebrow{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:13px;
     letter-spacing:0.16em;
     text-transform:uppercase;
@@ -79,7 +105,7 @@
   }
 
   h1{
-    font-family:"Newsreader",Georgia,serif;
+    font-family:var(--font-serif),Georgia,serif;
     font-weight:700;
     font-size:40px;
     line-height:1.05;
@@ -95,7 +121,7 @@
   .roundhead{display:flex;gap:11px;align-items:baseline;margin-bottom:2px;}
 
   .clock{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:13px;
     color:var(--green);
     letter-spacing:0.06em;
@@ -111,7 +137,7 @@
     grid-template-columns:repeat(auto-fill,minmax(92px,1fr));
     gap:8px;
     margin-top:12px;
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:15px;
   }
 
@@ -132,7 +158,7 @@
   }
 
   .listen th{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:11.5px;
     letter-spacing:0.11em;
     text-transform:uppercase;
@@ -151,7 +177,7 @@
   .callout p:last-child{margin-bottom:0;}
 
   .fr{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:14px;
     background:#EEF1EA;
     border:1.5px solid #C7CFC6;
@@ -168,7 +194,7 @@
   .log th,.log td{border:1.5px solid var(--ink);text-align:center;}
 
   .log th{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:11px;
     letter-spacing:0.09em;
     text-transform:uppercase;
@@ -180,14 +206,14 @@
   .log td{height:38px;}
 
   .log td.wk{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:12px;
     width:74px;
     background:#EEF1EA;
   }
 
   .kicker{
-    font-family:"Newsreader",Georgia,serif;
+    font-family:var(--font-serif),Georgia,serif;
     font-size:21px;
     font-weight:600;
     margin:28px 0 0;
@@ -195,7 +221,7 @@
   }
 
   .foot{
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:11.5px;
     color:var(--muted);
     letter-spacing:0.06em;

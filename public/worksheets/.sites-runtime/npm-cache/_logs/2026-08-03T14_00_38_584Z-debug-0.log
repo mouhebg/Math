@@ -1,0 +1,18 @@
+0 verbose cli /opt/node22/bin/node /opt/node22/bin/npm
+1 info using npm@10.9.7
+2 info using node@v22.22.2
+3 silly config load:file:/opt/node22/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/user/Math/.npmrc
+5 silly config load:file:/root/.npmrc
+6 silly config load:file:/opt/node22/etc/npmrc
+7 verbose title npm run build
+8 verbose argv "run" "build"
+9 verbose logfile logs-max:10 dir:/home/user/Math/public/worksheets/.sites-runtime/npm-cache/_logs/2026-08-03T14_00_38_584Z-
+10 verbose logfile /home/user/Math/public/worksheets/.sites-runtime/npm-cache/_logs/2026-08-03T14_00_38_584Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd /home/user/Math
+13 verbose os Linux 6.18.5
+14 verbose node v22.22.2
+15 verbose npm  v10.9.7
+16 verbose exit 0
+17 info ok

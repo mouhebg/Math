@@ -5,6 +5,32 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MathNest | Unit 9, Session A: Canadian coins</title>
 <style>
+  /* Thmanyah type system, matching the website. Worksheets keep their styles
+     inline so a downloaded file still looks right on its own. */
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/Ej0k3h4Mi5O7TSo2w2JaDCPRgvo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/3XGelYpTgxSxBXN4Oieg9Dt3bc.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:500 600;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/JUv6rms2ye2kYL3UI3O9YyExQcQ.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Sans";src:url("https://framerusercontent.com/assets/ulQLGTktcl2Qq4AmD6RuVgELZKg.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/gUSrlMNsoOIspcnYhQl24uNZZo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400 600;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/AAY5hsAWwWmVC7qlScZUGjzCgE8.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Serif Display";src:url("https://framerusercontent.com/assets/a9r2dKNoQcqFiTkwxTUnXgAfjws.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/pTIPpIhdyoUL1Tl7cDpv1Ze80uQ.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:400;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/oVoRwZKk5rDtzCpYG0Ol1gigl5s.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:500 600;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/kzVXDC4kJxZgS0rOVcbdPBBC5sw.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:700 800;}
+  @font-face{font-family:"Thmanyah Serif Text";src:url("https://framerusercontent.com/assets/e1GJ2wtz2b2fMo8i7AbRPck4Qo.woff2") format("woff2");font-display:swap;font-style:normal;font-weight:900;}
+
+  :root{
+    --font-sans:"Thmanyah Sans";
+    --font-serif:"Thmanyah Serif Display";
+    --font-text:"Thmanyah Serif Text";
+  }
+
+  /* Thmanyah replaces the monospace faces that used to hold digits in line, so
+     columns of figures ask for tabular numerals explicitly. */
+  .vsum,.cell,.tally,.pricelist,.inline-answer-value,.writebox,.blank,.known,
+  .fact,.chain,.pw .top,.pw .bot div,.bar .whole,.bar .parts div,.clockwrap .cl,
+  .qnum,.readoff,.answers{font-variant-numeric:tabular-nums;}
+
 
 :root{
   --paper:#faf9f5; --card:#ffffff; --ink:#141413; --muted:#b0aea5; --rule:#e8e6dc;
@@ -17,46 +43,46 @@ body{
   margin:0; background-color:var(--paper);
   background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
   background-size:22px 22px;
-  color:var(--ink); font-family:'Lora',Georgia,serif; font-size:16.5px; line-height:1.62;
+  color:var(--ink); font-family:var(--font-text),Georgia,serif; font-size:16.5px; line-height:1.62;
 }
 .sheet{max-width:880px;margin:0 auto;padding:0 20px 80px;}
 .hero{padding:56px 0 34px;}
-.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;}
-h1{font-family:'Poppins',Arial,sans-serif;font-weight:600;font-size:clamp(2.3rem,7vw,3.5rem);line-height:1.03;margin:0 0 6px;letter-spacing:-.02em;}
-h3{font-family:'Poppins',Arial,sans-serif;font-size:1.12rem;font-weight:600;margin:26px 0 6px;}
+.eyebrow{font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;}
+h1{font-family:var(--font-sans),system-ui,sans-serif;font-weight:600;font-size:clamp(2.3rem,7vw,3.5rem);line-height:1.03;margin:0 0 6px;letter-spacing:-.02em;}
+h3{font-family:var(--font-sans),system-ui,sans-serif;font-size:1.12rem;font-weight:600;margin:26px 0 6px;}
 p{margin:0 0 14px;}
 ul,ol{margin:0 0 16px;padding-left:20px;} li{margin-bottom:7px;}
 .card{background:var(--card);border:1.5px solid var(--rule);padding:20px 22px;margin:0 0 16px;}
 .pnote{background:var(--teal-soft);border-left:4px solid var(--teal);padding:11px 14px;font-size:.9rem;margin-top:20px;}
-.pnote b{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:3px;}
+.pnote b{font-family:var(--font-sans),ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:3px;}
 section{margin:52px 0 0;}
-h2{font-family:'Poppins',Arial,sans-serif;font-weight:600;font-size:clamp(1.5rem,4.6vw,2rem);line-height:1.15;margin:0 0 6px;letter-spacing:-.015em;}
+h2{font-family:var(--font-sans),system-ui,sans-serif;font-weight:600;font-size:clamp(1.5rem,4.6vw,2rem);line-height:1.15;margin:0 0 6px;letter-spacing:-.015em;}
 
 body{padding:18px;background:#f5f4ef;}
 .worksheet-shell{max-width:900px;margin:0 auto;}
 .worksheet-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 auto 14px;padding:12px 14px;border:1.5px solid var(--ink);background:var(--card);}
-.breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
 .breadcrumb a{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-weight:600;padding:2px 6px;border-radius:4px;transition:background .15s;}
 .breadcrumb a:hover{background:var(--teal-soft);color:var(--teal);}
 .breadcrumb .sep{color:var(--rule);font-size:13px;user-select:none;}
 .breadcrumb .current{color:var(--ink);font-weight:600;}
 .worksheet-actions{display:flex;gap:8px;flex-wrap:wrap;}
-.worksheet-actions button{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;}
+.worksheet-actions button{font-family:var(--font-sans),ui-monospace,monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;}
 .worksheet-actions button.alt{background:transparent;color:var(--ink);}
 .ws{display:block;max-width:900px;margin:0 auto;background:#fff;border:1.5px solid var(--ink);padding:26px 28px 30px;}
 .ws-head{border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:20px;}
-.ws-head .code{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--teal);}
-.ws-head h4{font-family:'Poppins',Arial,sans-serif;font-size:1.5rem;font-weight:600;margin:6px 0 4px;line-height:1.15;}
-.ws-head .nm{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:10px;display:flex;gap:24px;flex-wrap:wrap;}
+.ws-head .code{font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:var(--teal);}
+.ws-head h4{font-family:var(--font-sans),system-ui,sans-serif;font-size:1.5rem;font-weight:600;margin:6px 0 4px;line-height:1.15;}
+.ws-head .nm{font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);margin-top:10px;display:flex;gap:24px;flex-wrap:wrap;}
 .ws-head .nm span{border-bottom:1px solid var(--rule);padding-bottom:2px;min-width:150px;}
 .ex{margin:0 0 28px;}
-.ex-t{font-family:'Lora',Georgia,serif;font-weight:700;font-size:.98rem;margin:0 0 4px;}
-.ex-t .n{font-family:'IBM Plex Mono',monospace;color:var(--teal);margin-right:8px;}
+.ex-t{font-family:var(--font-text),Georgia,serif;font-weight:700;font-size:.98rem;margin:0 0 4px;}
+.ex-t .n{font-family:var(--font-sans),ui-monospace,monospace;color:var(--teal);margin-right:8px;}
 .ex-h{font-size:.88rem;color:var(--muted);margin:0 0 12px;font-style:italic;}
 .qg{display:grid;gap:10px 16px;}
 .qg.c2{grid-template-columns:repeat(2,1fr);}
 .qg.c3{grid-template-columns:repeat(3,1fr);}
-.q{font-family:'IBM Plex Mono',monospace;font-size:15px;padding:7px 0;border-bottom:1px dotted var(--rule);}
+.q{font-family:var(--font-sans),ui-monospace,monospace;font-size:15px;padding:7px 0;border-bottom:1px dotted var(--rule);}
 .bl{display:inline-block;min-width:46px;border-bottom:1.5px solid var(--ink);}
 .bl.w{min-width:96px;}
 
@@ -64,20 +90,20 @@ body{padding:18px;background:#f5f4ef;}
 
 .coin-row{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:18px 0 24px;}
 .coin-item{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;}
-.coin-item .coin-label{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;}
-.coin-item .coin-eq{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink);}
+.coin-item .coin-label{font-family:var(--font-sans),ui-monospace,monospace;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;}
+.coin-item .coin-eq{font-family:var(--font-sans),ui-monospace,monospace;font-size:14px;color:var(--ink);}
 .coin-item .bl{min-width:50px;}
 
 .coin-svg{display:block;}
 
 .compare-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:12px 0;}
 .compare-box{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--rule);background:var(--card);min-height:72px;}
-.compare-box .vs{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);white-space:nowrap;}
+.compare-box .vs{font-family:var(--font-sans),ui-monospace,monospace;font-size:13px;color:var(--muted);white-space:nowrap;}
 .compare-coins{display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
 
 .coin-sum-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:12px 0;}
 .coin-sum{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1.5px solid var(--rule);background:var(--card);flex-wrap:wrap;}
-.coin-sum .eq{font-family:'IBM Plex Mono',monospace;font-size:15px;margin-left:auto;}
+.coin-sum .eq{font-family:var(--font-sans),ui-monospace,monospace;font-size:15px;margin-left:auto;}
 .coin-sum .eq .bl{min-width:46px;}
 
 .order-coins{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0 8px;padding:14px;border:1px solid var(--rule);background:var(--card);}
@@ -88,7 +114,7 @@ body{padding:18px;background:#f5f4ef;}
 .tf-row{margin:10px 0;}
 .tf-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px dotted var(--rule);}
 .tf-item .tf-text{font-size:.95rem;flex:1;}
-.tf-item .tf-choice{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);white-space:nowrap;}
+.tf-item .tf-choice{font-family:var(--font-sans),ui-monospace,monospace;font-size:13px;color:var(--muted);white-space:nowrap;}
 
 /* ---------- inline answers ---------- */
 
@@ -96,7 +122,7 @@ body{padding:18px;background:#f5f4ef;}
   display:none;
   color:#788c5d;
   font-weight:800;
-  font-family:'IBM Plex Mono',monospace;
+  font-family:var(--font-sans),ui-monospace,monospace;
 }
 body.answers-visible .inline-answer-value{display:inline-block;}
 .inline-answer-card{
@@ -107,7 +133,7 @@ body.answers-visible .inline-answer-value{display:inline-block;}
   border-left-width:5px;
   background:#eef1e8;
   color:#126a4d;
-  font-family:'IBM Plex Mono',monospace;
+  font-family:var(--font-sans),ui-monospace,monospace;
   font-size:12px;
   line-height:1.55;
 }
@@ -122,7 +148,7 @@ body.answers-visible .inline-answer-value{display:inline-block;}
 body.answers-visible .inline-answer-card{display:block;}
 body.answers-visible .bl{border-bottom-color:#788c5d;}
 
-.answers{display:none;margin-top:18px;border-top:1.5px dashed var(--ink);padding-top:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);line-height:1.7;}
+.answers{display:none;margin-top:18px;border-top:1.5px dashed var(--ink);padding-top:10px;font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);line-height:1.7;}
 .answers.show{display:block;}
 .answers b{color:var(--ink);}
 
@@ -153,7 +179,7 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
   .pnote::before,.moveon::before,.callout::before{
     content:"For the teacher · not printed";
     display:block;
-    font-family:"DM Mono",ui-monospace,monospace;
+    font-family:var(--font-sans),ui-monospace,monospace;
     font-size:10px;
     letter-spacing:0.12em;
     text-transform:uppercase;
@@ -165,7 +191,7 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
     .pnote,.moveon,.callout{display:none !important;}
   }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 </head>
 <body>
 <div class="worksheet-shell">
@@ -188,9 +214,9 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
     <svg class="coin-svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="nickel">
      <circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/>
      <circle cx="32" cy="32" r="26" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="2,2"/>
-     <text x="32" y="25" font-family="Georgia,serif" font-size="10" font-weight="600" fill="#444" text-anchor="middle">5</text>
-     <text x="32" y="36" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">CENTS</text>
-     <text x="32" y="48" font-family="Georgia,serif" font-size="6" fill="#888" text-anchor="middle">CANADA</text>
+     <text x="32" y="25" font-family="Thmanyah Serif Text, Georgia, serif" font-size="10" font-weight="600" fill="#444" text-anchor="middle">5</text>
+     <text x="32" y="36" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">CENTS</text>
+     <text x="32" y="48" font-family="Thmanyah Serif Text, Georgia, serif" font-size="6" fill="#888" text-anchor="middle">CANADA</text>
     </svg>
     <span class="coin-label">Nickel</span>
     <span class="coin-eq">= <span class="bl"></span></span>
@@ -199,9 +225,9 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
     <svg class="coin-svg" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="dime">
      <circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/>
      <circle cx="28" cy="28" r="22" fill="none" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/>
-     <text x="28" y="22" font-family="Georgia,serif" font-size="9" font-weight="600" fill="#444" text-anchor="middle">10</text>
-     <text x="28" y="31" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">CENTS</text>
-     <text x="28" y="42" font-family="Georgia,serif" font-size="5" fill="#888" text-anchor="middle">CANADA</text>
+     <text x="28" y="22" font-family="Thmanyah Serif Text, Georgia, serif" font-size="9" font-weight="600" fill="#444" text-anchor="middle">10</text>
+     <text x="28" y="31" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">CENTS</text>
+     <text x="28" y="42" font-family="Thmanyah Serif Text, Georgia, serif" font-size="5" fill="#888" text-anchor="middle">CANADA</text>
     </svg>
     <span class="coin-label">Dime</span>
     <span class="coin-eq">= <span class="bl"></span></span>
@@ -210,9 +236,9 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
     <svg class="coin-svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="quarter">
      <circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/>
      <circle cx="36" cy="36" r="30" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="2,2"/>
-     <text x="36" y="28" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">25</text>
-     <text x="36" y="40" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">CENTS</text>
-     <text x="36" y="53" font-family="Georgia,serif" font-size="6" fill="#888" text-anchor="middle">CANADA</text>
+     <text x="36" y="28" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">25</text>
+     <text x="36" y="40" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">CENTS</text>
+     <text x="36" y="53" font-family="Thmanyah Serif Text, Georgia, serif" font-size="6" fill="#888" text-anchor="middle">CANADA</text>
     </svg>
     <span class="coin-label">Quarter</span>
     <span class="coin-eq">= <span class="bl"></span></span>
@@ -221,9 +247,9 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
     <svg class="coin-svg" width="78" height="78" viewBox="0 0 78 78" role="img" aria-label="loonie">
      <circle cx="39" cy="39" r="37" fill="#DAB44E" stroke="#B8922A" stroke-width="1.5"/>
      <circle cx="39" cy="39" r="33" fill="none" stroke="#C4A03A" stroke-width="0.8" stroke-dasharray="2,2"/>
-     <text x="39" y="30" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$1</text>
-     <text x="39" y="43" font-family="monospace" font-size="7" fill="#7A6020" text-anchor="middle">DOLLAR</text>
-     <text x="39" y="56" font-family="Georgia,serif" font-size="6" fill="#8A7030" text-anchor="middle">CANADA</text>
+     <text x="39" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$1</text>
+     <text x="39" y="43" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#7A6020" text-anchor="middle">DOLLAR</text>
+     <text x="39" y="56" font-family="Thmanyah Serif Text, Georgia, serif" font-size="6" fill="#8A7030" text-anchor="middle">CANADA</text>
     </svg>
     <span class="coin-label">Loonie</span>
     <span class="coin-eq">= <span class="bl"></span></span>
@@ -232,9 +258,9 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
     <svg class="coin-svg" width="84" height="84" viewBox="0 0 84 84" role="img" aria-label="toonie">
      <circle cx="42" cy="42" r="40" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/>
      <circle cx="42" cy="42" r="26" fill="#DAB44E" stroke="#B8922A" stroke-width="1.2"/>
-     <text x="42" y="34" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$2</text>
-     <text x="42" y="47" font-family="monospace" font-size="7" fill="#7A6020" text-anchor="middle">DOLLARS</text>
-     <text x="42" y="72" font-family="Georgia,serif" font-size="6" fill="#888" text-anchor="middle">CANADA</text>
+     <text x="42" y="34" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$2</text>
+     <text x="42" y="47" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#7A6020" text-anchor="middle">DOLLARS</text>
+     <text x="42" y="72" font-family="Thmanyah Serif Text, Georgia, serif" font-size="6" fill="#888" text-anchor="middle">CANADA</text>
     </svg>
     <span class="coin-label">Toonie</span>
     <span class="coin-eq">= <span class="bl"></span></span>
@@ -248,45 +274,45 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
   <div class="compare-row">
    <div class="compare-box">
     <div class="compare-coins">
-     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
     <span class="vs">or</span>
     <div class="compare-coins">
-     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
    </div>
    <div class="compare-box">
     <div class="compare-coins">
-     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
     <span class="vs">or</span>
     <div class="compare-coins">
-     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
    </div>
   </div>
   <div class="compare-row">
    <div class="compare-box">
     <div class="compare-coins">
-     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="40" height="40" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
     <span class="vs">or</span>
     <div class="compare-coins">
-     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="34" height="34" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
    </div>
    <div class="compare-box">
     <div class="compare-coins">
-     <svg width="48" height="48" viewBox="0 0 78 78" role="img" aria-label="loonie"><circle cx="39" cy="39" r="37" fill="#DAB44E" stroke="#B8922A" stroke-width="1.5"/><text x="39" y="35" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$1</text><text x="39" y="49" font-family="monospace" font-size="7" fill="#7A6020" text-anchor="middle">  </text></svg>
+     <svg width="48" height="48" viewBox="0 0 78 78" role="img" aria-label="loonie"><circle cx="39" cy="39" r="37" fill="#DAB44E" stroke="#B8922A" stroke-width="1.5"/><text x="39" y="35" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$1</text><text x="39" y="49" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#7A6020" text-anchor="middle">  </text></svg>
     </div>
     <span class="vs">or</span>
     <div class="compare-coins">
-     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+     <svg width="44" height="44" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     </div>
    </div>
   </div>
@@ -296,53 +322,53 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
  <div class="ex"><p class="ex-t"><span class="n">3</span>How much?</p>
   <div class="coin-sum-row">
    <div class="coin-sum">
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     <span class="eq">= <span class="bl"></span></span>
    </div>
    <div class="coin-sum">
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <span class="eq">= <span class="bl"></span></span>
-   </div>
-  </div>
-  <div class="coin-sum-row">
-   <div class="coin-sum">
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <span class="eq">= <span class="bl"></span></span>
-   </div>
-   <div class="coin-sum">
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
     <span class="eq">= <span class="bl"></span></span>
    </div>
   </div>
   <div class="coin-sum-row">
    <div class="coin-sum">
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     <span class="eq">= <span class="bl"></span></span>
    </div>
    <div class="coin-sum">
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <span class="eq">= <span class="bl"></span></span>
+   </div>
+  </div>
+  <div class="coin-sum-row">
+   <div class="coin-sum">
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <span class="eq">= <span class="bl"></span></span>
+   </div>
+   <div class="coin-sum">
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     <span class="eq">= <span class="bl"></span></span>
    </div>
   </div>
@@ -352,23 +378,23 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
  <div class="ex"><p class="ex-t"><span class="n">4</span>Put these in order, smallest value first.</p>
   <div class="order-coins">
    <div class="coin-item">
-    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Georgia,serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="28" height="28" viewBox="0 0 56 56" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="26" font-family="Thmanyah Serif Text, Georgia, serif" font-size="11" font-weight="600" fill="#444" text-anchor="middle">10</text><text x="28" y="37" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="6" fill="#666" text-anchor="middle">¢</text></svg>
     <span style="font-size:11px;">dime</span>
    </div>
    <div class="coin-item">
-    <svg width="42" height="42" viewBox="0 0 84 84" role="img" aria-label="toonie"><circle cx="42" cy="42" r="40" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><circle cx="42" cy="42" r="26" fill="#DAB44E" stroke="#B8922A" stroke-width="1.2"/><text x="42" y="38" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#5C4400" text-anchor="middle">$2</text></svg>
+    <svg width="42" height="42" viewBox="0 0 84 84" role="img" aria-label="toonie"><circle cx="42" cy="42" r="40" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><circle cx="42" cy="42" r="26" fill="#DAB44E" stroke="#B8922A" stroke-width="1.2"/><text x="42" y="38" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#5C4400" text-anchor="middle">$2</text></svg>
     <span style="font-size:11px;">toonie</span>
    </div>
    <div class="coin-item">
-    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="32" height="32" viewBox="0 0 64 64" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="12" font-weight="600" fill="#444" text-anchor="middle">5</text><text x="32" y="42" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     <span style="font-size:11px;">nickel</span>
    </div>
    <div class="coin-item">
-    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
+    <svg width="36" height="36" viewBox="0 0 72 72" role="img" aria-label="quarter"><circle cx="36" cy="36" r="34" fill="#C8C8C8" stroke="#888" stroke-width="1.5"/><text x="36" y="33" font-family="Thmanyah Serif Text, Georgia, serif" font-size="13" font-weight="600" fill="#444" text-anchor="middle">25</text><text x="36" y="46" font-family="Thmanyah Sans, ui-monospace, monospace" font-size="7" fill="#666" text-anchor="middle">¢</text></svg>
     <span style="font-size:11px;">quarter</span>
    </div>
    <div class="coin-item">
-    <svg width="38" height="38" viewBox="0 0 78 78" role="img" aria-label="loonie"><circle cx="39" cy="39" r="37" fill="#DAB44E" stroke="#B8922A" stroke-width="1.5"/><text x="39" y="35" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$1</text></svg>
+    <svg width="38" height="38" viewBox="0 0 78 78" role="img" aria-label="loonie"><circle cx="39" cy="39" r="37" fill="#DAB44E" stroke="#B8922A" stroke-width="1.5"/><text x="39" y="35" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#5C4400" text-anchor="middle">$1</text></svg>
     <span style="font-size:11px;">loonie</span>
    </div>
   </div>
@@ -381,25 +407,25 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
  <div class="ex"><p class="ex-t"><span class="n">5</span>True or false?</p>
   <div class="tf-row">
    <div class="tf-item">
-    <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--teal);">a)</span>
+    <span style="font-family:var(--font-sans),ui-monospace,monospace;font-size:13px;color:var(--teal);">a)</span>
     <span class="tf-text">The dime
-     <svg width="22" height="22" viewBox="0 0 56 56" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="30" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">10</text></svg>
+     <svg width="22" height="22" viewBox="0 0 56 56" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">10</text></svg>
      is <b>bigger</b> than the nickel
-     <svg width="28" height="28" viewBox="0 0 64 64" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="34" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">5</text></svg>
+     <svg width="28" height="28" viewBox="0 0 64 64" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="34" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">5</text></svg>
     </span>
     <span class="tf-choice">TRUE / FALSE</span>
    </div>
    <div class="tf-item">
-    <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--teal);">b)</span>
+    <span style="font-family:var(--font-sans),ui-monospace,monospace;font-size:13px;color:var(--teal);">b)</span>
     <span class="tf-text">The dime
-     <svg width="22" height="22" viewBox="0 0 56 56" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="30" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">10</text></svg>
+     <svg width="22" height="22" viewBox="0 0 56 56" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="dime"><circle cx="28" cy="28" r="26" fill="#D4D4D4" stroke="#999" stroke-width="1.5"/><text x="28" y="30" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">10</text></svg>
      is <b>worth more</b> than the nickel
-     <svg width="28" height="28" viewBox="0 0 64 64" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="34" font-family="Georgia,serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">5</text></svg>
+     <svg width="28" height="28" viewBox="0 0 64 64" style="display:inline-block;vertical-align:middle;margin:0 3px;" role="img" aria-label="nickel"><circle cx="32" cy="32" r="30" fill="#C0C0C0" stroke="#888" stroke-width="1.5"/><text x="32" y="34" font-family="Thmanyah Serif Text, Georgia, serif" font-size="14" font-weight="600" fill="#444" text-anchor="middle">5</text></svg>
     </span>
     <span class="tf-choice">TRUE / FALSE</span>
    </div>
    <div class="tf-item">
-    <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--teal);">c)</span>
+    <span style="font-family:var(--font-sans),ui-monospace,monospace;font-size:13px;color:var(--teal);">c)</span>
     <span class="tf-text">Five coins always means five cents.</span>
     <span class="tf-choice">TRUE / FALSE</span>
    </div>
