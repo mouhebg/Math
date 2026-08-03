@@ -119,7 +119,7 @@ Pages are designed for North American Letter paper, 8.5 by 11 inches. When print
 
 ## Progress tracking
 
-Each session can be marked Not started, Practising, or Mastered. The homepage automatically recommends the next lesson, while the sixteen-unit progress map makes it easy to revisit any topic. Progress is always stored locally first. A parent can optionally sign in through a passwordless Supabase email link to back up that progress and continue on another device. Existing mastery ticks from earlier versions are migrated automatically.
+Each session can be marked Not started, Practising, or Mastered. The homepage automatically recommends the next lesson, the header carries a running percentage, and each part of the programme shows how far through it the student is. Progress is always stored locally first. A parent can optionally sign in through a passwordless Supabase email link to back up that progress and continue on another device. Existing mastery ticks from earlier versions are migrated automatically.
 
 Cloud synchronization uses two row-level secured tables:
 

@@ -54,10 +54,6 @@ function RouteIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M8.5 6H13a3 3 0 0 1 0 6h-2a3 3 0 0 0 0 6h4.5" /></svg>;
 }
 
-function ChartIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8m7 8V4m7 16v-11" /></svg>;
-}
-
 function GuideIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0-9-9m9-4v4l3 2" /><path d="M3 16v5h5" /></svg>;
 }
@@ -66,15 +62,42 @@ function CloudIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19h11a4 4 0 0 0 .6-8A6 6 0 0 0 6.4 9 5 5 0 0 0 6.5 19Z" /><path d="m9 14 2 2 4-5" /></svg>;
 }
 
+// A nest cradling a hatching egg, with the four operators breaking out of it.
+// Every colour comes from the palette in globals.css: the operators take the
+// four accent tokens, and the nest takes currentColor so it turns white on the
+// navy footer. The filled shapes carry stroke="none" because the global svg
+// rule sets a currentColor stroke on every svg in the page.
 function MathNestMark() {
   return (
-    <svg className="mathnest-mark" viewBox="0 0 40 40" aria-hidden="true">
-      <path d="M6 11v8c0 9 6.3 15 14 15s14-6 14-15v-8" />
-      <path d="M10 15v4c0 6.2 4.5 10.5 10 10.5S30 25.2 30 19v-4" />
-      <path d="M14 19c0 3.8 2.7 6.5 6 6.5s6-2.7 6-6.5" />
-      <circle cx="14" cy="12" r="2.2" />
-      <circle cx="20" cy="9" r="2.2" />
-      <circle cx="26" cy="12" r="2.2" />
+    <svg className="mathnest-mark" viewBox="0 0 48 48" aria-hidden="true">
+      <g fill="none" strokeLinecap="round" strokeWidth="2.8">
+        <path d="M21.5 2.6 L26.5 7.6 M26.5 2.6 L21.5 7.6" stroke="var(--blue)" />
+        <path d="M10.2 9.4 H14.8" stroke="var(--coral)" />
+        <path d="M24 9 V13.8 M21.6 11.4 H26.4" stroke="var(--yellow)" />
+        <path d="M32.7 10 H37.3" stroke="var(--purple)" />
+      </g>
+      <g stroke="none">
+        <circle cx="35" cy="7.3" r="1.45" fill="var(--purple)" />
+        <circle cx="35" cy="12.7" r="1.45" fill="var(--purple)" />
+        <path d="M9.8 16.4 L13.8 14.4 L14.6 18.2 L10.8 19.6 Z" fill="var(--shell)" />
+        <path d="M33.4 14.2 L37.4 16.2 L36.6 19.8 L33.2 18.2 Z" fill="var(--shell)" />
+        <path
+          d="M16.6 23.4 C14.4 26.4 12.4 29.4 12.4 32 C12.4 37.2 17.6 41.4 24 41.4
+             C30.4 41.4 35.6 37.2 35.6 32 C35.6 29.4 33.6 26.4 31.4 23.4
+             L29.6 26.4 L27.4 21.9 L25.2 25.8 L23 21.5 L20.8 25.9 L18.6 22.1 Z"
+          fill="var(--egg)"
+        />
+        <path
+          d="M3 28.6 C3.4 37.4 12.6 43.6 24 43.6 C35.4 43.6 44.6 37.4 45 28.6
+             C42.8 35.6 34.3 39.6 24 39.6 C13.7 39.6 5.2 35.6 3 28.6 Z"
+          fill="currentColor"
+        />
+        <path
+          d="M9 37.2 C11.2 43.4 17.1 47.2 24 47.2 C30.9 47.2 36.8 43.4 39 37.2
+             C36 41.8 30.5 44.4 24 44.4 C17.5 44.4 12 41.8 9 37.2 Z"
+          fill="currentColor"
+        />
+      </g>
     </svg>
   );
 }
@@ -298,7 +321,6 @@ export default function Home() {
   }, [activePart, cloudLoaded, openUnit, ready, user]);
 
   const masteredCount = sessions.filter((session) => statuses[session.id] === "mastered").length;
-  const practisingCount = sessions.filter((session) => statuses[session.id] === "practising").length;
   const progress = Math.round((masteredCount / sessions.length) * 100);
   const programmeComplete = masteredCount === sessions.length;
   const nextSession = useMemo(
@@ -414,10 +436,10 @@ export default function Home() {
         <nav id="main-nav" className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
           <a href="#today" onClick={() => setMenuOpen(false)}>Today</a>
           <a href="#programme" onClick={() => setMenuOpen(false)}>Programme</a>
-          <a href="#progress" onClick={() => setMenuOpen(false)}>Progress</a>
           <a href="#parent-guide" onClick={() => setMenuOpen(false)}>Parent guide</a>
         </nav>
-        <a className="header-progress" href="#progress" aria-label={`${progress}% of the programme mastered`}>
+        {/* Points at the programme, where a session's status is actually set. */}
+        <a className="header-progress" href="#programme" aria-label={`${progress}% of the programme mastered. Open the programme.`}>
           <span><i style={{ width: `${progress}%` }} /></span><b>{progress}%</b>
         </a>
         <div className="sync-menu">
@@ -645,49 +667,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="progress-section" id="progress">
-        <div className="section-heading progress-heading">
-          <div><p className="eyebrow">Progress</p><h2>Understanding grows<br />one unit at a time.</h2></div>
-          <div className="progress-overview">
-            <strong>{progress}%</strong>
-            <span>{masteredCount} mastered{practisingCount ? `, ${practisingCount} practising` : ""}</span>
-          </div>
-        </div>
-
-        <div className="unit-progress-grid">
-          {weeklyUnits.map((unit) => {
-            const count = unit.sessions.filter((session) => getStatus(session.id) === "mastered").length;
-            const complete = count === unit.sessions.length;
-            return (
-              <button
-                className={`progress-unit part-${Math.floor((unit.week - 1) / 4) + 1}${complete ? " unit-complete" : ""}`}
-                onClick={() => openSession(unit.sessions.find((session) => getStatus(session.id) !== "mastered") ?? unit.sessions[0])}
-                key={unit.week}
-              >
-                <span className="progress-unit-head">
-                  <span className="progress-unit-number">UNIT {String(unit.week).padStart(2, "0")}</span>
-                  {complete && <span className="progress-unit-tick" aria-hidden="true">✓</span>}
-                </span>
-                <span className="progress-unit-name">{unitNames[unit.week - 1]}</span>
-                <span className="progress-unit-bar" aria-label={`${count} of ${unit.sessions.length} sessions mastered`}>
-                  <i style={{ width: `${(count / unit.sessions.length) * 100}%` }} />
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
       <section className="guide-section" id="parent-guide">
         <div className="section-heading">
           <div><p className="eyebrow">Parent guide</p><h2>Keep each lesson<br />small and successful.</h2></div>
           <p>Twenty minutes is enough on most days. Finish earlier when the student reaches a natural success, and return another day if frustration starts to rise.</p>
-        </div>
-
-        <div className="lesson-rhythm" aria-label="Suggested lesson timing">
-          {[{ time: "2", label: "Warm up" }, { time: "6", label: "Model" }, { time: "8", label: "Exercise" }, { time: "5", label: "Play" }, { time: "2", label: "Explain" }].map((step, index) => (
-            <div key={step.label}><span>{index + 1}</span><strong>{step.time}<small>min</small></strong><p>{step.label}</p></div>
-          ))}
         </div>
 
         <div className="guide-details">
@@ -720,7 +703,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Patient practice. Clear thinking.</small></span></div>
+        <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Where numbers grow.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
         <div className="footer-actions"><a href="worksheets/mathnest-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
       </footer>
@@ -728,7 +711,6 @@ export default function Home() {
       <nav className="mobile-nav" aria-label="Mobile navigation">
         <a href="#today"><BookIcon /><span>Today</span></a>
         <a href="#programme"><RouteIcon /><span>Programme</span></a>
-        <a href="#progress"><ChartIcon /><span>Progress</span></a>
         <a href="#parent-guide"><GuideIcon /><span>Guide</span></a>
       </nav>
     </main>
