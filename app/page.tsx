@@ -458,11 +458,11 @@ export default function Home() {
           <p className="eyebrow">Grade 2 home learning</p>
           <h1>Small lessons.<br />Strong foundations.</h1>
           <p className="today-lede">
-            A calm mathematics programme built around understanding. Two short sessions per unit, clear parent guidance, and no pressure to rush.
+            A calm mathematics programme built around understanding. Short sessions, clear parent guidance, and no pressure to rush.
           </p>
           <div className="programme-summary" aria-label="Programme summary">
-            <span><strong>16</strong> units</span>
-            <span><strong>32</strong> sessions</span>
+            <span><strong>{weeklyUnits.length}</strong> units</span>
+            <span><strong>{sessions.length}</strong> sessions</span>
             <span><strong>20</strong> min each</span>
           </div>
         </div>
@@ -494,12 +494,12 @@ export default function Home() {
       <section className="programme-section" id="programme">
         <div className="section-heading">
           <div><p className="eyebrow">Learning pathway</p><h2>See the whole journey.<br />Open only what you need.</h2></div>
-          <p>Choose a part, then open one unit. Session A comes first. Leave at least one day before Session B, and repeat whenever understanding is still developing.</p>
+          <p>Choose a part, then open one unit. Work through its sessions in order, leave at least one day between them, and repeat whenever understanding is still developing.</p>
         </div>
 
         <div className="part-tabs" role="tablist" aria-label="Programme parts">
           {phases.map((phase, index) => {
-            const partSessions = sessions.slice(index * 8, index * 8 + 8);
+            const partSessions = weeklyUnits.slice(index * 4, index * 4 + 4).flatMap((unit) => unit.sessions);
             const partMastered = partSessions.filter((session) => getStatus(session.id) === "mastered").length;
             return (
               <button
@@ -511,7 +511,7 @@ export default function Home() {
               >
                 <span className="part-index">{String(index + 1).padStart(2, "0")}</span>
                 <span className="part-name"><strong>{phase.name}</strong><small>{phase.units}</small></span>
-                <span className="part-score">{partMastered}/8</span>
+                <span className="part-score">{partMastered}/{partSessions.length}</span>
               </button>
             );
           })}
@@ -533,8 +533,8 @@ export default function Home() {
                   <button className="unit-summary" onClick={() => setOpenUnit(isOpen ? 0 : unit.week)} aria-expanded={isOpen}>
                     <span className="unit-number">Unit {String(unit.week).padStart(2, "0")}</span>
                     <span className="unit-title">{unitNames[unit.week - 1]}</span>
-                    <span className={`unit-state ${unitMastered === 2 ? "complete" : unitPractising ? "active" : ""}`}>
-                      {unitMastered === 2 ? "Mastered" : unitPractising ? "In progress" : `${unitMastered}/2 complete`}
+                    <span className={`unit-state ${unitMastered === unit.sessions.length ? "complete" : unitPractising ? "active" : ""}`}>
+                      {unitMastered === unit.sessions.length ? "Mastered" : unitPractising ? "In progress" : `${unitMastered}/${unit.sessions.length} complete`}
                     </span>
                     <span className="unit-toggle-icon" aria-hidden="true">{isOpen ? "−" : "+"}</span>
                   </button>
@@ -543,7 +543,9 @@ export default function Home() {
                     <div className="unit-detail">
                       <div className="weekly-note">
                         <span>Weekly rhythm</span>
-                        <p>Teach Session A, pause for at least one day, then teach Session B. Repeat with new numbers if the move-on check is not yet secure.</p>
+                        <p>{unit.sessions.length > 2
+                          ? "Teach one session at a time and in order, pausing at least a day between them. Repeat any session with new numbers if the move-on check is not yet secure."
+                          : "Teach Session A, pause for at least one day, then teach Session B. Repeat with new numbers if the move-on check is not yet secure."}</p>
                         {unit.week === 1 && (
                           <a href="worksheets/mathnest-unit-01-warm-up-card.html" target="_blank" rel="noreferrer">Open the 2-minute warm-up card <ArrowIcon /></a>
                         )}
@@ -613,7 +615,7 @@ export default function Home() {
               <button onClick={() => openSession(unit.sessions.find((session) => getStatus(session.id) !== "mastered") ?? unit.sessions[0])} key={unit.week}>
                 <span className="progress-unit-number">{String(unit.week).padStart(2, "0")}</span>
                 <span className="progress-unit-name">{unitNames[unit.week - 1]}</span>
-                <span className="session-dots" aria-label={`${count} of 2 sessions mastered`}>
+                <span className="session-dots" aria-label={`${count} of ${unit.sessions.length} sessions mastered`}>
                   {unit.sessions.map((session) => <i className={`dot-${getStatus(session.id)}`} key={session.id} />)}
                 </span>
               </button>

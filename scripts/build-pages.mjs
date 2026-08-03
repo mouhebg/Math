@@ -60,14 +60,22 @@ if (!html.includes('href="worksheets/mathnest-unit-01-warm-up-card.html"')) {
   throw new Error("The rendered homepage does not reference the Unit 1 warm-up card");
 }
 
+const expectedWorksheets = [
+  "mathnest-unit-01-warm-up-card.html",
+  // Unit 1 carries two extra sessions on doubles and bridging through ten.
+  "mathnest-unit-01-session-c.html",
+  "mathnest-unit-01-session-d.html",
+];
+
 for (let unit = 1; unit <= 16; unit += 1) {
   for (const session of ["a", "b"]) {
-    const filename = `mathnest-unit-${String(unit).padStart(2, "0")}-session-${session}.html`;
-    await access(join(outputDirectory, "worksheets", filename));
+    expectedWorksheets.push(`mathnest-unit-${String(unit).padStart(2, "0")}-session-${session}.html`);
   }
 }
 
-await access(join(outputDirectory, "worksheets", "mathnest-unit-01-warm-up-card.html"));
+for (const filename of expectedWorksheets) {
+  await access(join(outputDirectory, "worksheets", filename));
+}
 
 await writeFile(join(outputDirectory, "index.html"), html);
 await writeFile(join(outputDirectory, "404.html"), html);

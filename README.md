@@ -1,6 +1,6 @@
 # MathNest
 
-A calm, practical Grade 2 mathematics programme for home use. It includes sixteen units, two teaching sessions per unit, printable exercises, parent guidance, and a readiness check that tells you when to move on.
+A calm, practical Grade 2 mathematics programme for home use. It includes sixteen units, thirty-four teaching sessions, printable exercises, parent guidance, and a readiness check that tells you when to move on.
 
 **Live site:** https://mathnest.ca
 
@@ -19,13 +19,13 @@ The sixteen units sit in four parts:
 3. **Math in daily life**, Units 9 to 12
 4. **Groups and wider thinking**, Units 13 to 16
 
-Each unit contains Session A, Session B, parent instructions, a downloadable exercise, a move-on check, and a three-state learning tracker stored in the browser.
+Each unit contains Session A, Session B, parent instructions, a downloadable exercise, a move-on check, and a three-state learning tracker stored in the browser. Unit 1 carries two further sessions, C and D, covering the addition facts to 20.
 
 ### Unit map
 
 | Unit | Focus | Move on when |
 | --- | --- | --- |
-| 01 | Bonds to ten and part-whole thinking | She gives the partner of any number to 10 without counting up |
+| 01 | Bonds to ten and facts to 20 | She adds past ten and says the total, not the leftover |
 | 02 | Place value to 200 | She represents and compares a number in more than one way |
 | 03 | Mental addition | She moves by tens and chooses an efficient strategy |
 | 04 | Addition within 100 | Her answer matches her estimate and concrete model |
@@ -41,6 +41,23 @@ Each unit contains Session A, Session B, parent instructions, a downloadable exe
 | 14 | Sharing, odd, and even | She checks equal shares and predicts odd or even |
 | 15 | Data, patterns, and chance | She interprets a graph and states a pattern rule |
 | 16 | Review and next steps | She names her strengths and chooses the next practice target |
+
+### Facts to 20, inside Unit 1
+
+Bonds to ten make the partners of ten automatic, and Unit 3 applies bridging to
+two-digit numbers. Two sessions sit between them, so a child is not asked to
+bridge mentally before the teen numbers are secure:
+
+- **Session C, Doubles and near doubles.** Learn the doubles to 10 + 10, then
+  reach a neighbouring pair from a known double. `8 + 7` is one less than
+  `8 + 8`. One fact held in the head instead of three.
+- **Session D, Cross the ten.** Make the ten with counters that stay visible on
+  the table, then read the answer as ten and some ones. The session opens with
+  `10 + n` because a child who does not yet hear "fifteen" as "ten and five"
+  cannot bridge at all.
+
+A child who answers `8 + 7` with `5` has not forgotten the ten; she is answering
+the last question she was asked. Session D ends every step on the total.
 
 The programme uses Ontario Grade 2 topics as a reference, but follows its own mastery sequence. It is not an official curriculum or a line-by-line implementation of provincial expectations.
 
@@ -60,7 +77,7 @@ The explanation at the end is an important diagnostic. "I counted" and "I knew 7
 
 ## Worksheets
 
-- 32 printable session exercises
+- 34 printable session exercises
 - A two-minute Unit 1 warm-up card
 - Individual downloads and one ZIP bundle
 - Print or save as PDF from each page

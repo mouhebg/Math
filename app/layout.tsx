@@ -17,7 +17,7 @@ const newsreader = Newsreader({
 export const metadata: Metadata = {
   metadataBase: new URL("https://mathnest.ca"),
   title: "MathNest | Grade 2 math at home",
-  description: "A calm, mastery-based Grade 2 home mathematics plan with 32 downloadable exercises.",
+  description: "A calm, mastery-based Grade 2 home mathematics plan with 34 downloadable exercises.",
   other: {
     "codex-preview": "development",
     viewport: "width=device-width, initial-scale=1",
