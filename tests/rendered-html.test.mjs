@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const developmentPreviewMeta =
@@ -69,4 +69,19 @@ test("uses the Thmanyah type system across the homepage", async () => {
   assert.match(css, /--font-serif:\s*"Thmanyah Serif Display"/);
   assert.match(css, /--font-text:\s*"Thmanyah Serif Text"/);
   assert.doesNotMatch(layout, /next\/font\/google/);
+});
+
+test("uses Thmanyah typography on the worksheets as well as the site", async () => {
+  const directory = new URL("../public/worksheets/", import.meta.url);
+  const sheets = (await readdir(directory)).filter((name) => name.endsWith(".html"));
+
+  assert.ok(sheets.length >= 34, `expected the full worksheet set, found ${sheets.length}`);
+
+  for (const name of sheets) {
+    const html = await readFile(new URL(name, directory), "utf8");
+    assert.doesNotMatch(html, /fonts\.(googleapis|gstatic)\.com/, `${name} still loads Google Fonts`);
+    assert.doesNotMatch(html, /Poppins|Lora|IBM Plex Mono|DM Mono|Newsreader|Archivo/, `${name} still names a replaced family`);
+    assert.match(html, /font-family:"Thmanyah Sans"/, `${name} is missing the Thmanyah faces`);
+    assert.match(html, /--font-sans:"Thmanyah Sans"/, `${name} is missing the Thmanyah variables`);
+  }
 });

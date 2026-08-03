@@ -112,8 +112,9 @@ This allows the passwordless email link to return safely to the published MathNe
 
 The website and new learning resources share one visual system:
 
-- Archivo for clear instructional and interface text
-- Newsreader for lesson titles and learning hierarchy
+- Thmanyah Sans for interface text, labels, and figures
+- Thmanyah Serif Display for lesson titles and learning hierarchy
+- Thmanyah Serif Text for reading passages and exercise prose
 - Warm ivory backgrounds, deep navy actions, green learning cues, and distinct part colours
 - Rounded cards, visible rules, and restrained shadows
 - Print-friendly worksheets with answers hidden by default
