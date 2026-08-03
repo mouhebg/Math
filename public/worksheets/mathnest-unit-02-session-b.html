@@ -222,6 +222,8 @@ body.answers-visible .pw .bot div:has(.inline-answer-value){background:#eef1e8;b
   .sheet{padding:0 16px 60px;}
   .ws{padding:20px 16px 24px;}
   .qg.c3,.qg.c4{grid-template-columns:repeat(2,1fr);}
+  /* One column, so a label is never split from its own blank. */
+  .qg.c2{grid-template-columns:1fr;}
   .clocks{grid-template-columns:repeat(2,1fr);}
   .pricelist{grid-template-columns:repeat(2,1fr);}
 }
@@ -300,12 +302,18 @@ body{padding:18px;background:#f5f4ef;}
  <div class="nm"><span>Name:</span><span>Date:</span></div></div>
  <div class="ex"><p class="ex-t"><span class="n">1</span>Fill in the neighbours. Use the chart if you need it, then try without.</p>
   <div class="qg c2">
-   <div class="q">Above 63: <span class="bl"></span> &nbsp; Below 63: <span class="bl"></span></div>
-   <div class="q">Left of 47: <span class="bl"></span> &nbsp; Right of 47: <span class="bl"></span></div>
-   <div class="q">Above 85: <span class="bl"></span> &nbsp; Below 85: <span class="bl"></span></div>
-   <div class="q">Above 100: <span class="bl"></span> &nbsp; Below 100: <span class="bl"></span></div>
-   <div class="q">Above 128: <span class="bl"></span> &nbsp; Below 128: <span class="bl"></span></div>
-   <div class="q">Left of 150: <span class="bl"></span> &nbsp; Right of 150: <span class="bl"></span></div>
+   <div class="q">Above 63: <span class="bl"></span></div>
+      <div class="q">Below 63: <span class="bl"></span></div>
+   <div class="q">Left of 47: <span class="bl"></span></div>
+      <div class="q">Right of 47: <span class="bl"></span></div>
+   <div class="q">Above 85: <span class="bl"></span></div>
+      <div class="q">Below 85: <span class="bl"></span></div>
+   <div class="q">Above 100: <span class="bl"></span></div>
+      <div class="q">Below 100: <span class="bl"></span></div>
+   <div class="q">Above 128: <span class="bl"></span></div>
+      <div class="q">Below 128: <span class="bl"></span></div>
+   <div class="q">Left of 150: <span class="bl"></span></div>
+      <div class="q">Right of 150: <span class="bl"></span></div>
   </div></div>
  <div class="ex"><p class="ex-t"><span class="n">2</span>Write &lt; or &gt; or = in the box.</p>
   <div class="qg c3">
