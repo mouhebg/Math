@@ -45,3 +45,6 @@ tsconfig.tsbuildinfo
 /.sites-runtime/
 /outputs/
 /work/
+
+# generated build output
+dist/

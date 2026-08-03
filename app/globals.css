@@ -109,6 +109,10 @@
   --yellow: #ffb100;
   --yellow-soft: #fff9eb;
   --navy: #0b2149;
+  --purple: #6d28d9;
+  --purple-soft: #f3eefe;
+  --teal: #0d7d72;
+  --teal-soft: #e7f4f2;
   --shadow-sm: 0 2px 2px rgb(33 36 44 / 0.16);
   --shadow-md: 0 8px 24px rgb(33 36 44 / 0.12);
   --radius-sm: 4px;
@@ -270,6 +274,8 @@ h1 { margin: 0; font-family: var(--font-serif), "Noto Serif", Georgia, serif; fo
 .part-2 { --part-colour: var(--coral); }
 .part-3 { --part-colour: var(--yellow); }
 .part-4 { --part-colour: var(--blue); }
+.part-5 { --part-colour: var(--purple); }
+.part-6 { --part-colour: var(--teal); }
 .part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: color-mix(in srgb, var(--part-colour) 15%, white); color: var(--part-colour); font-size: 12px; font-weight: 900; }
 .part-tab.active .part-index { background: var(--blue); color: #fff; }
 .part-name { display: flex; min-width: 0; flex-direction: column; }
@@ -284,6 +290,8 @@ h1 { margin: 0; font-family: var(--font-serif), "Noto Serif", Georgia, serif; fo
 .part-panel-2 { --part-colour: var(--coral); }
 .part-panel-3 { --part-colour: var(--yellow); }
 .part-panel-4 { --part-colour: var(--blue); }
+.part-panel-5 { --part-colour: var(--purple); }
+.part-panel-6 { --part-colour: var(--teal); }
 .part-panel-header { display: flex; align-items: end; justify-content: space-between; gap: 30px; padding: 24px 26px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--part-colour) 6%, white); }
 .part-panel-header span { color: var(--part-colour); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .part-panel-header h3 { margin: 5px 0 0; font-family: var(--font-serif), "Noto Serif", Georgia, serif; font-size: 32px; font-weight: 600; line-height: 1.05; }
@@ -508,3 +516,5 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+.session-codes { font-family: var(--font-mono, ui-monospace), ui-monospace, monospace; font-size: 12px; letter-spacing: .04em; color: var(--ink-soft); }

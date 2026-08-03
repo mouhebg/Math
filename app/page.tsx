@@ -541,7 +541,7 @@ export default function Home() {
 
         <div className={`part-panel part-panel-${activePart + 1}`} role="tabpanel">
           <header className="part-panel-header">
-            <div><span>Part {activePart + 1} of 4</span><h3>{phases[activePart].name}</h3></div>
+            <div><span>Part {activePart + 1} of {phases.length}</span><h3>{phases[activePart].name}</h3></div>
             <p>{phases[activePart].note}</p>
           </header>
 
@@ -588,6 +588,9 @@ export default function Home() {
                                 <div><span>Goal</span><p>{session.focus}</p></div>
                                 <div><span>What you do</span><p>{session.activity}</p></div>
                                 <div><span>Move on when</span><p>{session.success}</p></div>
+                                {session.expectations.length > 0 && (
+                                  <div><span>Ontario Grade 2</span><p className="session-codes">{session.expectations.join(", ")}</p></div>
+                                )}
                               </div>
 
                               <div className="session-resources">
@@ -674,8 +677,14 @@ export default function Home() {
         </div>
 
         <div className="curriculum-note">
-          <div><span>Ontario alignment</span><h3>Core learning and optional enrichment are clearly separated.</h3></div>
-          <p>Grade 2 core work includes numbers to 200, addition and subtraction situations to 100, facts to 20, fair sharing, equal groups, patterns, data, measurement, and Canadian money. More advanced change, algorithms, halving, and clock reading remain optional extensions.</p>
+          <div><span>For French immersion</span><h3>Same idea, two names.</h3></div>
+          <p>If she learns this in French at school, the concept is not the problem, the word is. Keep the vocabulary card on the table and say each term in both languages once as it comes up.</p>
+          <p><a href="worksheets/mathnest-glossary-card.html" target="_blank" rel="noreferrer">Open the English and French vocabulary card <ArrowIcon /></a></p>
+        </div>
+
+        <div className="curriculum-note">
+          <div><span>Ontario alignment</span><h3>Every Grade 2 expectation has a session, and extensions are labelled as extensions.</h3></div>
+          <p>Core sessions carry the specific expectation codes they cover, across all six strands of the Ontario 2020 mathematics curriculum: Number, Algebra including coding, Data, Spatial Sense including geometry and measurement, and Financial Literacy. Two-digit halving, making change, and clock reading sit beyond the Grade 2 expectations and are marked as extensions. Social-emotional learning and mathematical modelling run through the parent guide and the review sessions rather than through single lessons. This is a home programme that follows the curriculum, not a replacement for the school year.</p>
         </div>
       </section>
 
