@@ -37,8 +37,12 @@ export const sessions: Session[] = [
   { id: "2B", unit: 2, letter: "B", title: "Charts and order", focus: "Compare, order, and locate numbers to 200.", activity: "Explore neighbours on 100 and 200 charts.", success: "The student explains why one number is greater than another.", kind: "Core", expectations: ["B1.2"] },
   { id: "2C", unit: 2, letter: "C", title: "Estimate, then count", focus: "Estimate a collection up to 200, then count by 20s, 25s, and 50s to check.", activity: "Guess a jar of counters, group them, and count in useful jumps.", success: "The student chooses a grouping that speeds up the count and explains why.", kind: "Core", expectations: ["B1.3", "B1.4"] },
 
-  { id: "3A", unit: 3, letter: "A", title: "Ten more, ten less", focus: "Use place value to move mentally by tens.", activity: "Move on a number chart, then repeat without the chart.", success: "The student changes the tens while tracking what happens to the ones.", kind: "Core", expectations: ["B2.3"] },
-  { id: "3B", unit: 3, letter: "B", title: "Add ten, adjust", focus: "Choose an efficient mental addition strategy.", activity: "Solve 47 + 8 by adding ten and adjusting, then by making 50.", success: "The student chooses a strategy and explains the route.", kind: "Core", expectations: ["B2.3"] },
+  // B2.3 caps at 50, so it cannot be the only code on either session. 3A moves
+  // by tens across numbers as large as 148, which is place value to 200 (B1.1);
+  // 3B's sums all land under 100 (B2.4). The work was always Grade 2, only the
+  // labels were short.
+  { id: "3A", unit: 3, letter: "A", title: "Ten more, ten less", focus: "Use place value to move mentally by tens.", activity: "Move on a number chart, then repeat without the chart.", success: "The student changes the tens while tracking what happens to the ones.", kind: "Core", expectations: ["B1.1", "B2.3"] },
+  { id: "3B", unit: 3, letter: "B", title: "Add ten, adjust", focus: "Choose an efficient mental addition strategy.", activity: "Solve 47 + 8 by adding ten and adjusting, then by making 50.", success: "The student chooses a strategy and explains the route.", kind: "Core", expectations: ["B2.3", "B2.4"] },
 
   { id: "4A", unit: 4, letter: "A", title: "Regroup with objects", focus: "Understand ten ones as one ten.", activity: "Combine bundled sticks before writing any vertical calculation.", success: "The student describes the trade in place-value language.", kind: "Core", expectations: ["B1.1", "B2.4"] },
   { id: "4B", unit: 4, letter: "B", title: "Add within 100", focus: "Represent and solve two-digit addition situations.", activity: "Use drawings, equations, and an optional written method.", success: "The student's answer matches the estimate and the concrete model.", kind: "Core", expectations: ["B2.4"] },
@@ -47,7 +51,9 @@ export const sessions: Session[] = [
   { id: "5A", unit: 5, letter: "A", title: "Unbundle a ten", focus: "Trade one ten for ten ones in subtraction.", activity: "Model 52 minus 27 with bundled sticks.", success: "The student explains why the number of tens changes.", kind: "Core", expectations: ["B1.1", "B2.4"] },
   { id: "5B", unit: 5, letter: "B", title: "Subtract and check", focus: "Solve subtraction within 100 and check by adding.", activity: "Use objects or drawings first, then an optional written method.", success: "The student checks the difference independently.", kind: "Core", expectations: ["B2.1", "B2.4"] },
 
-  { id: "6A", unit: 6, letter: "A", title: "Choose a method", focus: "Compare counting up with subtracting by place value.", activity: "Contrast 52 minus 47 with 52 minus 27.", success: "The student selects a method because it suits the numbers.", kind: "Core", expectations: ["B2.3"] },
+  // Same correction as Unit 3: the sheet subtracts within 100 (84 minus 27,
+  // 100 minus 96), which is B2.4, not only the mental strategies capped at 50.
+  { id: "6A", unit: 6, letter: "A", title: "Choose a method", focus: "Compare counting up with subtracting by place value.", activity: "Contrast 52 minus 47 with 52 minus 27.", success: "The student selects a method because it suits the numbers.", kind: "Core", expectations: ["B2.3", "B2.4"] },
   { id: "6B", unit: 6, letter: "B", title: "Add or subtract?", focus: "Reason through mixed word problems.", activity: "Identify the whole and parts before choosing an operation.", success: "The student justifies the operation before computing.", kind: "Core", expectations: ["B2.1", "B2.4"] },
 
   { id: "7A", unit: 7, letter: "A", title: "Half of even numbers", focus: "Connect fair sharing, doubles, and halves.", activity: "Share counters equally between two people.", success: "The student uses a known double to explain a half.", kind: "Core", expectations: ["B1.6"] },
