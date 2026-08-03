@@ -41,12 +41,30 @@ const homeIcon =
   'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
   '<path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>';
 
-function renderExercise(exercise, index) {
+/**
+ * Which exercise numbers the answers string actually covers. The toggle script
+ * groups answers by a bold "N." marker, so that marker is the source of truth.
+ */
+function keyedExercises(answers) {
+  return new Set([...String(answers ?? "").matchAll(/<b>(\d+)\./g)].map((m) => Number(m[1])));
+}
+
+function renderExercise(exercise, index, keyed) {
   const hint = exercise.hint ? `\n  <p class="ex-h">${exercise.hint}</p>` : "";
+  // Every sheet has at least one exercise the key cannot cover, because the
+  // answer is whatever the student drew, counted or surveyed. Left unmarked,
+  // pressing Show answers just skips those questions and the sheet reads as
+  // broken. Say so instead, and let a sheet override the wording where a
+  // parent needs to know what a good response looks like.
+  const open = keyed.has(index + 1)
+    ? ""
+    : `\n  <p class="ex-open" style="margin:8px 0 0;font-size:12.5px;font-style:italic;opacity:.75">${
+        exercise.open ?? "Answers vary, so nothing is printed for this one. The answer is whatever the student made, found or counted."
+      }</p>`;
   return [
     '<div class="ex">',
     `<p class="ex-t"><span class="n">${index + 1}</span>${exercise.prompt}</p>${hint}`,
-    `  ${exercise.body}`,
+    `  ${exercise.body}${open}`,
     "</div>",
   ].join("\n ");
 }
@@ -75,7 +93,7 @@ function renderWorksheet(sheet) {
     ` <div class="ws-head"><div class="code">UNIT ${unit} // SESSION ${letter} // MASTER WHEN READY</div><h4>${sheet.title}</h4>`,
     `  <p class="ex-h">${sheet.intro}</p>${codes}`,
     '  <div class="nm"><span>Name:</span><span>Date:</span></div></div>',
-    ...sheet.exercises.map((exercise, index) => ` ${renderExercise(exercise, index)}`),
+    ...sheet.exercises.map((exercise, index) => ` ${renderExercise(exercise, index, keyedExercises(sheet.answers))}`),
     ` <div class="pnote"><b>${sheet.parentNoteTitle}</b>${sheet.parentNote}</div>`,
     ` <div class="moveon"><b>Move on when</b> ${sheet.moveOn}</div>`,
     sheet.answers ? ` <div class="answers">${sheet.answers}</div>` : "",

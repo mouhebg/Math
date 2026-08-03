@@ -31,7 +31,12 @@ export const worksheetContent = [
     exercises: [
       {
         prompt: "Guess first. Do not count yet.",
-        hint: "Look at the pile for three seconds only, then write your guess. A guess is allowed to be wrong.",
+        hint:
+          "Set up first: an adult makes two piles on the table, a small one of about 40 things and a big one of about 150. " +
+          "Look at each pile for three seconds only, then write your guess. A guess is allowed to be wrong. Count them afterwards to fill in the real number.",
+        open:
+          "No printed answer here, because the real count is whatever went into your piles. " +
+          "The point is the gap between the guess and the count, and whether the second guess is closer than the first.",
         body:
           '<div class="qg c2">' +
           '<div class="q">Pile A, my guess: <span class="bl"></span></div>' +
