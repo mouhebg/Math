@@ -70,6 +70,15 @@ Source: https://www.dcp.edu.gov.on.ca/en/curriculum/elementary-mathematics/grade
 | --- | --- | --- |
 | F1.1 | Represent the same amount of money up to 200 cents and up to 200 dollars in different ways | 13A, 13B, 16A |
 
+## Overall expectations
+
+Mathematical modelling has no specific expectations beneath it in the Ontario
+document, so it is listed here rather than counted among the specific ones.
+
+| Code | Expectation | Sessions |
+| --- | --- | --- |
+| C4 | Apply the process of mathematical modelling to represent, analyse, and make predictions about real-life situations | 16A |
+
 ## Sessions outside the Grade 2 expectations
 
 These are deliberate extensions or reviews, labelled as such in the interface.

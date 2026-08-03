@@ -27,6 +27,8 @@ Each unit contains two to four sessions, parent instructions, a downloadable exe
 
 Every session in `data/sessions.ts` carries an `expectations` array holding the Ontario specific expectation codes it covers. `COVERAGE.md` is generated from that data and lists each of the thirty-nine Grade 2 expectations against the sessions that teach it.
 
+Mathematical modelling, C4, is an overall expectation with no specific expectations beneath it, so it is held in a separate list and reported in its own section of `COVERAGE.md` rather than counted among the thirty-nine. The coverage check fails if a session cites a code that appears in neither list.
+
 ```bash
 node scripts/check-coverage.mjs   # fails on a missing expectation, worksheet, or mislabelled sheet
 node scripts/build-worksheets.mjs # generates any worksheet listed in content/worksheets.mjs

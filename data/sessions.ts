@@ -207,6 +207,16 @@ export const ontarioGrade2Expectations: { code: string; strand: string; summary:
   { code: "F1.1", strand: "Financial Literacy", summary: "Represent the same amount of money up to 200 cents and up to 200 dollars in different ways" },
 ];
 
+/**
+ * C4, mathematical modelling, is an overall expectation. The Ontario document
+ * lists no specific expectations beneath it, so it is held apart rather than
+ * counted among the thirty-nine above. Session 16A cites it, and without this
+ * entry that citation pointed at nothing and was never checked.
+ */
+export const ontarioGrade2OverallExpectations: { code: string; strand: string; summary: string }[] = [
+  { code: "C4", strand: "Algebra", summary: "Apply the process of mathematical modelling to represent, analyse, and make predictions about real-life situations" },
+];
+
 /** Sessions covering a given expectation code. */
 export const coverageFor = (code: string) =>
   sessions.filter((session) => session.expectations.includes(code));
