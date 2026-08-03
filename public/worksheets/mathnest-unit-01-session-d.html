@@ -169,6 +169,24 @@
     letter-spacing:0.02em;
   }
 
+  /* The key. Without it the two green marks were told apart only by a dash
+     pattern, which greyscale printing all but erases. */
+  .framekey{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 22px;
+    margin:0 0 18px 30px;
+    padding:10px 14px;
+    border:1.5px solid var(--ink);
+    border-radius:8px;
+    background:#fff;
+    font-family:var(--font-sans),ui-monospace,monospace;
+    font-size:12.5px;
+    color:var(--ink);
+  }
+  .framekey span{display:inline-flex;align-items:center;gap:8px;}
+  .framekey svg{flex:0 0 auto;}
+
   /* ---------- frame rows ---------- */
 
   .frameset{margin:0 0 24px 30px;}
@@ -429,7 +447,12 @@
     <!-- Q2 -->
     <section class="q">
       <div class="qhead"><span class="qnum">2</span><p class="qtext">Fill the frame first.</p></div>
-      <p class="qhint">The pale dots move across to fill the first frame. Now the ten is there, on the paper, where you can see it.</p>
+      <p class="qhint">The <b>shaded counters</b> in the second frame move across into the <b>dashed spaces</b> in the first one. Once they land, the ten is there on the paper where you can see it, and whatever stays behind is the ones.</p>
+      <div class="framekey" aria-hidden="true">
+        <span><svg viewBox="0 0 36 36" width="26" height="26"><circle cx="18" cy="18" r="16" fill="#fff" stroke="#1E6B52" stroke-width="2.5" stroke-dasharray="5 4"/></svg> a space waiting to be filled</span>
+        <span><svg viewBox="0 0 36 36" width="26" height="26"><circle cx="18" cy="18" r="16" fill="#9CCBB8" stroke="#1E6B52" stroke-width="2"/></svg> a counter that moves across</span>
+        <span><svg viewBox="0 0 36 36" width="26" height="26"><circle cx="18" cy="18" r="16" fill="#141413"/></svg> a counter that stays put</span>
+      </div>
 
       <div class="frameset">
         <div class="twoframes">
@@ -546,14 +569,19 @@
                    '" fill="#fff" stroke="#101A17" stroke-width="2"/>');
         var cx = x + CELL / 2, cy = y + CELL / 2;
         if (i < filled) {
-          // A dot that is about to move across is drawn pale, like the ones arriving.
+          // A counter that is about to travel: solid, filled, but green, so it
+          // reads as a counter that has been singled out.
           if (take && i >= filled - take) {
             parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="16" fill="#9CCBB8" stroke="#1E6B52" stroke-width="2"/>');
           } else {
             parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="16" fill="#141413"/>');
           }
         } else if (add && i < filled + add) {
-          parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="16" fill="#9CCBB8" stroke="#1E6B52" stroke-width="2" stroke-dasharray="4 3"/>');
+          // An empty seat, so it is drawn empty. Filling this with the same green
+          // as the travelling counters made a space look like a counter, and left
+          // a dash pattern as the only thing telling them apart, which is exactly
+          // what a home printer loses.
+          parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="16" fill="#fff" stroke="#1E6B52" stroke-width="2.5" stroke-dasharray="5 4"/>');
         }
         i++;
       }
