@@ -41,3 +41,15 @@ test("uses a publishable Supabase browser key", async () => {
   assert.match(source, /sb_publishable_/);
   assert.doesNotMatch(source, /service[_-]?role/i);
 });
+
+test("keeps homepage scrolling interruptible on mobile browsers", async () => {
+  const [css, page] = await Promise.all([
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.doesNotMatch(css, /scroll-behavior:\s*smooth/);
+  assert.doesNotMatch(page, /scrollIntoView\(\{\s*behavior:\s*["']smooth["']/);
+  assert.match(css, /scroll-snap-type:\s*x proximity/);
+  assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
+});
