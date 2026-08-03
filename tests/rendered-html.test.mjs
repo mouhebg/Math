@@ -50,7 +50,9 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
 
   assert.doesNotMatch(css, /scroll-behavior:\s*smooth/);
   assert.doesNotMatch(page, /scrollIntoView\(\{\s*behavior:\s*["']smooth["']/);
-  assert.match(css, /scroll-snap-type:\s*x proximity/);
+  // The parts row is a two-by-two grid on small screens, so no horizontal snap
+  // container remains to freeze. Mandatory snapping must not come back.
+  assert.doesNotMatch(css, /scroll-snap-type:[^;]*mandatory/);
   assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
 });
 
