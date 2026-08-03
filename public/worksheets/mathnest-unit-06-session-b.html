@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -257,7 +279,7 @@ body{padding:18px;background:#f5f4ef;}
  <div class="ex"><p class="ex-t"><span class="n">2</span>There were 61 grapes. Ava and Nora ate 27. How many are left?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <div class="q">Missing: WHOLE / PART &nbsp;&nbsp; Answer: <span class="bl"></span></div></div>
- <div class="ex"><p class="ex-t"><span class="n">3</span>Nora had some blocks. She gave 15 to Ava. She has 28 left. How many did she start with?</p>
+ <div class="ex"><p class="ex-t"><span class="n">3</span>Nora had some blocks. Nora gave 15 to Ava. Nora has 28 left. How many did Nora start with?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <div class="q">Missing: WHOLE / PART &nbsp;&nbsp; Answer: <span class="bl"></span></div></div>
  <div class="ex"><p class="ex-t"><span class="n">4</span>Mama used 45 red beads and 38 blue beads. How many beads in total?</p>
@@ -269,7 +291,7 @@ body{padding:18px;background:#f5f4ef;}
  <div class="ex"><p class="ex-t"><span class="n">6</span>Ava has 13 stickers. That is 5 more than Nora. How many does Nora have?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <div class="q">Missing: WHOLE / PART &nbsp;&nbsp; Answer: <span class="bl"></span></div></div>
- <div class="pnote"><b>Question 6 is the diagnostic</b>The word "more" is there and the answer is subtraction. If she adds, she is keyword hunting, not thinking about wholes and parts. Go straight back to the box.</div>
+ <div class="pnote"><b>Question 6 is the diagnostic</b>The word "more" is there and the answer is subtraction. If the student adds, that is keyword hunting, not thinking about wholes and parts. Go straight back to the box.</div>
  <div class="answers"><b>1.</b> whole, 52 &nbsp; <b>2.</b> part, 34 &nbsp; <b>3.</b> whole, 43 &nbsp; <b>4.</b> whole, 83 &nbsp; <b>5.</b> part, 25 &nbsp; <b>6.</b> part, 8</div>
 </div>
 </div>

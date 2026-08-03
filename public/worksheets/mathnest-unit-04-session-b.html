@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -265,7 +287,7 @@ body{padding:18px;background:#f5f4ef;}
  <div class="ex"><p class="ex-t"><span class="n">2</span>Two of these do NOT need a carry. Circle them.</p>
   <div class="qg c4"><div class="q">24 + 35</div><div class="q">48 + 26</div><div class="q">53 + 19</div><div class="q">61 + 27</div></div></div>
  <div class="ex"><p class="ex-t"><span class="n">3</span>Word problems. Draw the box first.</p>
-  <div class="wp"><span class="n">a</span>Ava had 47 stickers. She got 26 more. How many now? <span class="bl"></span></div>
+  <div class="wp"><span class="n">a</span>Ava had 47 stickers. Ava got 26 more. How many now? <span class="bl"></span></div>
   <div class="wp"><span class="n">b</span>There are 38 books on the top shelf and 25 on the bottom shelf. How many books? <span class="bl"></span></div>
   <div class="wp"><span class="n">c</span>Nora counted 19 red cars and 34 blue cars. How many cars altogether? <span class="bl"></span></div>
   <div class="work"></div></div>

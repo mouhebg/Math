@@ -280,6 +280,28 @@
     .framegrid,.bargrid,.rainbow{margin-left:0;}
     .qhint{margin-left:0;}
   }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 </head>
 <body>
@@ -478,7 +500,7 @@
 
     <div class="moveon">
       <h2>Move on when</h2>
-      <p>She gives the partner of any number to 10 straight away, without counting up and without looking at a frame. A short pause is fine. Counting on fingers means repeat this session.</p>
+      <p>The student gives the partner of any number to 10 straight away, without counting up and without looking at a frame. A short pause is fine. Counting on fingers means repeat this session.</p>
     </div>
 
     <p class="foot">MathNest &middot; Unit 01 &middot; Session A &middot; Bonds to ten</p>

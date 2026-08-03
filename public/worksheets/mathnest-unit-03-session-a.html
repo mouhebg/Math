@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -274,7 +296,7 @@ body{padding:18px;background:#f5f4ef;}
   <div class="q">b) I am 10 less than 104. I am <span class="bl"></span></div>
   <div class="q">c) 10 more than me is 90. I am <span class="bl"></span></div>
   <div class="q">d) 10 less than me is 55. I am <span class="bl"></span></div></div>
- <div class="pnote"><b>Questions 5c and 5d</b>These reverse the direction, which is much harder than it looks. If she stumbles, put it back in the part whole box.</div>
+ <div class="pnote"><b>Questions 5c and 5d</b>These reverse the direction, which is much harder than it looks. If the student stumbles, put it back in the part whole box.</div>
  <div class="answers"><b>1.</b> 44,77,99,115,158,102 &nbsp; <b>2.</b> 46,61,93,110,35,78 &nbsp; <b>3.</b> 66, 45, 111, 100 &nbsp; <b>4.</b> 53,63,73,83 / 107,97,87,77 / 38,48,58,68 &nbsp; <b>5.</b> a 86, b 94, c 80, d 65</div>
 </div>
 </div>

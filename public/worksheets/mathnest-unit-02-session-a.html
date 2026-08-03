@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -280,7 +302,7 @@ body{padding:18px;background:#f5f4ef;}
   </div></div>
  <div class="ex"><p class="ex-t"><span class="n">4</span>Draw 64 using sticks. Bundles of ten, then loose ones.</p>
   <div class="grid-paper"></div></div>
- <div class="pnote"><b>The point of question 3</b>This is the single most important thing on this sheet. It is exactly what borrowing does, three weeks before she meets borrowing. Do not skip it, even if she finds it strange at first. Use real sticks alongside.</div>
+ <div class="pnote"><b>The point of question 3</b>This is the single most important thing on this sheet. It is exactly what borrowing does, three weeks before the student meets borrowing. Do not skip it, even if the student finds it strange at first. Use real sticks alongside.</div>
  <div class="answers"><b>1.</b> 4/7, 6/3, 8/5, 9/2, 7/0, 3/6 &nbsp; <b>2.</b> 53, 80, 142, 107, 46, 163 &nbsp; <b>3.</b> 4 tens 12 ones; 5 tens 13 ones; 3 tens 10 ones; 6 tens 11 ones; 7 tens 15 ones; 2 tens 16 ones</div>
 </div>
 </div>

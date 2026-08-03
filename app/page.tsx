@@ -640,7 +640,7 @@ export default function Home() {
       <section className="guide-section" id="parent-guide">
         <div className="section-heading">
           <div><p className="eyebrow">Parent guide</p><h2>Keep each lesson<br />small and successful.</h2></div>
-          <p>Twenty minutes is enough on most days. Finish earlier when your child reaches a natural success, and return another day if frustration starts to rise.</p>
+          <p>Twenty minutes is enough on most days. Finish earlier when the student reaches a natural success, and return another day if frustration starts to rise.</p>
         </div>
 
         <div className="lesson-rhythm" aria-label="Suggested lesson timing">

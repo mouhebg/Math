@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -267,7 +289,7 @@ body{padding:18px;background:#f5f4ef;}
   <div class="q" style="line-height:2.6">The little 1 I write above the tens column really means <span class="bl xw"></span>.</div></div>
  <div class="ex"><p class="ex-t"><span class="n">4</span>Draw 38 + 25 with sticks. Circle the bundle you made.</p>
   <div class="grid-paper"></div></div>
- <div class="pnote"><b>The test</b>Question 3, second line. If she writes "one," stop and go back to the sticks. She should write "one ten."</div>
+ <div class="pnote"><b>The test</b>Question 3, second line. If the student writes "one," stop and go back to the sticks. The student should write "one ten."</div>
  <div class="answers"><b>2.</b> 15 yes 6 = 65; 11 yes 6 = 61; 13 yes 8 = 83; 5 no 5 = 55; 13 yes 9 = 93; 6 no 7 = 76 &nbsp; <b>3.</b> 10 ones for 1 ten; the little 1 means one ten</div>
 </div>
 </div>

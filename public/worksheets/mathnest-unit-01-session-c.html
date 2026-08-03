@@ -311,6 +311,28 @@
     .dblgrid,.factgrid,.chain,.callout{margin-left:0;}
     .qhint{margin-left:0;}
   }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 </head>
 <body>
@@ -389,7 +411,7 @@
       <div class="chain"><span class="step">Double</span><span class="known">8 + 8</span>=<span class="known">16</span><span class="step">so</span>8 + 7 =<span class="blank"><span class="ans">15</span></span></div>
       <div class="chain"><span class="step">Double</span><span class="known">6 + 6</span>=<span class="known">12</span><span class="step">so</span>6 + 5 =<span class="blank"><span class="ans">11</span></span></div>
       <div class="chain"><span class="step">Double</span><span class="known">10 + 10</span>=<span class="known">20</span><span class="step">so</span>10 + 9 =<span class="blank"><span class="ans">19</span></span></div>
-      <div class="callout"><b>8 + 7 appeared twice.</b> One more than 7 + 7, and one less than 8 + 8. Both routes give 15. Either one is correct, so let her use whichever double she knows best.</div>
+      <div class="callout"><b>8 + 7 appeared twice.</b> One more than 7 + 7, and one less than 8 + 8. Both routes give 15. Either one is correct, so let the student use whichever double is known best.</div>
     </section>
 
     <!-- Q5 -->
@@ -408,7 +430,7 @@
 
     <div class="moveon">
       <h2>Move on when</h2>
-      <p>She names the double before she answers, without being asked. "Seven and seven is fourteen, so seven and eight is fifteen." A pause while she finds the double is fine. Counting up one by one means repeat this session.</p>
+      <p>The student names the double before answering, without being asked. "Seven and seven is fourteen, so seven and eight is fifteen." A pause while the student finds the double is fine. Counting up one by one means repeat this session.</p>
     </div>
 
     <div class="moveon parent">
