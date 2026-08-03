@@ -370,7 +370,7 @@ export default function Home() {
   function openSession(session: Session) {
     setActivePart(Math.floor((session.unit - 1) / 4));
     setOpenUnit(session.unit);
-    window.requestAnimationFrame(() => document.getElementById("programme")?.scrollIntoView({ behavior: "smooth" }));
+    window.requestAnimationFrame(() => document.getElementById("programme")?.scrollIntoView({ block: "start" }));
   }
 
   function startNextLesson() {
