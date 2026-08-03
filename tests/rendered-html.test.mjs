@@ -56,6 +56,24 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
   assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
 });
 
+test("keeps the homepage scrolling at frame rate", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+
+  // A scroll-linked animation on .part-panel composites and re-rasters the whole
+  // programme, every unit and every session card, on each frame. Measured on a
+  // throttled CPU it held the page at half frame rate all the way down, with
+  // spikes to 200ms. Reported as the page freezing while scrolling.
+  assert.doesNotMatch(css, /animation-timeline/);
+
+  // No backdrop-filter on either bar that stays on screen while content moves
+  // under it. Each one re-reads and re-blurs the page behind it every frame.
+  assert.doesNotMatch(css, /\.site-header[^}]*backdrop-filter/s);
+
+  // filter: blur() on the hero washes bought nothing over the radial gradient
+  // already in them, and cost a composited layer on two 600px elements.
+  assert.doesNotMatch(css, /\.today-shell[^}]*filter:\s*blur/s);
+});
+
 test("uses the Thmanyah type system across the homepage", async () => {
   const [css, layout] = await Promise.all([
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
