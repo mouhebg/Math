@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { DM_Sans, Newsreader } from "next/font/google";
+import { Lato, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const lato = Lato({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700", "900"],
 });
 
-const newsreader = Newsreader({
+const sourceSerif = Source_Serif_4({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.variable} ${newsreader.variable} antialiased`}
+        className={`${lato.variable} ${sourceSerif.variable} antialiased`}
       >
         {children}
       </body>
