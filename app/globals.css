@@ -166,9 +166,10 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
   min-height: 62px;
   padding: 8px max(22px, calc((100vw - 1120px) / 2));
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
-  backdrop-filter: saturate(1.6) blur(14px);
-  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  /* Opaque, not translucent. Blurring what scrolls under a sticky bar re-reads
+     and re-renders the page behind it every frame, which is the same reason the
+     bottom bar never had that treatment. The look was not worth the frames. */
+  background: var(--surface);
 }
 
 .brand { display: flex; align-items: center; gap: 9px; margin-right: auto; color: var(--navy); text-decoration: none; }
@@ -251,7 +252,9 @@ h1, h2, h3, h4 { margin-top: 0; color: var(--ink); font-family: var(--font-sans)
 /* Two soft colour washes behind the hero. They give the fold depth without a
    photograph, and they are the only place on the page where colour is unbounded. */
 .today-shell::before,
-.today-shell::after { content: ""; position: absolute; z-index: 0; border-radius: 50%; pointer-events: none; filter: blur(10px); }
+/* Deliberately unblurred. A radial-gradient is already soft, so blurring it
+   bought nothing visible and cost a composited layer on two 600px elements. */
+.today-shell::after { content: ""; position: absolute; z-index: 0; border-radius: 50%; pointer-events: none; }
 .today-shell::before { top: -300px; right: -180px; width: 680px; height: 680px; background: radial-gradient(circle, rgb(120 170 255 / .3), transparent 66%); }
 .today-shell::after { bottom: -260px; left: -160px; width: 560px; height: 560px; background: radial-gradient(circle, rgb(240 164 19 / .22), transparent 66%); }
 
@@ -511,9 +514,7 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 @media (max-width: 780px) {
   html { scroll-padding-top: 68px; }
   body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
-  /* Same reasoning as the bottom bar below: drop the blur on phones, where a
-     translucent sticky bar costs a full-page repaint per scroll frame. */
-  .site-header { min-height: 62px; padding: 8px 16px; background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .site-header { min-height: 62px; padding: 8px 16px; }
   .brand-mark, .brand-mark .mathnest-mark { flex-basis: 42px; width: 42px; height: 42px; }
   .header-progress { display: none; }
   .sync-menu { margin-left: 0; }
@@ -586,22 +587,15 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   .status-control button { min-height: 40px; }
 }
 
-/* Scroll reveal, progressive enhancement only. Browsers without a view timeline
-   simply render everything in place, so nothing depends on this to be readable. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .section-heading,
-    .part-tabs,
-    .part-panel,
-    .guide-details,
-    .curriculum-note {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 22%;
-    }
-  }
-}
-@keyframes reveal { from { opacity: 0; transform: translateY(22px); } }
+/* A scroll-linked reveal used to live here, driven by a view() timeline. It is
+   gone, and it should not come back in this form.
+   .part-panel wraps the entire programme, every unit and every session card, so
+   animating opacity and transform across it meant compositing and re-rastering
+   that whole subtree on every scroll frame. Measured on a throttled CPU it held
+   the page at half frame rate the whole way down, p50 33ms against 17ms without
+   it, with spikes to 200ms. Removing it alone took janky frames from 9 to 0.
+   It was decoration, and it cost the page its scrolling.
+   tests/rendered-html.test.mjs guards it. */
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
