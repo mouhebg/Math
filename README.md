@@ -113,7 +113,7 @@ The explanation at the end is an important diagnostic. "I counted" and "I knew 7
 
 ## Worksheets
 
-- 34 printable session exercises
+- 60 printable session exercises, one for every session
 - A two-minute Unit 1 warm-up card
 - Individual downloads and one ZIP bundle
 - Print or save as PDF from each page
