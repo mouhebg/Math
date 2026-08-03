@@ -31,7 +31,13 @@ Every session in `data/sessions.ts` carries an `expectations` array holding the 
 node scripts/check-coverage.mjs   # fails on a missing expectation, worksheet, or mislabelled sheet
 node scripts/build-worksheets.mjs # generates any worksheet listed in content/worksheets.mjs
 node scripts/build-glossary.mjs   # rebuilds the English and French vocabulary card
+node scripts/build-sitemap.mjs    # rebuilds SITEMAP.md from the routes, sessions, and public files
 ```
+
+`SITEMAP.md` is the structure of the site in one page: the single route and its
+sections, the sixty-two static pages, where each one is linked from, and the
+programme tree. It is generated, so rerun the script after adding a unit or
+renaming a section rather than editing the file.
 
 `check-coverage.mjs` also verifies that each worksheet's printed header, page title, and element id match its filename, so renumbering a unit cannot silently leave a sheet labelled with its old number.
 
