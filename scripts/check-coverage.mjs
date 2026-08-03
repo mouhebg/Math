@@ -83,6 +83,13 @@ for (const session of sessions) {
   if (title && (Number(title[1]) !== session.unit || title[2] !== session.letter)) {
     problems.push(`${file}: page title says Unit ${title[1]}, Session ${title[2]}`);
   }
+  // A session that names its materials must say so on the sheet too, or a parent
+  // who works from the printout never sees it.
+  if (Boolean(session.materials) !== html.includes('class="needs"')) {
+    problems.push(
+      `${file}: "What you need" is ${session.materials ? "missing" : "present but the session declares no materials"}. Run node scripts/build-materials.mjs`,
+    );
+  }
 }
 
 // 2b. Every unit has a warm-up card, because the interface now links to one from

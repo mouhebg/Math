@@ -605,6 +605,11 @@ export default function Home() {
                               <div className="instruction-list">
                                 <div><span>Goal</span><p>{session.focus}</p></div>
                                 <div><span>What you do</span><p>{session.activity}</p></div>
+                                {/* Named before the worksheet is opened, so a parent
+                                    knows what to fetch rather than finding out mid-lesson. */}
+                                {session.materials && (
+                                  <div><span>What you need</span><p>{session.materials}</p></div>
+                                )}
                                 <div><span>Move on when</span><p>{session.success}</p></div>
                                 {session.expectations.length > 0 && (
                                   <div><span>Ontario Grade 2</span><p className="session-codes">{session.expectations.join(", ")}</p></div>
@@ -651,7 +656,14 @@ export default function Home() {
         <div className="guide-details">
           <details open>
             <summary><span>01</span><strong>What to keep nearby</strong><i /></summary>
-            <ul><li>Objects and drawings for modelling</li><li>Questions such as “show me how you know”</li><li>Untimed practice and playful fluency</li><li>One digit per square for written work</li></ul>
+            <ul>
+              <li>About 20 small identical things to count with: dried beans, pasta, buttons, or a jar of nickels</li>
+              <li>Sticks or straws and a few elastic bands, for bundling tens</li>
+              <li>Scrap paper for drawing, folding, and cutting into strips</li>
+              <li>None of the above is required. Pencil dots you can rub out do the same job</li>
+              <li>Questions such as “show me how you know”</li>
+              <li>One digit per square for written work</li>
+            </ul>
           </details>
           <details>
             <summary><span>02</span><strong>When to pause</strong><i /></summary>
