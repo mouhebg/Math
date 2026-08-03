@@ -338,6 +338,28 @@
     .frameset,.factgrid,.chain,.routegrid,.callout{margin-left:0;}
     .qhint{margin-left:0;}
   }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 </head>
 <body>
@@ -461,13 +483,13 @@
 
     <div class="moveon">
       <h2>Move on when</h2>
-      <p>She says the total, not the leftover. "Ten and five, fifteen." If she answers a bridging question with the small number alone, the ten is still being dropped, so go back to question 1.</p>
+      <p>The student says the total, not the leftover. "Ten and five, fifteen." If the student answers a bridging question with the small number alone, the ten is still being dropped, so go back to question 1.</p>
     </div>
 
     <div class="moveon parent">
       <h2>For the parent</h2>
-      <p>Ask the last question so the ten comes last, never the leftover. Not "and what is left from the seven?" but <b>"the frame is full, so that is a ten, and how many are outside?"</b> Then have her say the whole thing herself: ten and five, fifteen.</p>
-      <p>Keep the counters on the table until she stops needing them. A child who has to remember the ten will drop it. A child who can see the ten will not.</p>
+      <p>Ask the last question so the ten comes last, never the leftover. Not "and what is left from the seven?" but <b>"the frame is full, so that is a ten, and how many are outside?"</b> Then have the student say the whole thing: ten and five, fifteen.</p>
+      <p>Keep the counters on the table until the student stops needing them. A child who has to remember the ten will drop it. A child who can see the ten will not.</p>
     </div>
 
     <p class="foot">MathNest &middot; Unit 01 &middot; Session D &middot; Cross the ten</p>

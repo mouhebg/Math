@@ -82,7 +82,9 @@ function MathNestMark() {
 export default function Home() {
   const [statuses, setStatuses] = useState<StatusMap>({});
   const [activePart, setActivePart] = useState(0);
-  const [openUnit, setOpenUnit] = useState(1);
+  // Units the reader has expanded. A list rather than a single value, so opening
+  // one unit never collapses another; closing is always a deliberate act.
+  const [openUnits, setOpenUnits] = useState<number[]>([1]);
   const [ready, setReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -92,6 +94,7 @@ export default function Home() {
   const [authMessage, setAuthMessage] = useState("");
   const [syncState, setSyncState] = useState<SyncState>("local");
   const [cloudLoaded, setCloudLoaded] = useState(false);
+  const openUnit = openUnits.length ? openUnits[openUnits.length - 1] : 0;
   const statusesRef = useRef<StatusMap>({});
   const pendingSyncRef = useRef<Set<string>>(new Set());
 
@@ -132,12 +135,12 @@ export default function Home() {
           && location.unit! <= location.part! * 4 + 4
         ) {
           setActivePart(location.part!);
-          setOpenUnit(location.unit!);
+          setOpenUnits([location.unit!]);
         } else {
           const current = sessions.find((session) => nextStatuses[session.id] === "practising")
             ?? sessions.find((session) => nextStatuses[session.id] !== "mastered");
           if (current) {
-            setOpenUnit(current.unit);
+            setOpenUnits([current.unit]);
             setActivePart(Math.floor((current.unit - 1) / 4));
           }
         }
@@ -238,7 +241,7 @@ export default function Home() {
 
       if (preferencesResult.data) {
         setActivePart(preferencesResult.data.active_part);
-        setOpenUnit(preferencesResult.data.open_unit);
+        setOpenUnits([preferencesResult.data.open_unit]);
       } else {
         const savedLocation = readStored("location");
         const localLocation = savedLocation
@@ -360,16 +363,22 @@ export default function Home() {
     if (!error) setAuthOpen(false);
   }
 
+  function toggleUnit(week: number) {
+    setOpenUnits((previous) => (
+      previous.includes(week) ? previous.filter((open) => open !== week) : [...previous, week]
+    ));
+  }
+
   function choosePart(part: number) {
     const units = weeklyUnits.slice(part * 4, part * 4 + 4);
     const firstCurrent = units.find((unit) => unit.sessions.some((session) => getStatus(session.id) !== "mastered"));
     setActivePart(part);
-    setOpenUnit(firstCurrent?.week ?? part * 4 + 1);
+    setOpenUnits([firstCurrent?.week ?? part * 4 + 1]);
   }
 
   function openSession(session: Session) {
     setActivePart(Math.floor((session.unit - 1) / 4));
-    setOpenUnit(session.unit);
+    setOpenUnits((previous) => (previous.includes(session.unit) ? previous : [...previous, session.unit]));
     window.requestAnimationFrame(() => document.getElementById("programme")?.scrollIntoView({ block: "start" }));
   }
 
@@ -507,7 +516,7 @@ export default function Home() {
       <section className="programme-section" id="programme">
         <div className="section-heading">
           <div><p className="eyebrow">Learning pathway</p><h2>See the whole journey.<br />Open only what you need.</h2></div>
-          <p>Choose a part, then open one unit. Work through its sessions in order, leave at least one day between them, and repeat whenever understanding is still developing.</p>
+          <p>Choose a part, then open any units you want to see. They stay open until you close them. Work through each unit&apos;s sessions in order, leave at least one day between them, and repeat whenever understanding is still developing.</p>
         </div>
 
         <div className="part-tabs" role="tablist" aria-label="Programme parts">
@@ -540,10 +549,10 @@ export default function Home() {
             {visibleUnits.map((unit) => {
               const unitMastered = unit.sessions.filter((session) => getStatus(session.id) === "mastered").length;
               const unitPractising = unit.sessions.some((session) => getStatus(session.id) === "practising");
-              const isOpen = openUnit === unit.week;
+              const isOpen = openUnits.includes(unit.week);
               return (
                 <article className={`unit-card ${isOpen ? "open" : ""}`} key={unit.week}>
-                  <button className="unit-summary" onClick={() => setOpenUnit(isOpen ? 0 : unit.week)} aria-expanded={isOpen}>
+                  <button className="unit-summary" onClick={() => toggleUnit(unit.week)} aria-expanded={isOpen}>
                     <span className="unit-number">Unit {String(unit.week).padStart(2, "0")}</span>
                     <span className="unit-title">{unitNames[unit.week - 1]}</span>
                     <span className={`unit-state ${unitMastered === unit.sessions.length ? "complete" : unitPractising ? "active" : ""}`}>
@@ -568,7 +577,7 @@ export default function Home() {
                         {unit.sessions.map((session) => {
                           const currentStatus = getStatus(session.id);
                           return (
-                            <section className={`session-card session-${currentStatus}`} key={session.id}>
+                            <section className={`session-card session-slot-${session.letter.toLowerCase()} session-${currentStatus}`} key={session.id}>
                               <header className="session-header">
                                 <span className="session-letter">{session.letter}</span>
                                 <div><span>Session {session.letter}</span><h4>{session.title}</h4></div>
@@ -640,7 +649,7 @@ export default function Home() {
       <section className="guide-section" id="parent-guide">
         <div className="section-heading">
           <div><p className="eyebrow">Parent guide</p><h2>Keep each lesson<br />small and successful.</h2></div>
-          <p>Twenty minutes is enough on most days. Finish earlier when your child reaches a natural success, and return another day if frustration starts to rise.</p>
+          <p>Twenty minutes is enough on most days. Finish earlier when the student reaches a natural success, and return another day if frustration starts to rise.</p>
         </div>
 
         <div className="lesson-rhythm" aria-label="Suggested lesson timing">

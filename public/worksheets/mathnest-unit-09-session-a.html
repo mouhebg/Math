@@ -142,6 +142,28 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
   body.answers-visible .inline-answer-value,body.answers-visible .inline-answer-card{color:#788c5d!important;}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -384,7 +406,7 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
   </div>
  </div>
 
- <div class="pnote"><b>Note on pennies</b>Canada stopped making the one cent coin in 2012, so it is not in the till any more and cash totals get rounded to the nearest five cents. If a worksheet from elsewhere shows pennies, tell her what they were rather than pretending they are current.</div>
+ <div class="pnote"><b>Note on pennies</b>Canada stopped making the one cent coin in 2012, so it is not in the till any more and cash totals get rounded to the nearest five cents. If a worksheet from elsewhere shows pennies, tell the student what they were rather than pretending they are current.</div>
  <div class="answers"><b>1.</b> 5c, 10c, 25c, $1, $2, $2 &nbsp; <b>2.</b> dime, quarter, 3 nickels, 1 loonie &nbsp; <b>3.</b> 75c, 40c, 30c, 50c, 80c, 45c &nbsp; <b>4.</b> nickel, dime, quarter, loonie, toonie &nbsp; <b>5.</b> a FALSE, b TRUE, c FALSE</div>
 </div>
 </div>

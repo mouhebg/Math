@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -268,7 +290,7 @@ body{padding:18px;background:#f5f4ef;}
   <div class="wp"><span class="n">c</span>The little hand is just past the 12. What hour is it? <span class="bl"></span></div></div>
  <div class="ex"><p class="ex-t"><span class="n">3</span>Finish the rule.</p>
   <div class="q" style="line-height:2.6">The hour is the number the little hand has <span class="bl w"></span>, not the number it is closest to.</div></div>
- <div class="pnote"><b>Why a whole session on this</b>Almost every wrong time answer at this age is an hour hand error. A child who reads 3:45 as "four forty five" has not misread the minutes, she has misread which hour she is in. Fix this first and the rest is easy.</div>
+ <div class="pnote"><b>Why a whole session on this</b>Almost every wrong time answer at this age is an hour hand error. A child who reads 3:45 as "four forty five" has not misread the minutes, but which hour it is. Fix this first and the rest is easy.</div>
  <div class="answers"><b>1.</b> a 3, b 3, c 7, d 11, e 5, f 9, g 1, h 6 &nbsp; <b>2.</b> a 3, b 8, c 12 &nbsp; <b>3.</b> passed (gone past)</div>
 </div>
 </div>

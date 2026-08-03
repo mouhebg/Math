@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -275,7 +297,7 @@ body{padding:18px;background:#f5f4ef;}
  <div class="ex"><p class="ex-t"><span class="n">4</span>What comes next for you?</p>
   <p class="ex-h">Write down three things you want to get better at, and one thing you are proud of.</p>
   <div class="work tall"></div></div>
- <div class="pnote"><b>For the adult</b>This is the last sheet. Sit down together with the Unit 16, Session A results and choose the next four topics with her. Giving her a voice in what comes next matters more than completing every question on this list.</div>
+ <div class="pnote"><b>For the adult</b>This is the last sheet. Sit down together with the Unit 16, Session A results and choose the next four topics together. Giving the student a voice in what comes next matters more than completing every question on this list.</div>
  <div class="answers"><b>1.</b> 10,15,20,25,30,35,40,45,50,55 &nbsp; <b>2.</b> 3:05, 7:20, 10:35, 2:50, 6:10, 11:25, 4:40, 8:55</div>
 </div>
 </div>

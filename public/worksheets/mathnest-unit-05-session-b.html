@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -268,7 +290,7 @@ body{padding:18px;background:#f5f4ef;}
  <div class="ex"><p class="ex-t"><span class="n">3</span>Word problems. Box first.</p>
   <div class="wp"><span class="n">a</span>There were 52 dates in the bowl. The family ate 27. How many are left? <span class="bl"></span></div>
   <div class="wp"><span class="n">b</span>Ava has 81 stickers. Nora has 36. How many more does Ava have? <span class="bl"></span></div></div>
- <div class="pnote"><b>Question 2</b>The classic error: taking the small digit from the big one in each column regardless of order, so 7 minus 2 gives 5. If she cannot spot it, do it with sticks together.</div>
+ <div class="pnote"><b>Question 2</b>The classic error: taking the small digit from the big one in each column regardless of order, so 7 minus 2 gives 5. If the student cannot spot it, do it with sticks together.</div>
  <div class="answers"><b>1.</b> 25, 15, 45, 45, 37, 47, 16, 47 &nbsp; <b>2.</b> They did 7 minus 2 instead of trading. Correct answer 25. &nbsp; <b>3.</b> a 25, b 45</div>
 </div>
 </div>

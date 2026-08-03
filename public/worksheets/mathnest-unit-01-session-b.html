@@ -234,6 +234,28 @@ body{padding:18px;background:#f5f4ef;}
  .ws{display:block!important;border:0!important;padding:0!important;}
  @page{size:letter;margin:12mm;}
 }
+
+  /* ---------- teacher notes ---------- */
+
+  /* Guidance written for the adult. It stays on the website and is never sent
+     to the printer, so the printed sheet carries only the student's exercise. */
+
+  .pnote,.moveon,.callout{position:relative;}
+
+  .pnote::before,.moveon::before,.callout::before{
+    content:"For the teacher · not printed";
+    display:block;
+    font-family:"DM Mono",ui-monospace,monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#7C877F;
+    margin-bottom:7px;
+  }
+
+  @media print{
+    .pnote,.moveon,.callout{display:none !important;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -251,25 +273,25 @@ body{padding:18px;background:#f5f4ef;}
  <div class="ws-head"><div class="code">UNIT 01 // SESSION B // MASTER WHEN READY</div><h4>Story problems, three shapes</h4>
  <div class="nm"><span>Name:</span><span>Date:</span></div></div>
  <p class="ex-h">Draw the box for every problem before you work it out. Whole on top, parts underneath.</p>
- <div class="ex"><p class="ex-t"><span class="n">1</span>Ava has 8 stickers. Nora gives her 5 more. How many does she have now?</p>
+ <div class="ex"><p class="ex-t"><span class="n">1</span>Ava has 8 stickers. Nora gives Ava 5 more. How many does Ava have now?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <p class="q">Answer: <span class="bl"></span></p></div>
  <div class="ex"><p class="ex-t"><span class="n">2</span>There are 12 dates on the plate. Papa eats 5. How many are left?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <p class="q">Answer: <span class="bl"></span></p></div>
- <div class="ex"><p class="ex-t"><span class="n">3</span>Ava had 8 marbles. She found some more. Now she has 13. How many did she find?</p>
+ <div class="ex"><p class="ex-t"><span class="n">3</span>Ava had 8 marbles. Ava found some more. Now Ava has 13. How many did Ava find?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <p class="q">Answer: <span class="bl"></span></p></div>
  <div class="ex"><p class="ex-t"><span class="n">4</span>There are 6 red apples and some green apples. There are 14 apples in total. How many are green?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <p class="q">Answer: <span class="bl"></span></p></div>
- <div class="ex"><p class="ex-t"><span class="n">5</span>Mama buys 9 oranges and 7 lemons. How many pieces of fruit did she buy?</p>
+ <div class="ex"><p class="ex-t"><span class="n">5</span>Mama buys 9 oranges and 7 lemons. How many pieces of fruit did Mama buy?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <p class="q">Answer: <span class="bl"></span></p></div>
- <div class="ex"><p class="ex-t"><span class="n">6</span>Ava had some crayons. She gave 4 to Nora. Now she has 11. How many did she start with?</p>
+ <div class="ex"><p class="ex-t"><span class="n">6</span>Ava had some crayons. Ava gave 4 to Nora. Now Ava has 11. How many did Ava start with?</p>
   <div class="pw"><div class="top"></div><div class="bot"><div></div><div></div></div></div>
   <p class="q">Answer: <span class="bl"></span></p></div>
- <div class="pnote"><b>Watch for</b>Problem 6 is the hard one. The starting amount is the whole, and both parts are known. Children who hunt for keywords will subtract because the word "gave" is there. If she does, go back to the box and ask which bar is empty.</div>
+ <div class="pnote"><b>Watch for</b>Problem 6 is the hard one. The starting amount is the whole, and both parts are known. Children who hunt for keywords will subtract because the word "gave" is there. If the student does, go back to the box and ask which bar is empty.</div>
  <div class="answers"><b>1.</b> 13 &nbsp; <b>2.</b> 7 &nbsp; <b>3.</b> 5 &nbsp; <b>4.</b> 8 &nbsp; <b>5.</b> 16 &nbsp; <b>6.</b> 15</div>
 </div>
 </div>

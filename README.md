@@ -25,22 +25,22 @@ Each unit contains Session A, Session B, parent instructions, a downloadable exe
 
 | Unit | Focus | Move on when |
 | --- | --- | --- |
-| 01 | Bonds to ten and facts to 20 | She adds past ten and says the total, not the leftover |
-| 02 | Place value to 200 | She represents and compares a number in more than one way |
-| 03 | Mental addition | She moves by tens and chooses an efficient strategy |
-| 04 | Addition within 100 | Her answer matches her estimate and concrete model |
-| 05 | Subtraction within 100 | She explains regrouping and checks by adding |
-| 06 | Choosing strategies | She selects and justifies an addition or subtraction method |
-| 07 | Fair sharing and halves | She connects equal sharing, doubles, and halves |
-| 08 | Two-digit halving | She splits tens and ones and models any remaining half |
-| 09 | Canadian money | She identifies coins and makes equivalent amounts |
-| 10 | Making change | She counts up and checks the change independently |
-| 11 | Reading clocks | She reads the hour correctly and explains quarter-hour times |
-| 12 | Apply and review | She applies money and time, and identifies what to practise next |
-| 13 | Equal groups and arrays | She finds totals without counting every object by ones |
-| 14 | Sharing, odd, and even | She checks equal shares and predicts odd or even |
-| 15 | Data, patterns, and chance | She interprets a graph and states a pattern rule |
-| 16 | Review and next steps | She names her strengths and chooses the next practice target |
+| 01 | Bonds to ten and facts to 20 | The student adds past ten and says the total, not the leftover |
+| 02 | Place value to 200 | The student represents and compares a number in more than one way |
+| 03 | Mental addition | The student moves by tens and chooses an efficient strategy |
+| 04 | Addition within 100 | The student's answer matches the estimate and concrete model |
+| 05 | Subtraction within 100 | The student explains regrouping and checks by adding |
+| 06 | Choosing strategies | The student selects and justifies an addition or subtraction method |
+| 07 | Fair sharing and halves | The student connects equal sharing, doubles, and halves |
+| 08 | Two-digit halving | The student splits tens and ones and models any remaining half |
+| 09 | Canadian money | The student identifies coins and makes equivalent amounts |
+| 10 | Making change | The student counts up and checks the change independently |
+| 11 | Reading clocks | The student reads the hour correctly and explains quarter-hour times |
+| 12 | Apply and review | The student applies money and time, and identifies what to practise next |
+| 13 | Equal groups and arrays | The student finds totals without counting every object by ones |
+| 14 | Sharing, odd, and even | The student checks equal shares and predicts odd or even |
+| 15 | Data, patterns, and chance | The student interprets a graph and states a pattern rule |
+| 16 | Review and next steps | The student names personal strengths and chooses the next practice target |
 
 ### Facts to 20, inside Unit 1
 
@@ -56,8 +56,8 @@ bridge mentally before the teen numbers are secure:
   `10 + n` because a child who does not yet hear "fifteen" as "ten and five"
   cannot bridge at all.
 
-A child who answers `8 + 7` with `5` has not forgotten the ten; she is answering
-the last question she was asked. Session D ends every step on the total.
+A child who answers `8 + 7` with `5` has not forgotten the ten, but is answering
+the last question asked. Session D ends every step on the total.
 
 The programme uses Ontario Grade 2 topics as a reference, but follows its own mastery sequence. It is not an official curriculum or a line-by-line implementation of provincial expectations.
 
@@ -71,7 +71,7 @@ A lesson takes about 20 to 25 minutes:
 - 6 minutes, modelling with objects
 - 8 minutes, the exercise
 - 5 minutes, a game or real-life example
-- 2 minutes, your child explains her thinking
+- 2 minutes, the student explains the thinking behind an answer
 
 The explanation at the end is an important diagnostic. "I counted" and "I knew 7 and 3 make 10" can produce the same answer, but they show different levels of understanding.
 
