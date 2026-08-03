@@ -54,10 +54,6 @@ function RouteIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M8.5 6H13a3 3 0 0 1 0 6h-2a3 3 0 0 0 0 6h4.5" /></svg>;
 }
 
-function ChartIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8m7 8V4m7 16v-11" /></svg>;
-}
-
 function GuideIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0-9-9m9-4v4l3 2" /><path d="M3 16v5h5" /></svg>;
 }
@@ -298,7 +294,6 @@ export default function Home() {
   }, [activePart, cloudLoaded, openUnit, ready, user]);
 
   const masteredCount = sessions.filter((session) => statuses[session.id] === "mastered").length;
-  const practisingCount = sessions.filter((session) => statuses[session.id] === "practising").length;
   const progress = Math.round((masteredCount / sessions.length) * 100);
   const programmeComplete = masteredCount === sessions.length;
   const nextSession = useMemo(
@@ -414,10 +409,10 @@ export default function Home() {
         <nav id="main-nav" className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
           <a href="#today" onClick={() => setMenuOpen(false)}>Today</a>
           <a href="#programme" onClick={() => setMenuOpen(false)}>Programme</a>
-          <a href="#progress" onClick={() => setMenuOpen(false)}>Progress</a>
           <a href="#parent-guide" onClick={() => setMenuOpen(false)}>Parent guide</a>
         </nav>
-        <a className="header-progress" href="#progress" aria-label={`${progress}% of the programme mastered`}>
+        {/* Points at the programme, where a session's status is actually set. */}
+        <a className="header-progress" href="#programme" aria-label={`${progress}% of the programme mastered. Open the programme.`}>
           <span><i style={{ width: `${progress}%` }} /></span><b>{progress}%</b>
         </a>
         <div className="sync-menu">
@@ -645,49 +640,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="progress-section" id="progress">
-        <div className="section-heading progress-heading">
-          <div><p className="eyebrow">Progress</p><h2>Understanding grows<br />one unit at a time.</h2></div>
-          <div className="progress-overview">
-            <strong>{progress}%</strong>
-            <span>{masteredCount} mastered{practisingCount ? `, ${practisingCount} practising` : ""}</span>
-          </div>
-        </div>
-
-        <div className="unit-progress-grid">
-          {weeklyUnits.map((unit) => {
-            const count = unit.sessions.filter((session) => getStatus(session.id) === "mastered").length;
-            const complete = count === unit.sessions.length;
-            return (
-              <button
-                className={`progress-unit part-${Math.floor((unit.week - 1) / 4) + 1}${complete ? " unit-complete" : ""}`}
-                onClick={() => openSession(unit.sessions.find((session) => getStatus(session.id) !== "mastered") ?? unit.sessions[0])}
-                key={unit.week}
-              >
-                <span className="progress-unit-head">
-                  <span className="progress-unit-number">UNIT {String(unit.week).padStart(2, "0")}</span>
-                  {complete && <span className="progress-unit-tick" aria-hidden="true">✓</span>}
-                </span>
-                <span className="progress-unit-name">{unitNames[unit.week - 1]}</span>
-                <span className="progress-unit-bar" aria-label={`${count} of ${unit.sessions.length} sessions mastered`}>
-                  <i style={{ width: `${(count / unit.sessions.length) * 100}%` }} />
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
       <section className="guide-section" id="parent-guide">
         <div className="section-heading">
           <div><p className="eyebrow">Parent guide</p><h2>Keep each lesson<br />small and successful.</h2></div>
           <p>Twenty minutes is enough on most days. Finish earlier when the student reaches a natural success, and return another day if frustration starts to rise.</p>
-        </div>
-
-        <div className="lesson-rhythm" aria-label="Suggested lesson timing">
-          {[{ time: "2", label: "Warm up" }, { time: "6", label: "Model" }, { time: "8", label: "Exercise" }, { time: "5", label: "Play" }, { time: "2", label: "Explain" }].map((step, index) => (
-            <div key={step.label}><span>{index + 1}</span><strong>{step.time}<small>min</small></strong><p>{step.label}</p></div>
-          ))}
         </div>
 
         <div className="guide-details">
@@ -728,7 +684,6 @@ export default function Home() {
       <nav className="mobile-nav" aria-label="Mobile navigation">
         <a href="#today"><BookIcon /><span>Today</span></a>
         <a href="#programme"><RouteIcon /><span>Programme</span></a>
-        <a href="#progress"><ChartIcon /><span>Progress</span></a>
         <a href="#parent-guide"><GuideIcon /><span>Guide</span></a>
       </nav>
     </main>
