@@ -55,7 +55,7 @@ Curriculum source: https://www.dcp.edu.gov.on.ca/en/curriculum/elementary-mathem
 | --- | --- | --- | --- |
 | 01 | Bonds to ten and facts to 20 | 4 | B2.2, B2.1, B2.4, B2.3 |
 | 02 | Place value to 200 | 3 | B1.1, B1.2, B1.3, B1.4 |
-| 03 | Mental addition | 2 | B2.3 |
+| 03 | Mental addition | 2 | B1.1, B2.3, B2.4 |
 | 04 | Addition within 100 | 2 | B1.1, B2.4 |
 | 05 | Subtraction within 100 | 2 | B1.1, B2.4, B2.1 |
 | 06 | Choosing strategies | 2 | B2.3, B2.1, B2.4 |

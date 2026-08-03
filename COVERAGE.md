@@ -10,7 +10,7 @@ Source: https://www.dcp.edu.gov.on.ca/en/curriculum/elementary-mathematics/grade
 
 | Code | Expectation | Sessions |
 | --- | --- | --- |
-| B1.1 | Read, represent, compose, and decompose whole numbers up to 200 | 2A, 4A, 5A |
+| B1.1 | Read, represent, compose, and decompose whole numbers up to 200 | 2A, 3A, 4A, 5A |
 | B1.2 | Compare and order whole numbers up to 200 | 2B |
 | B1.3 | Estimate collections of up to 200 and verify by counting | 2C |
 | B1.4 | Count to 200, including by 20s, 25s, and 50s | 2C, 22C |
@@ -20,7 +20,7 @@ Source: https://www.dcp.edu.gov.on.ca/en/curriculum/elementary-mathematics/grade
 | B2.1 | Use the properties of addition and subtraction and their relationships to multiplication and division | 1B, 5B, 6B |
 | B2.2 | Recall addition facts to 20 and the related subtraction facts | 1A, 1C, 1D |
 | B2.3 | Use mental math strategies, including estimation, to add and subtract to 50 | 1D, 3A, 3B, 6A |
-| B2.4 | Represent and solve addition and subtraction situations to 100 | 1B, 4A, 4B, 5A, 5B, 6B |
+| B2.4 | Represent and solve addition and subtraction situations to 100 | 1B, 3B, 4A, 4B, 5A, 5B, 6A, 6B |
 | B2.5 | Represent multiplication as repeated equal groups | 21A, 21B |
 | B2.6 | Represent division of up to 12 items as equal sharing | 22A |
 
