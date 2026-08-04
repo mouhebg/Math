@@ -341,37 +341,29 @@ h1 .accent::after {
 
 /* Programme
 
-   Cards here used to lean on one trick throughout: tint the whole surface with
-   --part-colour. That put the same green wash on the part header, the unit row
-   and the weekly-rhythm note all at once, so "which part is this" and "what
-   kind of thing am I looking at" collapsed into a single signal, and the
-   colour read as decoration rather than information. It also buried the
-   warm-up card link as plain coloured text on a coloured field.
+   One accent, used sparingly, carries "this is selected / this is yours to
+   act on" everywhere in this family: the active part tab, the part panel's
+   top bar and badge, a unit's and a session's left tab, the warm-up card
+   button. Six part colours and four session colours used to fill this same
+   role, so a glance at the page read as a rainbow before it read as content.
+   Colour elsewhere is reserved for what it actually means: green for
+   mastered, yellow for practising, exactly the way the maths diagrams
+   elsewhere on the site use colour only to tell two quantities apart, never
+   to decorate a card.
 
-   The replacement keeps colour meaningful but narrows it to a tab: a solid
-   accent on one edge, not a wash across the whole surface, so a card's colour
-   and its content stay legible independently. A shared asymmetric corner
-   pair (one tight, one generous, on opposite corners) replaces the uniform
-   rounded rectangle everywhere in this family, so the shape itself, not just
-   the colour, marks a card as belonging to this system. */
+   A shared asymmetric corner pair (one tight, one generous, on opposite
+   corners) still marks every card in this family as belonging to it, so the
+   shape carries the identity that colour no longer has to. */
 
 .programme-section { padding: 80px max(22px, calc((100vw - 1120px) / 2)) 92px; border-top: 1px solid var(--line); background: var(--surface); }
 .part-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-/* The tab carries its own part colour instead of turning blue when selected.
-   Blue everywhere meant the six parts were only distinguishable by their number. */
-.part-tab { --part-colour: var(--green); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px 14px 19px; border: 1px solid var(--line); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
+.part-tab { --part-colour: var(--blue); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px 14px 19px; border: 1px solid var(--line); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
 .part-tab::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 4px; background: var(--part-colour); opacity: 0; pointer-events: none; }
 .part-tab:hover { border-color: color-mix(in srgb, var(--part-colour) 45%, var(--line)); box-shadow: var(--shadow-md); }
 .part-tab:hover::before { opacity: .5; }
 .part-tab.active { border-color: var(--part-colour); background: color-mix(in srgb, var(--part-colour) 7%, var(--surface-strong)); color: var(--ink); box-shadow: var(--shadow-md); }
 .part-tab.active::before { opacity: 1; }
-.part-1 { --part-colour: var(--green); }
-.part-2 { --part-colour: var(--coral); }
-.part-3 { --part-colour: var(--yellow); }
-.part-4 { --part-colour: var(--blue); }
-.part-5 { --part-colour: var(--purple); }
-.part-6 { --part-colour: var(--teal); }
-.part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px 4px 12px 4px; background: color-mix(in srgb, var(--part-colour) 14%, white); color: var(--part-colour); font-size: 12px; font-weight: 900; }
+.part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px 4px 12px 4px; background: var(--canvas-deep); color: var(--ink-soft); font-size: 12px; font-weight: 900; }
 .part-tab.active .part-index { background: var(--part-colour); color: #fff; }
 .part-name { display: flex; min-width: 0; flex-direction: column; }
 .part-name strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
@@ -379,13 +371,7 @@ h1 .accent::after {
 .part-score { color: var(--ink-soft); font-size: 11px; font-weight: 700; }
 .part-tab.active .part-score { color: var(--part-colour); }
 
-.part-panel { --part-colour: var(--green); border: 1px solid var(--line); border-radius: var(--radius-lg) 8px var(--radius-lg) 8px; background: var(--canvas); box-shadow: var(--shadow-sm); overflow: hidden; }
-.part-panel-1 { --part-colour: var(--green); }
-.part-panel-2 { --part-colour: var(--coral); }
-.part-panel-3 { --part-colour: var(--yellow); }
-.part-panel-4 { --part-colour: var(--blue); }
-.part-panel-5 { --part-colour: var(--purple); }
-.part-panel-6 { --part-colour: var(--teal); }
+.part-panel { --part-colour: var(--blue); border: 1px solid var(--line); border-radius: var(--radius-lg) 8px var(--radius-lg) 8px; background: var(--canvas); box-shadow: var(--shadow-sm); overflow: hidden; }
 /* A plain surface with a top accent bar, not a full wash: "which part" now
    reads from the badge and the bar alone. */
 .part-panel-header { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 30px; padding: 28px 28px 26px; border-bottom: 1px solid var(--line); background: var(--surface-strong); }
@@ -430,12 +416,6 @@ h1 .accent::after {
    card, so the two never have to fight over the same border. */
 .session-card { contain: content; --session-colour: var(--blue); border: 1px solid var(--line); border-left: 5px solid var(--session-colour); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--surface-strong); box-shadow: var(--shadow-sm); overflow: hidden; }
 .session-card:hover { box-shadow: var(--shadow-md); }
-/* Each session in a unit gets its own hue, so A and B are never mistaken for one
-   another. These stay clear of the yellow and green that carry learning status. */
-.session-slot-a { --session-colour: #2a56d6; }
-.session-slot-b { --session-colour: #7449d6; }
-.session-slot-c { --session-colour: #c03559; }
-.session-slot-d { --session-colour: #10786f; }
 .session-card.session-practising { box-shadow: 0 0 0 2.5px var(--yellow), var(--shadow-sm); }
 .session-card.session-mastered { box-shadow: 0 0 0 2.5px var(--green), var(--shadow-sm); }
 .session-header { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 82px; padding: 16px 18px; background: var(--surface-strong); }
@@ -444,10 +424,10 @@ h1 .accent::after {
 .session-letter { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px 4px 11px 4px; background: var(--session-colour); color: #fff; font-family: var(--font-serif), "Noto Serif", Georgia, serif; font-size: 18px; font-weight: 700; }
 .session-header > div > span { color: var(--session-colour); font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 .session-header h4 { margin: 3px 0 0; font-size: 18px; line-height: 1.15; }
-.kind { padding: 5px 8px; border-radius: 99px; font-size: 9px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-.kind-core { background: var(--green-soft); color: var(--green-dark); }
-.kind-extension { background: var(--coral-soft); color: var(--coral-dark); }
-.kind-review { background: var(--blue-soft); color: var(--blue-dark); }
+/* Core, Extension and Review are told apart by their word, not a colour each,
+   the same way Khan Academy's own lesson lists differentiate rows by text
+   rather than colour-coding a whole taxonomy. */
+.kind { padding: 5px 8px; border: 1px solid var(--line-strong); border-radius: 99px; background: var(--surface-strong); color: var(--ink-soft); font-size: 9px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .instruction-list { padding: 0 18px; }
 .instruction-list > div { display: grid; grid-template-columns: 100px 1fr; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
 .instruction-list > div:last-child { border-bottom: 0; }
