@@ -134,7 +134,9 @@
 * { box-sizing: border-box; }
 /* scroll-behavior stays auto on purpose: smooth scrolling made the page
    uninterruptible mid-scroll on mobile. tests/rendered-html.test.mjs guards it. */
-html { scroll-behavior: auto; scroll-padding-top: 86px; }
+/* No fixed or sticky bar sits at the top any more, so an anchor target no
+   longer needs padding scrolled out from under it. */
+html { scroll-behavior: auto; }
 body { margin: 0; background: var(--surface); color: var(--ink); font-family: var(--font-sans), "Noto Sans", Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.5; }
 button, a, summary { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; font: inherit; }
@@ -164,104 +166,36 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .noscript-banner { padding: 14px 22px; border-bottom: 1px solid var(--coral); background: var(--coral-soft); color: var(--ink); text-align: center; }
 .noscript-banner a { font-weight: 700; }
 
-/* Menu bar
+/* Sync
 
-   Redesigned: an inner row that carries the layout, and a progress rail welded
-   to the bar's bottom edge. The rail replaces the old track-and-percentage
-   widget, so progress is legible at a glance and survives on a phone, where the
-   old widget was hidden for want of room.
+   The menu bar is gone. It carried the brand, a progress rail and this control;
+   the brand and the programme's progress both live elsewhere on the page
+   already, but cloud sign-in did not, so it moved to the footer instead of
+   disappearing. The panel opens upward from there.
 
-   The bar's structure exists for a layout reason as much as a visual one. The
-   header itself has no horizontal padding, so an absolutely positioned rail can
-   sit flush to the screen edges with plain `left: 0; right: 0`; the padding
-   lives on `.bar-inner`. Putting padding on the header instead means the rail's
-   containing block is the padding box and it stops short of both edges.
+   The rules the bar was built around still hold for everything that stays on
+   screen, and tests/rendered-html.test.mjs still guards them page-wide: nothing
+   is layer-promoted, nothing transitions or animates, and no bar is fixed over
+   the content for the compositor to maintain against everything moving beneath
+   it. That last one is now free: with the header gone, the only fixed element
+   left is the bottom navigation on small screens. */
 
-   None of this moves. The version before it drew a hover underline as a
-   transitioned `::after` on each nav link, carrying `will-change: transform` and
-   `backface-visibility: hidden`, inside a `position: fixed` bar that was itself
-   promoted with `translateZ(0)`. Every pointer entry and exit created and then
-   discarded a compositor layer stacked over the whole viewport, so moving the
-   mouse across the bar was enough to hold the page at half frame rate. On a
-   20x-throttled CPU, sweeping the pointer over the bar cost 414ms of blocked
-   main thread and 36 late frames out of 49; without the underline, 0ms and 8
-   out of 84. The bill grew with the amount of page underneath the bar.
-
-   So the bar holds to four rules, each guarded by
-   tests/rendered-html.test.mjs:
-     1. nothing here is layer-promoted: no will-change, no translateZ, no
-        backface-visibility, no filter or backdrop-filter
-     2. nothing here transitions or animates. Hover and open states are flat
-        swaps, which repaint one small rectangle and never touch the compositor
-     3. no decorative pseudo-element on anything the pointer crosses
-     4. sticky rather than fixed, so the bar scrolls as part of the document
-        instead of being an overlay the compositor maintains separately */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-}
-
-.bar-inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 16px;
-  min-height: 66px;
-  padding: 10px max(22px, calc((100vw - 1120px) / 2));
-}
-
-/* Progress as a hairline across the foot of the bar. It sits on the border, so
-   the border reads as the empty part of the track. */
-.header-rail {
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: var(--progress, 0%);
-  height: 2px;
-  border-radius: 0 99px 99px 0;
-  /* The gradient is sized to the viewport, not to the fill, so the rail reveals
-     part of one fixed spectrum instead of squeezing the whole of it into 2% of
-     the width. Early progress reads green, finishing reads blue. */
-  background: linear-gradient(90deg, var(--green), var(--blue));
-  background-size: 100vw 100%;
-  background-repeat: no-repeat;
-}
-
-.brand { display: flex; align-items: center; gap: 11px; justify-self: start; color: var(--navy); text-decoration: none; }
+/* Kept for the footer's lockup, which is the only place the mark still appears. */
 .brand-mark { display: grid; flex: 0 0 40px; place-items: center; width: 40px; height: 40px; color: var(--blue); }
 .brand-mark .mathnest-mark { width: 40px; height: 40px; object-fit: contain; }
-.brand-words { display: flex; flex-direction: column; gap: 1px; line-height: 1.1; }
-/* Tighter and heavier, and the slogan in sentence case. Letterspaced uppercase
-   under a wordmark is the detail that dated the old bar most. */
-.brand strong { font-size: 20px; font-weight: 800; letter-spacing: -.03em; }
-.brand small { color: var(--ink-soft); font-size: 11px; font-weight: 500; letter-spacing: 0; }
-
-.header-tools { display: flex; align-items: center; gap: 8px; justify-self: end; }
-
-/* Filled chips rather than outlined pills: one less hairline each, and the fill
-   carries the state instead of a border colour. */
-.header-progress { display: flex; align-items: baseline; gap: 5px; padding: 8px 13px; border-radius: 99px; background: var(--canvas-deep); color: var(--ink); text-decoration: none; }
-.header-progress b { font-size: 13px; font-weight: 800; letter-spacing: -.02em; }
-.header-progress span { color: var(--ink-soft); font-size: 11px; font-weight: 600; }
-.header-progress:hover { background: var(--blue-soft); color: var(--blue-dark); }
-.header-progress:hover span { color: var(--blue-dark); }
 
 .sync-menu { position: relative; display: flex; }
-.sync-trigger { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 8px 14px; border: 0; border-radius: 99px; background: var(--canvas-deep); color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
-.sync-trigger:hover { background: var(--blue-soft); color: var(--blue-dark); }
+.sync-trigger { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 9px 15px; border: 1px solid rgb(255 255 255 / .2); border-radius: 99px; background: rgb(255 255 255 / .06); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
+.sync-trigger:hover { border-color: rgb(255 255 255 / .5); background: rgb(255 255 255 / .12); }
 .sync-trigger svg { width: 17px; height: 17px; }
 .sync-trigger > i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 .sync-trigger.sync-syncing > i { background: var(--yellow); }
-.sync-trigger.sync-error { background: var(--coral-soft); color: #a44f39; }
+.sync-trigger.sync-error { border-color: var(--coral); }
 .sync-trigger.sync-error > i { background: var(--coral); }
 
 /* The panel appears outright. It used to fade and rise into place, which is the
    same composited work as the underline, just less often. */
-.sync-panel { position: absolute; top: calc(100% + 13px); right: 0; z-index: 50; width: min(390px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-lift); }
+.sync-panel { position: absolute; bottom: calc(100% + 13px); right: 0; z-index: 50; width: min(390px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-lift); }
 .sync-panel-kicker { color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .sync-panel h2 { margin: 8px 0 10px; font-size: 28px; font-weight: 700; line-height: 1.1; }
 .sync-panel > p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
@@ -544,19 +478,11 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 }
 
 @media (max-width: 780px) {
-  html { scroll-padding-top: 68px; }
   body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
-  .bar-inner { min-height: 58px; padding: 8px 16px; gap: 10px; }
   .brand-mark, .brand-mark .mathnest-mark { flex-basis: 36px; width: 36px; height: 36px; }
-  .brand strong { font-size: 18px; }
-  .brand small { display: none; }
-  /* The percentage survives on a phone now that it is a chip rather than a
-     track. Only the word beside it goes. */
-  .header-progress { padding: 7px 11px; }
-  .header-progress span { display: none; }
-  .sync-trigger { width: 40px; height: 40px; justify-content: center; padding: 0; }
-  .sync-trigger > span, .sync-trigger > i { display: none; }
-  .sync-panel { position: fixed; top: 72px; right: 16px; max-height: calc(100dvh - 88px); overflow-y: auto; overscroll-behavior: contain; }
+  /* The label stays here. In the footer the control has the room the bar never
+     gave it, and an unlabelled cloud on a dark bar reads as decoration. */
+  .sync-panel { position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; }
   .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 48px 18px 62px; }
   .today-shell::before { top: -220px; right: -180px; width: 460px; height: 460px; }
   .today-shell::after { bottom: -300px; left: -200px; width: 420px; height: 420px; }
