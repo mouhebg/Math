@@ -91,10 +91,16 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
   const todayHandledHrefs = todayHrefs.filter((tag) => /onClick=\{scrollToToday\}/.test(tag));
   assert.equal(todayHrefs.length, todayHandledHrefs.length, "every href=\"#today\" must have onClick={scrollToToday}");
   assert.ok(todayHrefs.length >= 3, "expected the logo, footer and mobile nav to all point at #today");
+  // Not scrollIntoView on #today: .today-section sits inside .today-shell,
+  // which is overflow: hidden, so scrolling #today into view scrolls that
+  // clipped container instead of the window and hides the masthead, its
+  // sibling, without ever moving window.scrollY. Back to top means window
+  // scrollY 0, plainly.
   assert.match(
     page,
-    /function scrollToToday\(event: MouseEvent<HTMLAnchorElement>\) \{\s*event\.preventDefault\(\);\s*document\.getElementById\("today"\)\?\.scrollIntoView\(\{ block: "start" \}\);/,
+    /function scrollToToday\(event: MouseEvent<HTMLAnchorElement>\) \{\s*event\.preventDefault\(\);\s*window\.scrollTo\(0, 0\);/,
   );
+  assert.doesNotMatch(page, /scrollToToday[\s\S]{0,10}scrollIntoView/);
 });
 
 test("keeps the homepage scrolling at frame rate", async () => {
