@@ -4,7 +4,7 @@ import { type FormEvent, useCallback, useEffect, useMemo, useRef, useState } fro
 import type { User } from "@supabase/supabase-js";
 import { phases, sessions, weeklyUnits, unitNames, type Session } from "@/data/sessions";
 import { supabase } from "@/lib/supabase";
-import SiteHeader, { type SyncState } from "./components/SiteHeader";
+import SyncMenu, { type SyncState } from "./components/SyncMenu";
 import { ArrowIcon, BookIcon, DownloadIcon, GuideIcon, MathNestMark, RouteIcon } from "./components/icons";
 
 type SessionStatus = "not-started" | "practising" | "mastered";
@@ -257,7 +257,8 @@ export default function Home() {
   }, [activePart, cloudLoaded, openUnit, ready, user]);
 
   const masteredCount = sessions.filter((session) => statuses[session.id] === "mastered").length;
-  const progress = Math.round((masteredCount / sessions.length) * 100);
+  // The whole-programme percentage went with the menu bar. Progress is still on
+  // the page per part and per unit, where it is actually actionable.
   const programmeComplete = masteredCount === sessions.length;
   const nextSession = useMemo(
     () => sessions.find((session) => statuses[session.id] === "practising")
@@ -359,20 +360,6 @@ export default function Home() {
           JavaScript is needed for progress tracking. You can still <a href="worksheets/mathnest-math-exercises.zip">download all exercises</a>.
         </div>
       </noscript>
-
-      <SiteHeader
-        progress={progress}
-        syncState={syncState}
-        user={user}
-        authOpen={authOpen}
-        onToggleAuth={toggleAuth}
-        onCloseAuth={closeAuth}
-        email={email}
-        onEmailChange={setEmail}
-        authMessage={authMessage}
-        onSubmitEmail={sendMagicLink}
-        onSignOut={signOut}
-      />
 
       <div className="today-shell">
       <section className="today-section" id="today">
@@ -596,7 +583,21 @@ export default function Home() {
       <footer>
         <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Where numbers grow.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
-        <div className="footer-actions"><a href="#today">Back to top ↑</a></div>
+        <div className="footer-actions">
+          <SyncMenu
+            syncState={syncState}
+            user={user}
+            authOpen={authOpen}
+            onToggleAuth={toggleAuth}
+            onCloseAuth={closeAuth}
+            email={email}
+            onEmailChange={setEmail}
+            authMessage={authMessage}
+            onSubmitEmail={sendMagicLink}
+            onSignOut={signOut}
+          />
+          <a href="#today">Back to top ↑</a>
+        </div>
       </footer>
 
       <nav className="mobile-nav" aria-label="Mobile navigation">
