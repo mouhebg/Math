@@ -362,6 +362,13 @@ export default function Home() {
       </noscript>
 
       <div className="today-shell">
+      {/* The logo, at the top of the page and part of it. Not a bar: nothing
+          fixed, nothing sticky, and it scrolls away with the hero. */}
+      <div className="masthead">
+        <span className="brand-mark"><MathNestMark /></span>
+        <span className="masthead-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
+      </div>
+
       <section className="today-section" id="today">
         <div className="today-copy">
           <p className="eyebrow">Grade 2 home learning</p>

@@ -237,6 +237,29 @@ h1, h2, h3, h4 { margin-top: 0; color: var(--ink); font-family: var(--font-sans)
 .today-shell::before { top: -300px; right: -180px; width: 680px; height: 680px; background: radial-gradient(circle, rgb(120 170 255 / .3), transparent 66%); }
 .today-shell::after { bottom: -260px; left: -160px; width: 560px; height: 560px; background: radial-gradient(circle, rgb(240 164 19 / .22), transparent 66%); }
 
+/* The logo sits at the top of the hero as ordinary content.
+
+   Not inside .today-copy, which is the obvious-looking spot and the wrong one:
+   .today-section centres its rows against a 560px minimum height, so anything
+   put in that column floats to the middle of the hero on a tall window rather
+   than sitting at the top. As a sibling above the section it stays where it is
+   put. It needs the z-index because the two colour washes behind the hero are
+   absolutely positioned at z-index 0. */
+.masthead {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  max-width: 1164px;
+  margin: 0 auto;
+  padding: 30px 22px 0;
+  color: var(--navy);
+}
+.masthead-words { display: flex; flex-direction: column; gap: 1px; line-height: 1.1; }
+.masthead strong { font-size: 21px; font-weight: 800; letter-spacing: -.03em; }
+.masthead small { color: var(--ink-soft); font-size: 11px; font-weight: 500; }
+
 .today-section {
   position: relative;
   z-index: 1;
@@ -247,7 +270,7 @@ h1, h2, h3, h4 { margin-top: 0; color: var(--ink); font-family: var(--font-sans)
   max-width: 1164px;
   min-height: 560px;
   margin: 0 auto;
-  padding: 76px 22px 84px;
+  padding: 52px 22px 84px;
 }
 
 .today-copy { max-width: 700px; }
@@ -483,7 +506,8 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   /* The label stays here. In the footer the control has the room the bar never
      gave it, and an unlabelled cloud on a dark bar reads as decoration. */
   .sync-panel { position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; }
-  .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 48px 18px 62px; }
+  .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 34px 18px 62px; }
+  .masthead { padding: 22px 18px 0; }
   .today-shell::before { top: -220px; right: -180px; width: 460px; height: 460px; }
   .today-shell::after { bottom: -300px; left: -200px; width: 420px; height: 420px; }
   h1 { font-size: clamp(46px, 13vw, 64px); }
