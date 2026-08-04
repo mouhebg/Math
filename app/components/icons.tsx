@@ -25,17 +25,6 @@ export function CloudIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19h11a4 4 0 0 0 .6-8A6 6 0 0 0 6.4 9 5 5 0 0 0 6.5 19Z" /><path d="m9 14 2 2 4-5" /></svg>;
 }
 
-// Two separate glyphs rather than one bar that folds into a cross. The folding
-// version needed transitions on two pseudo-elements inside the fixed bar, which
-// is the class of work the menu bar is now kept clear of.
-export function MenuIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
-}
-
-export function CloseIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>;
-}
-
 export function MathNestMark() {
   return (
     <img

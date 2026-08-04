@@ -1,18 +1,10 @@
 "use client";
 
-import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef } from "react";
 import type { User } from "@supabase/supabase-js";
-import { ArrowIcon, CloseIcon, CloudIcon, MathNestMark, MenuIcon } from "./icons";
+import { ArrowIcon, CloudIcon, MathNestMark } from "./icons";
 
 export type SyncState = "local" | "syncing" | "synced" | "error";
-
-type NavLink = { href: string; label: string };
-
-const navLinks: NavLink[] = [
-  { href: "#today", label: "Today" },
-  { href: "#programme", label: "Programme" },
-  { href: "#parent-guide", label: "Parent guide" },
-];
 
 function syncLabel(user: User | null, syncState: SyncState) {
   if (!user) return "Sync progress";
@@ -36,7 +28,12 @@ type SiteHeaderProps = {
 };
 
 /**
- * The menu bar.
+ * The menu bar: the brand, the progress meter and the sync control.
+ *
+ * The Today / Programme / Parent guide links have been removed, and with them
+ * the small-screen menu toggle, which existed only to open them. The bottom
+ * navigation still carries those three destinations on a phone, and the brand
+ * still returns to the top.
  *
  * It is deliberately plain. An earlier version animated a `::after` underline
  * under each nav link with `will-change: transform` and `backface-visibility`,
@@ -73,24 +70,17 @@ export default function SiteHeader({
   onSubmitEmail,
   onSignOut,
 }: SiteHeaderProps) {
-  // Menu state lives here rather than on the page, so opening the small-screen
-  // menu re-renders the bar instead of all sixty session cards below it.
-  const [menuOpen, setMenuOpen] = useState(false);
   const syncMenuRef = useRef<HTMLDivElement>(null);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
-
-  // Escape closes whichever of the two panels is showing.
+  // Escape closes the sync panel, the only thing the bar opens.
   useEffect(() => {
-    if (!menuOpen && !authOpen) return;
+    if (!authOpen) return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== "Escape") return;
-      setMenuOpen(false);
-      onCloseAuth();
+      if (event.key === "Escape") onCloseAuth();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [authOpen, menuOpen, onCloseAuth]);
+  }, [authOpen, onCloseAuth]);
 
   // A press anywhere outside the sync panel dismisses it. The listener exists
   // only while the panel is open, so the closed bar costs nothing.
@@ -106,23 +96,16 @@ export default function SiteHeader({
 
   return (
     <header className="site-header">
-      <a className="brand" href="#today" aria-label="MathNest, where numbers grow" onClick={closeMenu}>
+      <a className="brand" href="#today" aria-label="MathNest, where numbers grow">
         <span className="brand-mark"><MathNestMark /></span>
         <span className="brand-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
       </a>
-
-      <nav className={`site-nav${menuOpen ? " open" : ""}`} id="main-nav" aria-label="Main navigation">
-        {navLinks.map((link) => (
-          <a href={link.href} key={link.href} onClick={closeMenu}>{link.label}</a>
-        ))}
-      </nav>
 
       <div className="header-tools">
         {/* Points at the programme, where a session's status is actually set. */}
         <a
           className="header-progress"
           href="#programme"
-          onClick={closeMenu}
           aria-label={`${progress}% of the programme mastered. Open the programme.`}
         >
           <span className="header-progress-track">
@@ -181,16 +164,6 @@ export default function SiteHeader({
             </aside>
           )}
         </div>
-
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-expanded={menuOpen}
-          aria-controls="main-nav"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-        >
-          {menuOpen ? <CloseIcon /> : <MenuIcon />}
-        </button>
       </div>
     </header>
   );
