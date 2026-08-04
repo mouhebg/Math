@@ -365,9 +365,18 @@ export default function Home() {
   // URL and lets Chrome swallow the next scroll gesture on touch. The href
   // stays, for no-JS and middle-click, but a JS click scrolls itself and
   // never touches the URL.
+  //
+  // This scrolls the window to 0, not #today itself: #today (.today-section)
+  // sits inside .today-shell, which is overflow: hidden, so
+  // #today.scrollIntoView() scrolls .today-shell's own clipped scroll
+  // position rather than the window. That pushes the masthead, .today-shell's
+  // other child, up and out of the clipped box -- the logo visibly
+  // disappears, with window.scrollY never moving, until a reload resets it.
+  // "Back to top" means the top of the page, masthead included, which is
+  // window scrollY 0 regardless of where #today happens to sit in the DOM.
   function scrollToToday(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
-    document.getElementById("today")?.scrollIntoView({ block: "start" });
+    window.scrollTo(0, 0);
   }
 
   function openSession(session: Session) {
