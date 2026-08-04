@@ -1,3 +1,4 @@
+# Examples of generated content:
 # Compiled and build artifacts
 *.pyc
 __pycache__/
@@ -9,35 +10,38 @@ __pycache__/
 *.so
 *.a
 *.out
+dist/
+build/
+target/
+
 # Dependencies
 .venv/
 venv/
 node_modules/
-dist/
-build/
-target/
 .mypy_cache/
 .pytest_cache/
+.coverage
+coverage/
+htmlcov/
 .gradle/
+
 # Logs and temp files
 *.log
 *.tmp
 *.swp
 *.swo
+
 # Environment
 .env
 .env.local
 .env.*
+
 # Editors
 .vscode/
 .idea/
-# System files
-.DS_Store
+*.DS_Store
 Thumbs.db
-# Coverage
-coverage/
-htmlcov/
-.coverage
+
 # Compressed files
 *.zip
 *.gz
