@@ -5,6 +5,12 @@ import test from "node:test";
 const developmentPreviewMeta =
   /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
 
+// These guards look for declarations, not for the comments that explain why the
+// declarations are absent. Those comments have to be free to name the thing.
+function declarations(css) {
+  return css.replace(/\/\*[\s\S]*?\*\//g, "");
+}
+
 test("renders development preview metadata", async () => {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
@@ -72,6 +78,56 @@ test("keeps the homepage scrolling at frame rate", async () => {
   // filter: blur() on the hero washes bought nothing over the radial gradient
   // already in them, and cost a composited layer on two 600px elements.
   assert.doesNotMatch(css, /\.today-shell[^}]*filter:\s*blur/s);
+
+  // will-change on properties the compositor cannot animate, such as colour,
+  // border-colour or box-shadow, promotes a layer that buys nothing and makes
+  // every later repaint of it more expensive.
+  assert.doesNotMatch(declarations(css), /will-change/);
+});
+
+test("keeps the menu bar cheap to paint", async () => {
+  // The menu bar sits over the page for the whole visit, so anything it does on
+  // hover is paid for on top of whatever else is on screen. An animated
+  // `::after` underline on each nav link, promoted with will-change and
+  // backface-visibility inside a fixed, translateZ-promoted bar, created and
+  // destroyed a viewport-sized compositor layer on every pointer entry and
+  // exit. Sweeping the pointer across the bar then cost 414ms of blocked main
+  // thread and 36 late frames out of 49 on a 20x-throttled CPU, against 0ms and
+  // 8 out of 84 without it. It was reported as the cursor blinking and the page
+  // freezing, and it grew worse the more page there was under the bar, which is
+  // why it showed up only after opening the programme.
+  const [css, header] = await Promise.all([
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
+  ]);
+
+  const section = css.slice(css.indexOf("/* Menu bar"), css.indexOf("/* Shared */"));
+  assert.ok(section.length > 0, "the menu bar section is missing from globals.css");
+  const bar = declarations(section);
+
+  // Nothing in the bar is layer-promoted.
+  assert.doesNotMatch(bar, /will-change/);
+  assert.doesNotMatch(bar, /backface-visibility/);
+  assert.doesNotMatch(bar, /translateZ|translate3d/);
+  assert.doesNotMatch(bar, /backdrop-filter/);
+
+  // Nothing in the bar transitions or animates, so a hover is one small repaint
+  // and never a compositor job.
+  assert.doesNotMatch(bar, /transition\s*:/);
+  assert.doesNotMatch(bar, /animation\s*:/);
+
+  // No decorative pseudo-element on anything the pointer crosses.
+  assert.doesNotMatch(bar, /\.site-nav a::(after|before)/);
+
+  // Sticky, not fixed: the bar scrolls with the document rather than being an
+  // overlay the compositor maintains against everything moving beneath it.
+  assert.match(bar, /\.site-header\s*\{[^}]*position:\s*sticky/s);
+  assert.doesNotMatch(bar, /\.site-header\s*\{[^}]*position:\s*fixed/s);
+
+  // No scroll-linked state in the bar. Reading scroll position on every frame
+  // is the other reliable way to turn scrolling into main-thread work.
+  assert.doesNotMatch(header, /addEventListener\(\s*["']scroll["']/);
+  assert.doesNotMatch(header, /IntersectionObserver|requestAnimationFrame/);
 });
 
 test("uses the Thmanyah type system across the homepage", async () => {

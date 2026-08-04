@@ -1,13 +1,14 @@
 "use client";
 
-import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { phases, sessions, weeklyUnits, unitNames, type Session } from "@/data/sessions";
 import { supabase } from "@/lib/supabase";
+import SiteHeader, { type SyncState } from "./components/SiteHeader";
+import { ArrowIcon, BookIcon, DownloadIcon, GuideIcon, MathNestMark, RouteIcon } from "./components/icons";
 
 type SessionStatus = "not-started" | "practising" | "mastered";
 type StatusMap = Record<string, SessionStatus>;
-type SyncState = "local" | "syncing" | "synced" | "error";
 
 const statusLabels: Record<SessionStatus, string> = {
   "not-started": "Not started",
@@ -36,43 +37,6 @@ function readStored(key: keyof typeof storageKeys) {
 
 function worksheetName(session: Session) {
   return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
-}
-
-function ArrowIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
-}
-
-function DownloadIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>;
-}
-
-function BookIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v18H7.5A3.5 3.5 0 0 0 4 23.5v-18Zm16 0A3.5 3.5 0 0 0 16.5 2H12v18h4.5a3.5 3.5 0 0 1 3.5 3.5v-18Z" /></svg>;
-}
-
-function RouteIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M8.5 6H13a3 3 0 0 1 0 6h-2a3 3 0 0 0 0 6h4.5" /></svg>;
-}
-
-function GuideIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0-9-9m9-4v4l3 2" /><path d="M3 16v5h5" /></svg>;
-}
-
-function CloudIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19h11a4 4 0 0 0 .6-8A6 6 0 0 0 6.4 9 5 5 0 0 0 6.5 19Z" /><path d="m9 14 2 2 4-5" /></svg>;
-}
-
-function MathNestMark() {
-  return (
-    <img
-      className="mathnest-mark"
-      src="/mathnest-logo-mark.png"
-      width="512"
-      height="512"
-      alt=""
-      aria-hidden="true"
-    />
-  );
 }
 
 export default function Home() {
@@ -337,7 +301,9 @@ export default function Home() {
     }
   }
 
-  async function sendMagicLink(event: FormEvent<HTMLFormElement>) {
+  // The menu bar's callbacks keep a stable identity, so a status change three
+  // sections down the page does not hand the bar a fresh set of props.
+  const sendMagicLink = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail) return;
@@ -349,13 +315,16 @@ export default function Home() {
       },
     });
     setAuthMessage(error ? error.message : "Check your email and open the sign-in link on this device.");
-  }
+  }, [email]);
 
-  async function signOut() {
+  const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
     setAuthMessage(error ? error.message : "Signed out. Progress remains saved locally on this device.");
     if (!error) setAuthOpen(false);
-  }
+  }, []);
+
+  const toggleAuth = useCallback(() => setAuthOpen((open) => !open), []);
+  const closeAuth = useCallback(() => setAuthOpen(false), []);
 
   function toggleUnit(week: number) {
     setOpenUnits((previous) => (
@@ -391,46 +360,19 @@ export default function Home() {
         </div>
       </noscript>
 
-      {/* Header removed to fix freezing/stuttering issues */}
-
-          {authOpen && (
-            <aside className="sync-panel" id="sync-panel" aria-label="Progress synchronization">
-              {user ? (
-                <>
-                  <span className="sync-panel-kicker">Cloud sync is on</span>
-                  <h2>Your progress is protected.</h2>
-                  <p>Signed in as <strong>{user.email}</strong>. Use the same email on another device to continue there.</p>
-                  <div className={`sync-status-line sync-${syncState}`} aria-live="polite">
-                    <i />
-                    <span>{syncState === "syncing" ? "Saving changes…" : syncState === "error" ? "Local copy saved. Cloud will retry." : "Everything is up to date"}</span>
-                  </div>
-                  <button className="sign-out-button" onClick={signOut}>Sign out on this device</button>
-                </>
-              ) : (
-                <>
-                  <span className="sync-panel-kicker">Optional cloud backup</span>
-                  <h2>Continue on any device.</h2>
-                  <p>Enter your email. We will send a secure sign-in link, so there is no password to remember.</p>
-                  <form onSubmit={sendMagicLink}>
-                    <label htmlFor="sync-email">Email address</label>
-                    <input
-                      id="sync-email"
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      placeholder="you@example.com"
-                      required
-                    />
-                    <button type="submit">Send sign-in link <ArrowIcon /></button>
-                  </form>
-                  <small>Your local progress will be combined with the cloud copy after you sign in.</small>
-                </>
-              )}
-              {authMessage && <p className="auth-message" aria-live="polite">{authMessage}</p>}
-            </aside>
-          )}
-        </div>
+      <SiteHeader
+        progress={progress}
+        syncState={syncState}
+        user={user}
+        authOpen={authOpen}
+        onToggleAuth={toggleAuth}
+        onCloseAuth={closeAuth}
+        email={email}
+        onEmailChange={setEmail}
+        authMessage={authMessage}
+        onSubmitEmail={sendMagicLink}
+        onSignOut={signOut}
+      />
 
       <div className="today-shell">
       <section className="today-section" id="today">
