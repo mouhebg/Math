@@ -160,8 +160,10 @@ a:not(.site-header nav a), button:not(.next-actions .primary-action), summary, d
 /* Header */
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 30;
   display: flex;
   align-items: center;
@@ -169,14 +171,12 @@ a:not(.site-header nav a), button:not(.next-actions .primary-action), summary, d
   min-height: 62px;
   padding: 8px max(22px, calc((100vw - 1120px) / 2));
   border-bottom: 1px solid var(--line);
-  /* Opaque, not translucent. Blurring what scrolls under a sticky bar re-reads
-     and re-renders the page behind it every frame, which is the same reason the
-     bottom bar never had that treatment. The look was not worth the frames. */
   background: var(--surface);
-  will-change: scroll-position;
-  contain: layout style;
-  isolation: isolate;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
+
+body { padding-top: 62px; }
 
 .brand { display: flex; align-items: center; gap: 9px; margin-right: auto; color: var(--navy); text-decoration: none; }
 .brand-mark { display: grid; flex: 0 0 46px; place-items: center; width: 46px; height: 46px; color: var(--blue); }
