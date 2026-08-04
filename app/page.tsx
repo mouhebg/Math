@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { startTransition, type FormEvent, type MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { phases, sessions, weeklyUnits, unitNames, type Session } from "@/data/sessions";
 import { supabase } from "@/lib/supabase";
@@ -359,6 +359,17 @@ export default function Home() {
     });
   }
 
+  // The logo, "Back to top" and the mobile nav's "Today" link all point back
+  // here. A plain href="#today" was exactly the pattern already fixed once
+  // for the hero's part links: a native hash-navigation click updates the
+  // URL and lets Chrome swallow the next scroll gesture on touch. The href
+  // stays, for no-JS and middle-click, but a JS click scrolls itself and
+  // never touches the URL.
+  function scrollToToday(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    document.getElementById("today")?.scrollIntoView({ block: "start" });
+  }
+
   function openSession(session: Session) {
     setActivePart(Math.floor((session.unit - 1) / 4));
     setOpenUnits((previous) => (previous.includes(session.unit) ? previous : [...previous, session.unit]));
@@ -386,7 +397,7 @@ export default function Home() {
           the hero, so it carries none of the compositor cost a sticky menu
           bar has while the page scrolls underneath it. */}
       <div className="masthead">
-        <a className="masthead-brand" href="#today" aria-label="MathNest, where numbers grow. Back to the top.">
+        <a className="masthead-brand" href="#today" onClick={scrollToToday} aria-label="MathNest, where numbers grow. Back to the top.">
           <span className="brand-mark"><MathNestMark /></span>
           <span className="masthead-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
         </a>
@@ -627,12 +638,12 @@ export default function Home() {
         <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Where numbers grow.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
         <div className="footer-actions">
-          <a href="#today">Back to top ↑</a>
+          <a href="#today" onClick={scrollToToday}>Back to top ↑</a>
         </div>
       </footer>
 
       <nav className="mobile-nav" aria-label="Mobile navigation">
-        <a href="#today"><BookIcon /><span>Today</span></a>
+        <a href="#today" onClick={scrollToToday}><BookIcon /><span>Today</span></a>
         <a href="#programme"><RouteIcon /><span>Programme</span></a>
         <a href="#parent-guide"><GuideIcon /><span>Guide</span></a>
       </nav>
