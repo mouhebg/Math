@@ -362,6 +362,13 @@ export default function Home() {
       </noscript>
 
       <div className="today-shell">
+      {/* The logo, at the top of the page and part of it. Not a bar: nothing
+          fixed, nothing sticky, and it scrolls away with the hero. */}
+      <div className="masthead">
+        <span className="brand-mark"><MathNestMark /></span>
+        <span className="masthead-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
+      </div>
+
       <section className="today-section" id="today">
         <div className="today-copy">
           <p className="eyebrow">Grade 2 home learning</p>
@@ -423,30 +430,10 @@ export default function Home() {
       <section className="programme-section" id="programme">
         <div className="section-heading">
           <div><p className="eyebrow">Learning pathway</p><h2>See the whole journey.<br />Open only what you need.</h2></div>
-          <p>Choose a part, then open any units you want to see. They stay open until you close them. Work through each unit&apos;s sessions in order, leave at least one day between them, and repeat whenever understanding is still developing.</p>
+          <p>Open any units you want to see. They stay open until you close them. Work through each unit&apos;s sessions in order, leave at least one day between them, and repeat whenever understanding is still developing.</p>
         </div>
 
-        <div className="part-tabs" role="tablist" aria-label="Programme parts">
-          {phases.map((phase, index) => {
-            const partSessions = weeklyUnits.slice(index * 4, index * 4 + 4).flatMap((unit) => unit.sessions);
-            const partMastered = partSessions.filter((session) => getStatus(session.id) === "mastered").length;
-            return (
-              <button
-                className={`part-tab part-${index + 1} ${activePart === index ? "active" : ""}`}
-                role="tab"
-                aria-selected={activePart === index}
-                onClick={() => choosePart(index)}
-                key={phase.name}
-              >
-                <span className="part-index">{String(index + 1).padStart(2, "0")}</span>
-                <span className="part-name"><strong>{phase.name}</strong><small>{phase.units}</small></span>
-                <span className="part-score">{partMastered}/{partSessions.length}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className={`part-panel part-panel-${activePart + 1}`} role="tabpanel">
+        <div className={`part-panel part-panel-${activePart + 1}`}>
           <header className="part-panel-header">
             <div><span>Part {activePart + 1} of {phases.length}</span><h3>{phases[activePart].name}</h3></div>
             <p>{phases[activePart].note}</p>

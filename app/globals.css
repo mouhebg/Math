@@ -237,6 +237,29 @@ h1, h2, h3, h4 { margin-top: 0; color: var(--ink); font-family: var(--font-sans)
 .today-shell::before { top: -300px; right: -180px; width: 680px; height: 680px; background: radial-gradient(circle, rgb(120 170 255 / .3), transparent 66%); }
 .today-shell::after { bottom: -260px; left: -160px; width: 560px; height: 560px; background: radial-gradient(circle, rgb(240 164 19 / .22), transparent 66%); }
 
+/* The logo sits at the top of the hero as ordinary content.
+
+   Not inside .today-copy, which is the obvious-looking spot and the wrong one:
+   .today-section centres its rows against a 560px minimum height, so anything
+   put in that column floats to the middle of the hero on a tall window rather
+   than sitting at the top. As a sibling above the section it stays where it is
+   put. It needs the z-index because the two colour washes behind the hero are
+   absolutely positioned at z-index 0. */
+.masthead {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  max-width: 1164px;
+  margin: 0 auto;
+  padding: 30px 22px 0;
+  color: var(--navy);
+}
+.masthead-words { display: flex; flex-direction: column; gap: 1px; line-height: 1.1; }
+.masthead strong { font-size: 21px; font-weight: 800; letter-spacing: -.03em; }
+.masthead small { color: var(--ink-soft); font-size: 11px; font-weight: 500; }
+
 .today-section {
   position: relative;
   z-index: 1;
@@ -247,7 +270,7 @@ h1, h2, h3, h4 { margin-top: 0; color: var(--ink); font-family: var(--font-sans)
   max-width: 1164px;
   min-height: 560px;
   margin: 0 auto;
-  padding: 76px 22px 84px;
+  padding: 52px 22px 84px;
 }
 
 .today-copy { max-width: 700px; }
@@ -316,29 +339,16 @@ h1 .accent::after {
 /* Programme */
 
 .programme-section { padding: 80px max(22px, calc((100vw - 1120px) / 2)) 92px; border-top: 1px solid var(--line); background: var(--surface); }
-.part-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
 /* The tab carries its own part colour instead of turning blue when selected.
    Blue everywhere meant the six parts were only distinguishable by their number. */
-.part-tab { --part-colour: var(--green); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
-.part-tab::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 4px; background: var(--part-colour); opacity: 0; pointer-events: none; }
-.part-tab:hover { border-color: color-mix(in srgb, var(--part-colour) 45%, var(--line)); box-shadow: var(--shadow-md); }
-.part-tab:hover::before { opacity: .5; }
-.part-tab.active { border-color: var(--part-colour); background: color-mix(in srgb, var(--part-colour) 7%, var(--surface-strong)); color: var(--ink); box-shadow: var(--shadow-md); }
-.part-tab.active::before { opacity: 1; }
+/* The six part colours. The tabs that used them are gone; the hero's part
+   ribbon and the part panel still carry them. */
 .part-1 { --part-colour: var(--green); }
 .part-2 { --part-colour: var(--coral); }
 .part-3 { --part-colour: var(--yellow); }
 .part-4 { --part-colour: var(--blue); }
 .part-5 { --part-colour: var(--purple); }
 .part-6 { --part-colour: var(--teal); }
-.part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: color-mix(in srgb, var(--part-colour) 14%, white); color: var(--part-colour); font-size: 12px; font-weight: 900; }
-.part-tab.active .part-index { background: var(--part-colour); color: #fff; }
-.part-name { display: flex; min-width: 0; flex-direction: column; }
-.part-name strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
-.part-name small { margin-top: 3px; color: var(--ink-soft); font-size: 11px; }
-.part-tab.active .part-name small { color: var(--ink-soft); }
-.part-score { color: var(--ink-soft); font-size: 11px; font-weight: 700; }
-.part-tab.active .part-score { color: var(--part-colour); }
 
 .part-panel { --part-colour: var(--green); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--canvas); box-shadow: var(--shadow-sm); overflow: hidden; }
 .part-panel-1 { --part-colour: var(--green); }
@@ -474,7 +484,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 
 @media (max-width: 1040px) {
   .today-section { grid-template-columns: 1fr 390px; gap: 40px; }
-  .part-tabs { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 780px) {
@@ -483,7 +492,8 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   /* The label stays here. In the footer the control has the room the bar never
      gave it, and an unlabelled cloud on a dark bar reads as decoration. */
   .sync-panel { position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; }
-  .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 48px 18px 62px; }
+  .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 34px 18px 62px; }
+  .masthead { padding: 22px 18px 0; }
   .today-shell::before { top: -220px; right: -180px; width: 460px; height: 460px; }
   .today-shell::after { bottom: -300px; left: -200px; width: 420px; height: 420px; }
   h1 { font-size: clamp(46px, 13vw, 64px); }
@@ -500,12 +510,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   .section-heading h2 { font-size: 38px; }
   /* Two by two, so all four parts are visible at once. A horizontal strip hid
      half of them behind a sideways scroll that is easy to miss on a phone. */
-  .part-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  .part-tab { grid-template-columns: 34px minmax(0, 1fr); grid-template-areas: "index score" "name name"; row-gap: 9px; min-height: 0; padding: 12px; }
-  .part-index { grid-area: index; width: 34px; height: 34px; }
-  .part-name { grid-area: name; }
-  .part-name strong { overflow: visible; font-size: 13px; line-height: 1.25; white-space: normal; }
-  .part-score { grid-area: score; justify-self: end; align-self: center; }
   .part-panel-header { align-items: start; flex-direction: column; gap: 8px; padding: 22px; }
   .unit-grid { grid-template-columns: 1fr; padding: 8px; }
   .unit-card.open { grid-column: auto; }
