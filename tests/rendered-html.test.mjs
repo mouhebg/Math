@@ -62,15 +62,26 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
   assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
 
   // Chrome can swallow the next wheel gesture after a hero part link changes
-  // the URL fragment. The hero must select without navigating to #programme.
+  // the URL fragment. The hero must select without navigating to #programme,
+  // even though it jumps to the programme section: the jump is a deferred,
+  // non-smooth scrollIntoView call, never an <a href="#programme">.
   assert.doesNotMatch(page, /className="part-ribbon"[\s\S]*?href="#programme"[\s\S]*?<\/div>/);
   assert.match(page, /className="part-ribbon" role="group"/);
-  assert.match(page, /className=\{`part-\$\{index \+ 1\}`\}[\s\S]*?onClick=\{\(\) => choosePart\(index\)\}/);
+  assert.match(page, /className=\{`part-\$\{index \+ 1\}`\}[\s\S]*?onClick=\{\(\) => choosePartAndJump\(index\)\}/);
   assert.match(page, /aria-pressed=\{activePart === index\}/);
   assert.doesNotMatch(css, /\.part-ribbon\s+a\b/);
   assert.match(page, /className="part-tabs" role="tablist"/);
   assert.match(page, /role="tab"[\s\S]*onClick=\{\(\) => choosePart\(index\)\}/);
   assert.match(page, /startTransition\(\(\) => \{/);
+
+  // choosePartAndJump must select via the same startTransition-guarded
+  // choosePart and defer the scroll to the next frame, so the jump never
+  // blocks on the heaviest re-render on the page or fights an in-progress
+  // scroll gesture.
+  assert.match(
+    page,
+    /function choosePartAndJump\(part: number\) \{\s*choosePart\(part\);\s*window\.requestAnimationFrame\(\(\) => \{\s*document\.getElementById\("programme"\)\?\.scrollIntoView\(\{ block: "start" \}\);/,
+  );
 });
 
 test("keeps the homepage scrolling at frame rate", async () => {
