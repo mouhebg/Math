@@ -168,34 +168,33 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 
 /* Sync
 
-   The menu bar is gone. It carried the brand, a progress rail and this control;
-   the brand and the programme's progress both live elsewhere on the page
-   already, but cloud sign-in did not, so it moved to the footer instead of
-   disappearing. The panel opens upward from there.
+   Lives in the masthead, at the top of the page next to the logo, the same
+   place the old sticky menu bar kept it. Unlike that bar this row is not
+   pinned: it is ordinary content in .today-shell and scrolls away with the
+   hero, so it carries none of the compositor cost a sticky element has while
+   the page moves underneath it.
 
-   The rules the bar was built around still hold for everything that stays on
-   screen, and tests/rendered-html.test.mjs still guards them page-wide: nothing
-   is layer-promoted, nothing transitions or animates, and no bar is fixed over
-   the content for the compositor to maintain against everything moving beneath
-   it. That last one is now free: with the header gone, the only fixed element
-   left is the bottom navigation on small screens. */
+   The rules the old bar was built around still hold for everything that stays
+   on screen, and tests/rendered-html.test.mjs still guards them page-wide:
+   nothing is layer-promoted, nothing transitions or animates, and no bar is
+   fixed over the content except the bottom navigation on small screens. */
 
-/* Kept for the footer's lockup, which is the only place the mark still appears. */
 .brand-mark { display: grid; flex: 0 0 40px; place-items: center; width: 40px; height: 40px; color: var(--blue); }
 .brand-mark .mathnest-mark { width: 40px; height: 40px; object-fit: contain; }
 
-.sync-menu { position: relative; display: flex; }
-.sync-trigger { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 9px 15px; border: 1px solid rgb(255 255 255 / .2); border-radius: 99px; background: rgb(255 255 255 / .06); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
-.sync-trigger:hover { border-color: rgb(255 255 255 / .5); background: rgb(255 255 255 / .12); }
+.sync-menu { position: relative; display: flex; margin-left: auto; }
+.sync-trigger { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 8px 14px; border: 0; border-radius: 99px; background: var(--canvas-deep); color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+.sync-trigger:hover { background: var(--blue-soft); color: var(--blue-dark); }
 .sync-trigger svg { width: 17px; height: 17px; }
 .sync-trigger > i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 .sync-trigger.sync-syncing > i { background: var(--yellow); }
-.sync-trigger.sync-error { border-color: var(--coral); }
+.sync-trigger.sync-error { background: var(--coral-soft); color: #a44f39; }
 .sync-trigger.sync-error > i { background: var(--coral); }
 
 /* The panel appears outright. It used to fade and rise into place, which is the
-   same composited work as the underline, just less often. */
-.sync-panel { position: absolute; bottom: calc(100% + 13px); right: 0; z-index: 50; width: min(390px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-lift); }
+   same composited work as the underline, just less often. It opens downward,
+   under the trigger, since the trigger now sits at the top of the page. */
+.sync-panel { position: absolute; top: calc(100% + 13px); right: 0; z-index: 50; width: min(390px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-lift); }
 .sync-panel-kicker { color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .sync-panel h2 { margin: 8px 0 10px; font-size: 28px; font-weight: 700; line-height: 1.1; }
 .sync-panel > p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
@@ -243,11 +242,12 @@ h1, h2, h3, h4 { margin-top: 0; color: var(--ink); font-family: var(--font-sans)
    .today-section centres its rows against a 560px minimum height, so anything
    put in that column floats to the middle of the hero on a tall window rather
    than sitting at the top. As a sibling above the section it stays where it is
-   put. It needs the z-index because the two colour washes behind the hero are
-   absolutely positioned at z-index 0. */
+   put. Its z-index sits above .today-section's own (both positioned, so a tie
+   would paint in DOM order and bury the sync panel below under the lesson
+   card), and above the two colour washes behind the hero at z-index 0. */
 .masthead {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 11px;
@@ -503,9 +503,12 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 @media (max-width: 780px) {
   body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
   .brand-mark, .brand-mark .mathnest-mark { flex-basis: 36px; width: 36px; height: 36px; }
-  /* The label stays here. In the footer the control has the room the bar never
-     gave it, and an unlabelled cloud on a dark bar reads as decoration. */
-  .sync-panel { position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; }
+  .masthead-words small { display: none; }
+  /* Icon-only, so the trigger fits beside the logo at this width instead of
+     pushing the wordmark to wrap. */
+  .sync-trigger { width: 40px; height: 40px; justify-content: center; padding: 0; }
+  .sync-trigger > span, .sync-trigger > i { display: none; }
+  .sync-panel { position: fixed; top: 72px; right: 16px; left: 16px; width: auto; max-height: calc(100dvh - 88px); overflow-y: auto; overscroll-behavior: contain; }
   .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 34px 18px 62px; }
   .masthead { padding: 22px 18px 0; }
   .today-shell::before { top: -220px; right: -180px; width: 460px; height: 460px; }

@@ -344,6 +344,21 @@ export default function Home() {
     });
   }
 
+  // The hero's part buttons select a part and jump straight to it, unlike the
+  // programme's own tabs, which are already on screen and only need to select.
+  // This used to be done by pairing choosePart with an <a href="#programme">,
+  // which combined a native anchor jump with the heaviest re-render on the page
+  // in a single click and lost frames on touch browsers. Selecting stays a
+  // plain button click with no navigation, and the jump is an ordinary
+  // (non-smooth) scrollIntoView deferred to the next frame, so neither
+  // competes with the other or with a scroll gesture already in progress.
+  function choosePartAndJump(part: number) {
+    choosePart(part);
+    window.requestAnimationFrame(() => {
+      document.getElementById("programme")?.scrollIntoView({ block: "start" });
+    });
+  }
+
   function openSession(session: Session) {
     setActivePart(Math.floor((session.unit - 1) / 4));
     setOpenUnits((previous) => (previous.includes(session.unit) ? previous : [...previous, session.unit]));
@@ -366,11 +381,25 @@ export default function Home() {
       </noscript>
 
       <div className="today-shell">
-      {/* The logo, at the top of the page and part of it. Not a bar: nothing
-          fixed, nothing sticky, and it scrolls away with the hero. */}
+      {/* The logo and sync control, at the top of the page and part of it.
+          Not a bar: nothing fixed, nothing sticky, and it scrolls away with
+          the hero, so it carries none of the compositor cost a sticky menu
+          bar has while the page scrolls underneath it. */}
       <div className="masthead">
         <span className="brand-mark"><MathNestMark /></span>
         <span className="masthead-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
+        <SyncMenu
+          syncState={syncState}
+          user={user}
+          authOpen={authOpen}
+          onToggleAuth={toggleAuth}
+          onCloseAuth={closeAuth}
+          email={email}
+          onEmailChange={setEmail}
+          authMessage={authMessage}
+          onSubmitEmail={sendMagicLink}
+          onSignOut={signOut}
+        />
       </div>
 
       <section className="today-section" id="today">
@@ -394,9 +423,9 @@ export default function Home() {
                   type="button"
                   className={`part-${index + 1}`}
                   key={phase.name}
-                  onClick={() => choosePart(index)}
+                  onClick={() => choosePartAndJump(index)}
                   aria-pressed={activePart === index}
-                  aria-label={`${phase.name}, ${partMastered} of ${partSessions.length} sessions mastered; select this part`}
+                  aria-label={`${phase.name}, ${partMastered} of ${partSessions.length} sessions mastered; select this part, and jump to it in the programme below`}
                   title={phase.name}
                 >
                   <i aria-hidden="true"><b style={{ width: `${(partMastered / partSessions.length) * 100}%` }} /></i>
@@ -596,18 +625,6 @@ export default function Home() {
         <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Where numbers grow.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
         <div className="footer-actions">
-          <SyncMenu
-            syncState={syncState}
-            user={user}
-            authOpen={authOpen}
-            onToggleAuth={toggleAuth}
-            onCloseAuth={closeAuth}
-            email={email}
-            onEmailChange={setEmail}
-            authMessage={authMessage}
-            onSubmitEmail={sendMagicLink}
-            onSignOut={signOut}
-          />
           <a href="#today">Back to top ↑</a>
         </div>
       </footer>
