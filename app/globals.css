@@ -170,6 +170,8 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
      and re-renders the page behind it every frame, which is the same reason the
      bottom bar never had that treatment. The look was not worth the frames. */
   background: var(--surface);
+  will-change: scroll-position;
+  contain: layout style;
 }
 
 .brand { display: flex; align-items: center; gap: 9px; margin-right: auto; color: var(--navy); text-decoration: none; }
@@ -182,8 +184,8 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
 .site-header nav { display: flex; flex: 1; align-items: center; justify-content: center; gap: 8px; }
 /* The underline grows from the centre on hover rather than a filled pill, so the
    nav stays quiet while still answering the pointer. */
-.site-header nav a { position: relative; padding: 9px 11px; border-radius: var(--radius-sm); color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; }
-.site-header nav a::after { content: ""; position: absolute; bottom: 4px; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--blue); transform: scaleX(0); transition: transform var(--speed) var(--ease); }
+.site-header nav a { position: relative; padding: 9px 11px; border-radius: var(--radius-sm); color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; will-change: color; }
+.site-header nav a::after { content: ""; position: absolute; bottom: 4px; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--blue); transform: scaleX(0); transition: transform var(--speed) var(--ease); will-change: transform; backface-visibility: hidden; }
 .site-header nav a:hover { color: var(--blue-dark); }
 .site-header nav a:hover::after { transform: scaleX(1); }
 
