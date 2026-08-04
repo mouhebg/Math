@@ -82,7 +82,6 @@ export default function Home() {
   // one unit never collapses another; closing is always a deliberate act.
   const [openUnits, setOpenUnits] = useState<number[]>([1]);
   const [ready, setReady] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
@@ -392,40 +391,7 @@ export default function Home() {
         </div>
       </noscript>
 
-      <header className="site-header">
-        <a className="brand" href="#today" aria-label="MathNest, Where Numbers Grow">
-          <span className="brand-mark"><MathNestMark /></span>
-          <span><strong>MathNest</strong><small>Where Numbers Grow</small></span>
-        </a>
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-expanded={menuOpen}
-          aria-controls="main-nav"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-        >
-          <span className={`hamburger ${menuOpen ? "open" : ""}`} />
-        </button>
-        <nav id="main-nav" className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
-          <a href="#today" onClick={() => setMenuOpen(false)}>Today</a>
-          <a href="#programme" onClick={() => setMenuOpen(false)}>Programme</a>
-          <a href="#parent-guide" onClick={() => setMenuOpen(false)}>Parent guide</a>
-        </nav>
-        {/* Points at the programme, where a session's status is actually set. */}
-        <a className="header-progress" href="#programme" aria-label={`${progress}% of the programme mastered. Open the programme.`}>
-          <span><i style={{ width: `${progress}%` }} /></span><b>{progress}%</b>
-        </a>
-        <div className="sync-menu">
-          <button
-            className={`sync-trigger sync-${syncState}`}
-            onClick={() => setAuthOpen(!authOpen)}
-            aria-expanded={authOpen}
-            aria-controls="sync-panel"
-          >
-            <CloudIcon />
-            <span>{user ? syncState === "syncing" ? "Syncing" : syncState === "error" ? "Sync issue" : "Synced" : "Sync progress"}</span>
-            {user && <i aria-hidden="true" />}
-          </button>
+      {/* Header removed to fix freezing/stuttering issues */}
 
           {authOpen && (
             <aside className="sync-panel" id="sync-panel" aria-label="Progress synchronization">
@@ -465,7 +431,6 @@ export default function Home() {
             </aside>
           )}
         </div>
-      </header>
 
       <div className="today-shell">
       <section className="today-section" id="today">
