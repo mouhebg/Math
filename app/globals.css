@@ -339,29 +339,16 @@ h1 .accent::after {
 /* Programme */
 
 .programme-section { padding: 80px max(22px, calc((100vw - 1120px) / 2)) 92px; border-top: 1px solid var(--line); background: var(--surface); }
-.part-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
 /* The tab carries its own part colour instead of turning blue when selected.
    Blue everywhere meant the six parts were only distinguishable by their number. */
-.part-tab { --part-colour: var(--green); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
-.part-tab::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 4px; background: var(--part-colour); opacity: 0; pointer-events: none; }
-.part-tab:hover { border-color: color-mix(in srgb, var(--part-colour) 45%, var(--line)); box-shadow: var(--shadow-md); }
-.part-tab:hover::before { opacity: .5; }
-.part-tab.active { border-color: var(--part-colour); background: color-mix(in srgb, var(--part-colour) 7%, var(--surface-strong)); color: var(--ink); box-shadow: var(--shadow-md); }
-.part-tab.active::before { opacity: 1; }
+/* The six part colours. The tabs that used them are gone; the hero's part
+   ribbon and the part panel still carry them. */
 .part-1 { --part-colour: var(--green); }
 .part-2 { --part-colour: var(--coral); }
 .part-3 { --part-colour: var(--yellow); }
 .part-4 { --part-colour: var(--blue); }
 .part-5 { --part-colour: var(--purple); }
 .part-6 { --part-colour: var(--teal); }
-.part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: color-mix(in srgb, var(--part-colour) 14%, white); color: var(--part-colour); font-size: 12px; font-weight: 900; }
-.part-tab.active .part-index { background: var(--part-colour); color: #fff; }
-.part-name { display: flex; min-width: 0; flex-direction: column; }
-.part-name strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
-.part-name small { margin-top: 3px; color: var(--ink-soft); font-size: 11px; }
-.part-tab.active .part-name small { color: var(--ink-soft); }
-.part-score { color: var(--ink-soft); font-size: 11px; font-weight: 700; }
-.part-tab.active .part-score { color: var(--part-colour); }
 
 .part-panel { --part-colour: var(--green); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--canvas); box-shadow: var(--shadow-sm); overflow: hidden; }
 .part-panel-1 { --part-colour: var(--green); }
@@ -497,7 +484,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 
 @media (max-width: 1040px) {
   .today-section { grid-template-columns: 1fr 390px; gap: 40px; }
-  .part-tabs { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 780px) {
@@ -524,12 +510,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   .section-heading h2 { font-size: 38px; }
   /* Two by two, so all four parts are visible at once. A horizontal strip hid
      half of them behind a sideways scroll that is easy to miss on a phone. */
-  .part-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  .part-tab { grid-template-columns: 34px minmax(0, 1fr); grid-template-areas: "index score" "name name"; row-gap: 9px; min-height: 0; padding: 12px; }
-  .part-index { grid-area: index; width: 34px; height: 34px; }
-  .part-name { grid-area: name; }
-  .part-name strong { overflow: visible; font-size: 13px; line-height: 1.25; white-space: normal; }
-  .part-score { grid-area: score; justify-self: end; align-self: center; }
   .part-panel-header { align-items: start; flex-direction: column; gap: 8px; padding: 22px; }
   .unit-grid { grid-template-columns: 1fr; padding: 8px; }
   .unit-card.open { grid-column: auto; }
