@@ -385,24 +385,26 @@ export default function Home() {
             <span><strong>{sessions.length}</strong> sessions</span>
             <span><strong>20</strong> min each</span>
           </div>
-          <nav className="part-ribbon" aria-label="Programme parts">
+          <div className="part-ribbon" role="group" aria-label="Programme parts">
             {phases.map((phase, index) => {
               const partSessions = weeklyUnits.slice(index * 4, index * 4 + 4).flatMap((unit) => unit.sessions);
               const partMastered = partSessions.filter((session) => getStatus(session.id) === "mastered").length;
               return (
-                <a
+                <button
+                  type="button"
                   className={`part-${index + 1}`}
-                  href="#programme"
                   key={phase.name}
-                  aria-label={`${phase.name}, ${partMastered} of ${partSessions.length} sessions mastered; choose this part in the programme`}
+                  onClick={() => choosePart(index)}
+                  aria-pressed={activePart === index}
+                  aria-label={`${phase.name}, ${partMastered} of ${partSessions.length} sessions mastered; select this part`}
                   title={phase.name}
                 >
                   <i aria-hidden="true"><b style={{ width: `${(partMastered / partSessions.length) * 100}%` }} /></i>
                   <span>Part {index + 1}</span>
-                </a>
+                </button>
               );
             })}
-          </nav>
+          </div>
         </div>
 
         <article className="next-lesson-card" aria-label="Today's lesson">
