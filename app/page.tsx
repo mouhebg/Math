@@ -465,9 +465,6 @@ export default function Home() {
             </aside>
           )}
         </div>
-        <a className="header-download" href="worksheets/mathnest-math-exercises.zip" download>
-          <DownloadIcon /><span>Download all</span>
-        </a>
       </header>
 
       <div className="today-shell">
@@ -692,7 +689,7 @@ export default function Home() {
       <footer>
         <div className="footer-brand"><span className="brand-mark"><MathNestMark /></span><span><strong>MathNest</strong><small>Where numbers grow.</small></span></div>
         <p>Built for the pleasure of finally understanding.</p>
-        <div className="footer-actions"><a href="worksheets/mathnest-math-exercises.zip" download>Download all</a><a href="#today">Back to top ↑</a></div>
+        <div className="footer-actions"><a href="#today">Back to top ↑</a></div>
       </footer>
 
       <nav className="mobile-nav" aria-label="Mobile navigation">
