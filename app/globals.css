@@ -166,7 +166,18 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 
 /* Menu bar
 
-   Rebuilt to be paint-cheap. The version before it drew a hover underline as a
+   Redesigned: an inner row that carries the layout, and a progress rail welded
+   to the bar's bottom edge. The rail replaces the old track-and-percentage
+   widget, so progress is legible at a glance and survives on a phone, where the
+   old widget was hidden for want of room.
+
+   The bar's structure exists for a layout reason as much as a visual one. The
+   header itself has no horizontal padding, so an absolutely positioned rail can
+   sit flush to the screen edges with plain `left: 0; right: 0`; the padding
+   lives on `.bar-inner`. Putting padding on the header instead means the rail's
+   containing block is the padding box and it stops short of both edges.
+
+   None of this moves. The version before it drew a hover underline as a
    transitioned `::after` on each nav link, carrying `will-change: transform` and
    `backface-visibility: hidden`, inside a `position: fixed` bar that was itself
    promoted with `translateZ(0)`. Every pointer entry and exit created and then
@@ -174,10 +185,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
    mouse across the bar was enough to hold the page at half frame rate. On a
    20x-throttled CPU, sweeping the pointer over the bar cost 414ms of blocked
    main thread and 36 late frames out of 49; without the underline, 0ms and 8
-   out of 84. The bill grew with the amount of page underneath the bar, which is
-   why it only became unmistakable after opening the programme.
+   out of 84. The bill grew with the amount of page underneath the bar.
 
-   So the bar now holds to four rules, each guarded by
+   So the bar holds to four rules, each guarded by
    tests/rendered-html.test.mjs:
      1. nothing here is layer-promoted: no will-change, no translateZ, no
         backface-visibility, no filter or backdrop-filter
@@ -191,39 +201,62 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
   position: sticky;
   top: 0;
   z-index: 30;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.bar-inner {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 18px;
-  min-height: 62px;
-  padding: 8px max(22px, calc((100vw - 1120px) / 2));
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
+  gap: 16px;
+  min-height: 66px;
+  padding: 10px max(22px, calc((100vw - 1120px) / 2));
 }
 
-.brand { display: flex; align-items: center; gap: 9px; justify-self: start; color: var(--navy); text-decoration: none; }
-.brand-mark { display: grid; flex: 0 0 46px; place-items: center; width: 46px; height: 46px; color: var(--blue); }
-.brand-mark .mathnest-mark { width: 46px; height: 46px; object-fit: contain; }
-.brand-words { display: flex; flex-direction: column; line-height: 1.12; }
-.brand strong { font-size: 20px; font-weight: 900; letter-spacing: -.02em; }
-.brand small { margin-top: 1px; color: var(--ink-soft); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+/* Progress as a hairline across the foot of the bar. It sits on the border, so
+   the border reads as the empty part of the track. */
+.header-rail {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: var(--progress, 0%);
+  height: 2px;
+  border-radius: 0 99px 99px 0;
+  /* The gradient is sized to the viewport, not to the fill, so the rail reveals
+     part of one fixed spectrum instead of squeezing the whole of it into 2% of
+     the width. Early progress reads green, finishing reads blue. */
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  background-size: 100vw 100%;
+  background-repeat: no-repeat;
+}
 
-.header-tools { display: flex; align-items: center; gap: 10px; justify-self: end; }
+.brand { display: flex; align-items: center; gap: 11px; justify-self: start; color: var(--navy); text-decoration: none; }
+.brand-mark { display: grid; flex: 0 0 40px; place-items: center; width: 40px; height: 40px; color: var(--blue); }
+.brand-mark .mathnest-mark { width: 40px; height: 40px; object-fit: contain; }
+.brand-words { display: flex; flex-direction: column; gap: 1px; line-height: 1.1; }
+/* Tighter and heavier, and the slogan in sentence case. Letterspaced uppercase
+   under a wordmark is the detail that dated the old bar most. */
+.brand strong { font-size: 20px; font-weight: 800; letter-spacing: -.03em; }
+.brand small { color: var(--ink-soft); font-size: 11px; font-weight: 500; letter-spacing: 0; }
 
-.header-progress { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 12px; font-weight: 700; text-decoration: none; }
-.header-progress-track { width: 54px; height: 7px; border-radius: 99px; background: var(--canvas-deep); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
-/* Set, not animated. The fill changes when a session changes, which is a click,
-   not a frame budget. */
-.header-progress i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--blue)); }
-.header-progress:hover { color: var(--blue-dark); }
+.header-tools { display: flex; align-items: center; gap: 8px; justify-self: end; }
+
+/* Filled chips rather than outlined pills: one less hairline each, and the fill
+   carries the state instead of a border colour. */
+.header-progress { display: flex; align-items: baseline; gap: 5px; padding: 8px 13px; border-radius: 99px; background: var(--canvas-deep); color: var(--ink); text-decoration: none; }
+.header-progress b { font-size: 13px; font-weight: 800; letter-spacing: -.02em; }
+.header-progress span { color: var(--ink-soft); font-size: 11px; font-weight: 600; }
+.header-progress:hover { background: var(--blue-soft); color: var(--blue-dark); }
+.header-progress:hover span { color: var(--blue-dark); }
 
 .sync-menu { position: relative; display: flex; }
-.sync-trigger { display: flex; align-items: center; gap: 7px; min-height: 42px; padding: 9px 14px; border: 1px solid var(--line-strong); border-radius: 99px; background: var(--surface-strong); color: var(--ink); font-size: 11px; font-weight: 700; cursor: pointer; }
-.sync-trigger:hover { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
-.sync-trigger svg { width: 18px; height: 18px; }
-.sync-trigger > i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+.sync-trigger { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 8px 14px; border: 0; border-radius: 99px; background: var(--canvas-deep); color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+.sync-trigger:hover { background: var(--blue-soft); color: var(--blue-dark); }
+.sync-trigger svg { width: 17px; height: 17px; }
+.sync-trigger > i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 .sync-trigger.sync-syncing > i { background: var(--yellow); }
-.sync-trigger.sync-error { border-color: var(--coral); color: #a44f39; }
+.sync-trigger.sync-error { background: var(--coral-soft); color: #a44f39; }
 .sync-trigger.sync-error > i { background: var(--coral); }
 
 /* The panel appears outright. It used to fade and rise into place, which is the
@@ -513,10 +546,15 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 @media (max-width: 780px) {
   html { scroll-padding-top: 68px; }
   body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
-  .site-header { min-height: 62px; padding: 8px 16px; }
-  .brand-mark, .brand-mark .mathnest-mark { flex-basis: 42px; width: 42px; height: 42px; }
-  .header-progress { display: none; }
-  .sync-trigger { width: 42px; height: 42px; justify-content: center; padding: 0; }
+  .bar-inner { min-height: 58px; padding: 8px 16px; gap: 10px; }
+  .brand-mark, .brand-mark .mathnest-mark { flex-basis: 36px; width: 36px; height: 36px; }
+  .brand strong { font-size: 18px; }
+  .brand small { display: none; }
+  /* The percentage survives on a phone now that it is a chip rather than a
+     track. Only the word beside it goes. */
+  .header-progress { padding: 7px 11px; }
+  .header-progress span { display: none; }
+  .sync-trigger { width: 40px; height: 40px; justify-content: center; padding: 0; }
   .sync-trigger > span, .sync-trigger > i { display: none; }
   .sync-panel { position: fixed; top: 72px; right: 16px; max-height: calc(100dvh - 88px); overflow-y: auto; overscroll-behavior: contain; }
   .today-section { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 48px 18px 62px; }
@@ -572,7 +610,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 }
 
 @media (max-width: 430px) {
-  .brand small { display: none; }
   .lesson-position { flex-wrap: wrap; }
   .next-lesson-card h2 { font-size: 32px; }
   .session-resources { grid-template-columns: 1fr 48px; }

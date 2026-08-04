@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useEffect, useRef } from "react";
+import { type CSSProperties, type FormEvent, useEffect, useRef } from "react";
 import type { User } from "@supabase/supabase-js";
 import { ArrowIcon, CloudIcon, MathNestMark } from "./icons";
 
@@ -95,76 +95,79 @@ export default function SiteHeader({
   }, [authOpen, onCloseAuth]);
 
   return (
-    <header className="site-header">
-      <a className="brand" href="#today" aria-label="MathNest, where numbers grow">
-        <span className="brand-mark"><MathNestMark /></span>
-        <span className="brand-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
-      </a>
-
-      <div className="header-tools">
-        {/* Points at the programme, where a session's status is actually set. */}
-        <a
-          className="header-progress"
-          href="#programme"
-          aria-label={`${progress}% of the programme mastered. Open the programme.`}
-        >
-          <span className="header-progress-track">
-            <i style={{ width: `${progress}%` }} aria-hidden="true" />
-          </span>
-          <b>{progress}%</b>
+    // The rail reads its width from this, so the bar owns the number in one place.
+    <header className="site-header" style={{ "--progress": `${progress}%` } as CSSProperties}>
+      <div className="bar-inner">
+        <a className="brand" href="#today" aria-label="MathNest, where numbers grow">
+          <span className="brand-mark"><MathNestMark /></span>
+          <span className="brand-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
         </a>
 
-        <div className="sync-menu" ref={syncMenuRef}>
-          <button
-            className={`sync-trigger sync-${syncState}`}
-            onClick={onToggleAuth}
-            aria-expanded={authOpen}
-            aria-controls="sync-panel"
+        <div className="header-tools">
+          {/* Points at the programme, where a session's status is actually set. */}
+          <a
+            className="header-progress"
+            href="#programme"
+            aria-label={`${progress}% of the programme mastered. Open the programme.`}
           >
-            <CloudIcon />
-            <span>{syncLabel(user, syncState)}</span>
-            {user && <i aria-hidden="true" />}
-          </button>
+            <b>{progress}%</b>
+            <span>mastered</span>
+          </a>
 
-          {authOpen && (
-            <aside className="sync-panel" id="sync-panel" aria-label="Progress synchronisation">
-              {user ? (
-                <>
-                  <span className="sync-panel-kicker">Cloud sync is on</span>
-                  <h2>Your progress is protected.</h2>
-                  <p>Signed in as <strong>{user.email}</strong>. Use the same email on another device to continue there.</p>
-                  <div className={`sync-status-line sync-${syncState}`} aria-live="polite">
-                    <i />
-                    <span>{syncState === "syncing" ? "Saving changes…" : syncState === "error" ? "Local copy saved. Cloud will retry." : "Everything is up to date"}</span>
-                  </div>
-                  <button className="sign-out-button" onClick={onSignOut}>Sign out on this device</button>
-                </>
-              ) : (
-                <>
-                  <span className="sync-panel-kicker">Optional cloud backup</span>
-                  <h2>Continue on any device.</h2>
-                  <p>Enter your email. We will send a secure sign-in link, so there is no password to remember.</p>
-                  <form onSubmit={onSubmitEmail}>
-                    <label htmlFor="sync-email">Email address</label>
-                    <input
-                      id="sync-email"
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(event) => onEmailChange(event.target.value)}
-                      placeholder="you@example.com"
-                      required
-                    />
-                    <button type="submit">Send sign-in link <ArrowIcon /></button>
-                  </form>
-                  <small>Your local progress will be combined with the cloud copy after you sign in.</small>
-                </>
-              )}
-              {authMessage && <p className="auth-message" aria-live="polite">{authMessage}</p>}
-            </aside>
-          )}
+          <div className="sync-menu" ref={syncMenuRef}>
+            <button
+              className={`sync-trigger sync-${syncState}`}
+              onClick={onToggleAuth}
+              aria-expanded={authOpen}
+              aria-controls="sync-panel"
+            >
+              <CloudIcon />
+              <span>{syncLabel(user, syncState)}</span>
+              {user && <i aria-hidden="true" />}
+            </button>
+
+            {authOpen && (
+              <aside className="sync-panel" id="sync-panel" aria-label="Progress synchronisation">
+                {user ? (
+                  <>
+                    <span className="sync-panel-kicker">Cloud sync is on</span>
+                    <h2>Your progress is protected.</h2>
+                    <p>Signed in as <strong>{user.email}</strong>. Use the same email on another device to continue there.</p>
+                    <div className={`sync-status-line sync-${syncState}`} aria-live="polite">
+                      <i />
+                      <span>{syncState === "syncing" ? "Saving changes…" : syncState === "error" ? "Local copy saved. Cloud will retry." : "Everything is up to date"}</span>
+                    </div>
+                    <button className="sign-out-button" onClick={onSignOut}>Sign out on this device</button>
+                  </>
+                ) : (
+                  <>
+                    <span className="sync-panel-kicker">Optional cloud backup</span>
+                    <h2>Continue on any device.</h2>
+                    <p>Enter your email. We will send a secure sign-in link, so there is no password to remember.</p>
+                    <form onSubmit={onSubmitEmail}>
+                      <label htmlFor="sync-email">Email address</label>
+                      <input
+                        id="sync-email"
+                        type="email"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(event) => onEmailChange(event.target.value)}
+                        placeholder="you@example.com"
+                        required
+                      />
+                      <button type="submit">Send sign-in link <ArrowIcon /></button>
+                    </form>
+                    <small>Your local progress will be combined with the cloud copy after you sign in.</small>
+                  </>
+                )}
+                {authMessage && <p className="auth-message" aria-live="polite">{authMessage}</p>}
+              </aside>
+            )}
+          </div>
         </div>
       </div>
+
+      <span className="header-rail" aria-hidden="true" />
     </header>
   );
 }
