@@ -192,7 +192,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
   top: 0;
   z-index: 30;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 18px;
   min-height: 62px;
@@ -207,12 +207,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .brand-words { display: flex; flex-direction: column; line-height: 1.12; }
 .brand strong { font-size: 20px; font-weight: 900; letter-spacing: -.02em; }
 .brand small { margin-top: 1px; color: var(--ink-soft); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-
-/* A filled pill rather than a growing underline. One background repaint inside
-   the link's own box, no pseudo-element, no transition. */
-.site-nav { display: flex; align-items: center; justify-self: center; gap: 4px; }
-.site-nav a { padding: 9px 14px; border-radius: 99px; color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; }
-.site-nav a:hover { background: var(--blue-soft); color: var(--blue-dark); }
 
 .header-tools { display: flex; align-items: center; gap: 10px; justify-self: end; }
 
@@ -255,12 +249,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .sync-status-line.sync-error i { background: var(--coral); }
 .sign-out-button { width: 100%; border-color: var(--line); background: var(--surface); color: var(--ink); }
 .sync-panel .auth-message { margin-top: 13px; padding: 10px 12px; border-radius: 9px; background: var(--blue-soft); color: var(--ink); font-size: 11px; }
-
-/* Two swapped glyphs, not a bar folding into a cross. The folding version
-   transitioned two pseudo-elements inside the bar. */
-.menu-toggle { display: none; align-items: center; justify-content: center; width: 42px; height: 42px; padding: 0; border: 1px solid var(--line-strong); border-radius: 99px; background: var(--surface-strong); color: var(--ink); cursor: pointer; }
-.menu-toggle:hover { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
-.menu-toggle svg { width: 20px; height: 20px; }
 
 /* Shared */
 
@@ -518,19 +506,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
 /* Responsive */
 
 @media (max-width: 1040px) {
-  /* Two columns, brand and tools. The nav leaves the flow entirely rather than
-     sitting in an empty middle track. */
-  .site-header { grid-template-columns: 1fr auto; }
-  .menu-toggle { display: flex; }
-  .site-nav { display: none; }
-  /* An absolutely positioned grid item is laid out inside its own grid area and
-     still obeys justify-self, so the centring the bar uses on wide screens left
-     this panel shrink-wrapped in the middle of the bar. It has to span every
-     track and stretch, and then reach back over the bar's padding to sit flush
-     with the screen edges. */
-  .site-nav.open { position: absolute; top: 100%; left: 0; right: 0; grid-column: 1 / -1; justify-self: stretch; display: flex; flex-direction: column; align-items: stretch; gap: 0; margin: 0 -22px; padding: 6px 22px 12px; border-bottom: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-md); }
-  .site-nav.open a { padding: 13px 4px; border-bottom: 1px solid var(--line); border-radius: 0; color: var(--blue); font-size: 15px; }
-  .site-nav.open a:last-child { border-bottom: 0; }
   .today-section { grid-template-columns: 1fr 390px; gap: 40px; }
   .part-tabs { grid-template-columns: repeat(2, 1fr); }
 }
@@ -539,7 +514,6 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 13px; text-align: center; }
   html { scroll-padding-top: 68px; }
   body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
   .site-header { min-height: 62px; padding: 8px 16px; }
-  .site-nav.open { margin: 0 -16px; padding: 6px 16px 12px; }
   .brand-mark, .brand-mark .mathnest-mark { flex-basis: 42px; width: 42px; height: 42px; }
   .header-progress { display: none; }
   .sync-trigger { width: 42px; height: 42px; justify-content: center; padding: 0; }
