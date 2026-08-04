@@ -61,11 +61,13 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
   assert.doesNotMatch(css, /scroll-snap-type:[^;]*mandatory/);
   assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
 
-  // The hero used to replace the expanded programme panel in the same click
-  // that navigated to its anchor. On touch browsers that left the scroll
-  // gesture competing with a large layout replacement. The hero now only
-  // navigates, while the programme's buttons own part selection.
-  assert.doesNotMatch(page, /href="#programme"\s+onClick=\{\(\) => choosePart/);
+  // Chrome can swallow the next wheel gesture after a hero part link changes
+  // the URL fragment. The hero must select without navigating to #programme.
+  assert.doesNotMatch(page, /className="part-ribbon"[\s\S]*?href="#programme"[\s\S]*?<\/div>/);
+  assert.match(page, /className="part-ribbon" role="group"/);
+  assert.match(page, /className=\{`part-\$\{index \+ 1\}`\}[\s\S]*?onClick=\{\(\) => choosePart\(index\)\}/);
+  assert.match(page, /aria-pressed=\{activePart === index\}/);
+  assert.doesNotMatch(css, /\.part-ribbon\s+a\b/);
   assert.match(page, /className="part-tabs" role="tablist"/);
   assert.match(page, /role="tab"[\s\S]*onClick=\{\(\) => choosePart\(index\)\}/);
   assert.match(page, /startTransition\(\(\) => \{/);
