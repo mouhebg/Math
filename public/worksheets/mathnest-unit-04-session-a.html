@@ -142,6 +142,26 @@ footer{margin-top:56px;padding-top:20px;border-top:1.5px solid var(--ink);font-f
 .q{font-family:var(--font-sans),ui-monospace,monospace;font-size:15px;padding:7px 0;border-bottom:1px dotted var(--rule);}
 .bl{display:inline-block;min-width:46px;border-bottom:1.5px solid var(--ink);}
 .bl.w{min-width:96px;} .bl.xw{min-width:170px;} .bl.s{min-width:30px;}
+
+/* One problem, one card: each field gets its own row instead of running the
+   whole problem together as a single sentence that wraps wherever the
+   viewport happens to break it, splitting a label from its own blank. */
+.regroup-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px;}
+.regroup-card{border:1.5px solid var(--ink);border-radius:10px;padding:12px 16px 14px;background:#fff;}
+.regroup-sum{font-family:var(--font-sans),ui-monospace,monospace;font-variant-numeric:tabular-nums;font-weight:800;font-size:22px;letter-spacing:.01em;margin:0 0 8px;padding-bottom:8px;border-bottom:1.5px solid var(--ink);}
+.regroup-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;font-family:var(--font-sans),ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:15px;}
+.regroup-row+.regroup-row{border-top:1px dotted var(--rule);}
+.regroup-label{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;white-space:nowrap;}
+.regroup-value{white-space:nowrap;}
+.regroup-final{font-weight:800;}
+.regroup-final .regroup-label{color:var(--teal);}
+/* Two ovals to circle by hand, the way a printed page actually asks for a
+   yes/no answer, rather than the word "YES" sitting there for a pencil to
+   land on or miss. */
+.opt{display:inline-block;min-width:34px;margin-left:5px;padding:4px 11px;border:1.5px solid var(--ink);border-radius:99px;text-align:center;font-weight:700;}
+body.answers-visible .regroup-card[data-trade="yes"] .opt-yes,
+body.answers-visible .regroup-card[data-trade="no"] .opt-no{background:#eef1e8;border-color:#788c5d;color:#126a4d;}
+@media(max-width:640px){.regroup-grid{grid-template-columns:1fr;}}
 .wp{font-family:var(--font-text),Georgia,serif;font-size:.96rem;padding:9px 0;border-bottom:1px dotted var(--rule);}
 .wp .n{font-family:var(--font-sans),ui-monospace,monospace;color:var(--teal);margin-right:7px;}
 .pw{width:250px;margin:0 0 12px;}
@@ -314,19 +334,57 @@ body{padding:18px;background:#f5f4ef;}
   <div class="q">I traded <b>10</b> ones for <b>1</b> ten. Now I have <b>1</b> extra ten and <b>3</b> loose ones.</div>
   <div class="q">Tens: 3 + 2 + 1 = <b>6</b> &nbsp; &rarr; &nbsp; Answer: <b>63</b></div></div>
  <div class="ex"><p class="ex-t"><span class="n">2</span>Your turn. Build it, trade it, then fill in.</p>
-  <div class="q">47 + 18 &nbsp;&nbsp; Ones: 7 + 8 = <span class="bl s"></span> &nbsp; Trade? YES / NO &nbsp; Tens: <span class="bl s"></span> &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">26 + 35 &nbsp;&nbsp; Ones: 6 + 5 = <span class="bl s"></span> &nbsp; Trade? YES / NO &nbsp; Tens: <span class="bl s"></span> &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">54 + 29 &nbsp;&nbsp; Ones: 4 + 9 = <span class="bl s"></span> &nbsp; Trade? YES / NO &nbsp; Tens: <span class="bl s"></span> &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">43 + 12 &nbsp;&nbsp; Ones: 3 + 2 = <span class="bl s"></span> &nbsp; Trade? YES / NO &nbsp; Tens: <span class="bl s"></span> &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">66 + 27 &nbsp;&nbsp; Ones: 6 + 7 = <span class="bl s"></span> &nbsp; Trade? YES / NO &nbsp; Tens: <span class="bl s"></span> &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">31 + 45 &nbsp;&nbsp; Ones: 1 + 5 = <span class="bl s"></span> &nbsp; Trade? YES / NO &nbsp; Tens: <span class="bl s"></span> &nbsp; Answer <span class="bl"></span></div></div>
+  <div class="regroup-grid">
+   <div class="regroup-card" data-trade="yes">
+    <p class="regroup-sum">47 + 18</p>
+    <div class="regroup-row"><span class="regroup-label">Ones</span><span class="regroup-value">7 + 8 = <span class="bl s"></span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Trade?</span><span class="regroup-value"><span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Tens</span><span class="regroup-value"><span class="bl s"></span></span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card" data-trade="yes">
+    <p class="regroup-sum">26 + 35</p>
+    <div class="regroup-row"><span class="regroup-label">Ones</span><span class="regroup-value">6 + 5 = <span class="bl s"></span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Trade?</span><span class="regroup-value"><span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Tens</span><span class="regroup-value"><span class="bl s"></span></span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card" data-trade="yes">
+    <p class="regroup-sum">54 + 29</p>
+    <div class="regroup-row"><span class="regroup-label">Ones</span><span class="regroup-value">4 + 9 = <span class="bl s"></span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Trade?</span><span class="regroup-value"><span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Tens</span><span class="regroup-value"><span class="bl s"></span></span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card" data-trade="no">
+    <p class="regroup-sum">43 + 12</p>
+    <div class="regroup-row"><span class="regroup-label">Ones</span><span class="regroup-value">3 + 2 = <span class="bl s"></span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Trade?</span><span class="regroup-value"><span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Tens</span><span class="regroup-value"><span class="bl s"></span></span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card" data-trade="yes">
+    <p class="regroup-sum">66 + 27</p>
+    <div class="regroup-row"><span class="regroup-label">Ones</span><span class="regroup-value">6 + 7 = <span class="bl s"></span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Trade?</span><span class="regroup-value"><span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Tens</span><span class="regroup-value"><span class="bl s"></span></span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card" data-trade="no">
+    <p class="regroup-sum">31 + 45</p>
+    <div class="regroup-row"><span class="regroup-label">Ones</span><span class="regroup-value">1 + 5 = <span class="bl s"></span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Trade?</span><span class="regroup-value"><span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></span></div>
+    <div class="regroup-row"><span class="regroup-label">Tens</span><span class="regroup-value"><span class="bl s"></span></span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+  </div></div>
  <div class="ex"><p class="ex-t"><span class="n">3</span>Finish the sentence.</p>
   <div class="q" style="line-height:2.6">When the ones make more than ten, I trade <span class="bl s"></span> ones for <span class="bl s"></span> ten.</div>
   <div class="q" style="line-height:2.6">The little 1 I write above the tens column really means <span class="bl xw"></span>.</div></div>
  <div class="ex"><p class="ex-t"><span class="n">4</span>Draw 38 + 25 with sticks. Circle the bundle you made.</p>
   <div class="grid-paper"></div></div>
  <div class="pnote"><b>The test</b>Question 3, second line. If the student writes "one," stop and go back to the sticks. The student should write "one ten."</div>
- <div class="answers"><b>2.</b> 15 yes 6 = 65; 11 yes 6 = 61; 13 yes 8 = 83; 5 no 5 = 55; 13 yes 9 = 93; 6 no 7 = 76 &nbsp; <b>3.</b> 10 ones for 1 ten; the little 1 means one ten</div>
+ <div class="answers"><b>2.</b> 15,6,65; 11,6,61; 13,8,83; 5,5,55; 13,9,93; 6,7,76 &nbsp;<b>3.</b> 10 ones for 1 ten; the little 1 means one ten</div>
 </div>
 </div>
 <script>
