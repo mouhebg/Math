@@ -39,7 +39,7 @@ test("renders development preview metadata", async () => {
   const html = await response.text();
   assert.match(html, developmentPreviewMeta);
   assert.match(html, /Sync progress/);
-  assert.match(html, /Today(?:&apos;|’|')s lesson/);
+  assert.match(html, /Today(?:&apos;|â€™|')s lesson/);
 });
 
 test("uses a publishable Supabase browser key", async () => {
@@ -60,6 +60,15 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
   // container remains to freeze. Mandatory snapping must not come back.
   assert.doesNotMatch(css, /scroll-snap-type:[^;]*mandatory/);
   assert.doesNotMatch(css, /\.mobile-nav[^}]*backdrop-filter/s);
+
+  // The hero used to replace the expanded programme panel in the same click
+  // that navigated to its anchor. On touch browsers that left the scroll
+  // gesture competing with a large layout replacement. The hero now only
+  // navigates, while the programme's buttons own part selection.
+  assert.doesNotMatch(page, /href="#programme"\s+onClick=\{\(\) => choosePart/);
+  assert.match(page, /className="part-tabs" role="tablist"/);
+  assert.match(page, /role="tab"[\s\S]*onClick=\{\(\) => choosePart\(index\)\}/);
+  assert.match(page, /startTransition\(\(\) => \{/);
 });
 
 test("keeps the homepage scrolling at frame rate", async () => {
@@ -156,3 +165,4 @@ test("uses Thmanyah typography on the worksheets as well as the site", async () 
     assert.match(html, /--font-sans:"Thmanyah Sans"/, `${name} is missing the Thmanyah variables`);
   }
 });
+
