@@ -43,6 +43,12 @@
     --muted:#7C877F;
     --rule:#101A17;
     --answer:#158B5F;
+    --blue:#2E6FE0;
+    --coral:#E0543A;
+    --purple:#7449D6;
+    --gold:#C98A1F;
+    --teal:#158B5F;
+    --teal-soft:#E4F2ED;
   }
 
   *{box-sizing:border-box;}
@@ -76,7 +82,7 @@
   }
 .breadcrumb{display:flex;align-items:center;gap:6px;margin:0;font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;}
 .breadcrumb a{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-weight:600;padding:2px 6px;border-radius:4px;transition:background .15s;}
-.breadcrumb a:hover{background:var(--teal-soft);color:var(--teal);}
+.breadcrumb a:hover{background:var(--teal-soft);color:var(--green);}
 .breadcrumb .sep{color:var(--rule);font-size:13px;user-select:none;}
 .breadcrumb .current{color:var(--ink);font-weight:600;}
 
@@ -209,7 +215,7 @@
 
   .bar .whole,
   .bar .parts div{
-    border:2px solid var(--rule);
+    border:2px solid var(--bar-color, var(--rule));
     height:52px;
     display:flex;
     align-items:center;
@@ -219,11 +225,25 @@
     background:#fff;
   }
 
+  .bar .whole{border-bottom-width:4px;}
+
   .bar .parts{display:grid;grid-template-columns:1fr 1fr;}
 
   .bar .parts div{border-top:0;}
 
   .bar .parts div + div{border-left:0;}
+
+  /* A cheerful colour per bar card, cycling through the palette. */
+  .bargrid .bar:nth-child(6n+1){--bar-color:var(--blue);}
+  .bargrid .bar:nth-child(6n+2){--bar-color:var(--coral);}
+  .bargrid .bar:nth-child(6n+3){--bar-color:var(--purple);}
+  .bargrid .bar:nth-child(6n+4){--bar-color:var(--gold);}
+  .bargrid .bar:nth-child(6n+5){--bar-color:var(--teal);}
+  .bargrid .bar:nth-child(6n+6){--bar-color:var(--green);}
+  .framegrid .framecell:nth-child(4n+1) .bar{--bar-color:var(--blue);}
+  .framegrid .framecell:nth-child(4n+2) .bar{--bar-color:var(--coral);}
+  .framegrid .framecell:nth-child(4n+3) .bar{--bar-color:var(--purple);}
+  .framegrid .framecell:nth-child(4n+4) .bar{--bar-color:var(--gold);}
 
   .barcap{
     font-family:var(--font-sans),ui-monospace,monospace;
@@ -298,6 +318,7 @@
     .sheet{border:0;padding:0;}
     .q{break-inside:avoid;page-break-inside:avoid;}
     h1{font-size:32pt;}
+    .qhint{color:var(--ink);font-size:13px;font-style:normal;}
   }
 
   @media (max-width:520px){
@@ -541,7 +562,11 @@
   // Build every ten frame marked with data-frame="N"
   var COLS = 5, ROWS = 2, CELL = 50, PAD = 2;
 
-  function tenFrame(filled) {
+  // A cheerful colour per card rather than one flat black, matched to the
+  // same palette the part-whole bars cycle through.
+  var DOT_COLORS = ['#2E6FE0', '#E0543A', '#7449D6', '#C98A1F', '#158B5F', '#1E6B52'];
+
+  function tenFrame(filled, color) {
     var w = COLS * CELL + PAD * 2;
     var h = ROWS * CELL + PAD * 2;
     var parts = ['<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Ten frame showing ' + filled + '">'];
@@ -553,7 +578,7 @@
                    '" fill="#fff" stroke="#101A17" stroke-width="2"/>');
         if (i < filled) {
           parts.push('<circle cx="' + (x + CELL / 2) + '" cy="' + (y + CELL / 2) +
-                     '" r="16" fill="#141413"/>');
+                     '" r="16" fill="' + color + '"/>');
         }
         i++;
       }
@@ -562,12 +587,17 @@
     return parts.join('');
   }
 
-  var slots = document.querySelectorAll('[data-frame]');
-  for (var n = 0; n < slots.length; n++) {
-    var count = parseInt(slots[n].getAttribute('data-frame'), 10);
-    if (isNaN(count) || count < 0) { count = 0; }
-    if (count > COLS * ROWS) { count = COLS * ROWS; }
-    slots[n].innerHTML = tenFrame(count);
+  // Each .framegrid cycles the palette from its own start, so Q1's six
+  // frames and Q2's four frames both read as a deliberate set of colours.
+  var grids = document.querySelectorAll('.framegrid');
+  for (var g = 0; g < grids.length; g++) {
+    var slots = grids[g].querySelectorAll('[data-frame]');
+    for (var n = 0; n < slots.length; n++) {
+      var count = parseInt(slots[n].getAttribute('data-frame'), 10);
+      if (isNaN(count) || count < 0) { count = 0; }
+      if (count > COLS * ROWS) { count = COLS * ROWS; }
+      slots[n].innerHTML = tenFrame(count, DOT_COLORS[n % DOT_COLORS.length]);
+    }
   }
 
   // Answer toggle

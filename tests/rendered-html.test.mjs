@@ -39,7 +39,7 @@ test("renders development preview metadata", async () => {
   const html = await response.text();
   assert.match(html, developmentPreviewMeta);
   assert.match(html, /Sync progress/);
-  assert.match(html, /Today(?:&apos;|â€™|')s lesson/);
+  assert.match(html, /Today’s lesson/);
 });
 
 test("uses a publishable Supabase browser key", async () => {
