@@ -386,8 +386,10 @@ export default function Home() {
           the hero, so it carries none of the compositor cost a sticky menu
           bar has while the page scrolls underneath it. */}
       <div className="masthead">
-        <span className="brand-mark"><MathNestMark /></span>
-        <span className="masthead-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
+        <a className="masthead-brand" href="#today" aria-label="MathNest, where numbers grow. Back to the top.">
+          <span className="brand-mark"><MathNestMark /></span>
+          <span className="masthead-words"><strong>MathNest</strong><small>Where numbers grow</small></span>
+        </a>
         <SyncMenu
           syncState={syncState}
           user={user}
