@@ -34,8 +34,9 @@
 
 :root{
   --paper:#faf9f5; --card:#ffffff; --ink:#141413; --muted:#b0aea5; --rule:#e8e6dc;
-  --teal:#788c5d; --teal-soft:#eef1e8; --gold:#d97757; --gold-soft:#fdf0eb;
-  --crimson:#d97757; --crimson-soft:#fdf0eb;
+  --teal:#788c5d; --teal-soft:#eef1e8; --gold:#c98a1f; --gold-soft:#fbf1de;
+  --crimson:#c2447a; --crimson-soft:#fceef4; --blue:#2e6fe0; --blue-soft:#e9f0fd;
+  --purple:#7449d6; --purple-soft:#f1ecfd;
 }
 *{box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;}
@@ -61,7 +62,7 @@ h1{font-family:var(--font-sans),system-ui,sans-serif;font-weight:600;font-size:c
 .pwb-part:nth-child(1){border-bottom:5px solid var(--teal);}
 .pwb-part:nth-child(2){border-bottom:5px solid var(--gold);}
 .pwb-part:nth-child(3){border-bottom:5px solid var(--crimson);}
-.pwb-part:nth-child(4){border-bottom:5px solid var(--ink);}
+.pwb-part:nth-child(4){border-bottom:5px solid var(--blue);}
 .pwb-cap{font-family:var(--font-sans),ui-monospace,monospace;font-size:11px;color:var(--muted);margin-top:10px;}
 section{margin:52px 0 0;}
 h2{font-family:var(--font-sans),system-ui,sans-serif;font-weight:600;font-size:clamp(1.5rem,4.6vw,2rem);line-height:1.15;margin:0 0 6px;letter-spacing:-.015em;}
@@ -128,6 +129,11 @@ footer{margin-top:56px;padding-top:20px;border-top:1.5px solid var(--ink);font-f
 .ex{margin:0 0 24px;}
 .ex-t{font-family:var(--font-text),Georgia,serif;font-weight:700;font-size:.98rem;margin:0 0 4px;}
 .ex-t .n{font-family:var(--font-sans),ui-monospace,monospace;color:var(--teal);margin-right:8px;}
+.ex:nth-of-type(5n+1) .ex-t .n{color:var(--blue);}
+.ex:nth-of-type(5n+2) .ex-t .n{color:var(--crimson);}
+.ex:nth-of-type(5n+3) .ex-t .n{color:var(--purple);}
+.ex:nth-of-type(5n+4) .ex-t .n{color:var(--gold);}
+.ex:nth-of-type(5n+5) .ex-t .n{color:var(--teal);}
 .ex-h{font-size:.88rem;color:var(--muted);margin:0 0 12px;font-style:italic;}
 .qg{display:grid;gap:10px 16px;}
 .qg.c2{grid-template-columns:repeat(2,1fr);}
@@ -260,6 +266,7 @@ body{padding:18px;background:#f5f4ef;}
  .worksheet-tools{display:none!important;}
  .worksheet-shell{max-width:none;}
  .ws{display:block!important;border:0!important;padding:0!important;}
+ .ex-h{color:var(--ink);font-size:.95rem;font-style:normal;}
  @page{size:letter;margin:12mm;}
 }
 

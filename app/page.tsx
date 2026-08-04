@@ -308,7 +308,7 @@ export default function Home() {
     event.preventDefault();
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail) return;
-    setAuthMessage("Sending your secure sign-in linkâ€¦");
+    setAuthMessage("Sending your secure sign-in link…");
     const { error } = await supabase.auth.signInWithOtp({
       email: normalizedEmail,
       options: {
@@ -407,9 +407,9 @@ export default function Home() {
           </div>
         </div>
 
-        <article className="next-lesson-card" aria-label="Today's lesson">
+        <article className="next-lesson-card" aria-label="Today’s lesson">
           <header>
-            <span className="today-label">{programmeComplete ? "Programme complete" : "Todayâ€™s lesson"}</span>
+            <span className="today-label">{programmeComplete ? "Programme complete" : "Today’s lesson"}</span>
             <span className={`status-pill status-${getStatus(nextSession.id)}`}>{statusLabels[getStatus(nextSession.id)]}</span>
           </header>
           <div className="lesson-position">
@@ -477,7 +477,7 @@ export default function Home() {
                     <span className={`unit-state ${unitMastered === unit.sessions.length ? "complete" : unitPractising ? "active" : ""}`}>
                       {unitMastered === unit.sessions.length ? "Mastered" : unitPractising ? "In progress" : `${unitMastered}/${unit.sessions.length} complete`}
                     </span>
-                    <span className="unit-toggle-icon" aria-hidden="true">{isOpen ? "âˆ’" : "+"}</span>
+                    <span className="unit-toggle-icon" aria-hidden="true">{isOpen ? "−" : "+"}</span>
                   </button>
 
                   {isOpen && (
@@ -533,7 +533,7 @@ export default function Home() {
                                     onClick={() => setStatus(session.id, status)}
                                     key={status}
                                   >
-                                    {status === "mastered" && <span aria-hidden="true">âœ“</span>}{statusLabels[status]}
+                                    {status === "mastered" && <span aria-hidden="true">✓</span>}{statusLabels[status]}
                                   </button>
                                 ))}
                               </fieldset>
@@ -564,7 +564,7 @@ export default function Home() {
               <li>Sticks or straws and a few elastic bands, for bundling tens</li>
               <li>Scrap paper for drawing, folding, and cutting into strips</li>
               <li>None of the above is required. Pencil dots you can rub out do the same job</li>
-              <li>Questions such as â€œshow me how you knowâ€</li>
+              <li>Questions such as “show me how you know”</li>
               <li>One digit per square for written work</li>
             </ul>
           </details>
@@ -608,7 +608,7 @@ export default function Home() {
             onSubmitEmail={sendMagicLink}
             onSignOut={signOut}
           />
-          <a href="#today">Back to top â†‘</a>
+          <a href="#today">Back to top ↑</a>
         </div>
       </footer>
 
