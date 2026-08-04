@@ -339,13 +339,27 @@ h1 .accent::after {
 .next-actions .primary-action svg { width: 18px; }
 .next-actions .primary-action:hover svg { transform: translateX(4px); }
 
-/* Programme */
+/* Programme
+
+   Cards here used to lean on one trick throughout: tint the whole surface with
+   --part-colour. That put the same green wash on the part header, the unit row
+   and the weekly-rhythm note all at once, so "which part is this" and "what
+   kind of thing am I looking at" collapsed into a single signal, and the
+   colour read as decoration rather than information. It also buried the
+   warm-up card link as plain coloured text on a coloured field.
+
+   The replacement keeps colour meaningful but narrows it to a tab: a solid
+   accent on one edge, not a wash across the whole surface, so a card's colour
+   and its content stay legible independently. A shared asymmetric corner
+   pair (one tight, one generous, on opposite corners) replaces the uniform
+   rounded rectangle everywhere in this family, so the shape itself, not just
+   the colour, marks a card as belonging to this system. */
 
 .programme-section { padding: 80px max(22px, calc((100vw - 1120px) / 2)) 92px; border-top: 1px solid var(--line); background: var(--surface); }
 .part-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
 /* The tab carries its own part colour instead of turning blue when selected.
    Blue everywhere meant the six parts were only distinguishable by their number. */
-.part-tab { --part-colour: var(--green); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
+.part-tab { --part-colour: var(--green); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px 14px 19px; border: 1px solid var(--line); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
 .part-tab::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 4px; background: var(--part-colour); opacity: 0; pointer-events: none; }
 .part-tab:hover { border-color: color-mix(in srgb, var(--part-colour) 45%, var(--line)); box-shadow: var(--shadow-md); }
 .part-tab:hover::before { opacity: .5; }
@@ -357,7 +371,7 @@ h1 .accent::after {
 .part-4 { --part-colour: var(--blue); }
 .part-5 { --part-colour: var(--purple); }
 .part-6 { --part-colour: var(--teal); }
-.part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: color-mix(in srgb, var(--part-colour) 14%, white); color: var(--part-colour); font-size: 12px; font-weight: 900; }
+.part-index { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px 4px 12px 4px; background: color-mix(in srgb, var(--part-colour) 14%, white); color: var(--part-colour); font-size: 12px; font-weight: 900; }
 .part-tab.active .part-index { background: var(--part-colour); color: #fff; }
 .part-name { display: flex; min-width: 0; flex-direction: column; }
 .part-name strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
@@ -365,25 +379,30 @@ h1 .accent::after {
 .part-score { color: var(--ink-soft); font-size: 11px; font-weight: 700; }
 .part-tab.active .part-score { color: var(--part-colour); }
 
-.part-panel { --part-colour: var(--green); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--canvas); box-shadow: var(--shadow-sm); overflow: hidden; }
+.part-panel { --part-colour: var(--green); border: 1px solid var(--line); border-radius: var(--radius-lg) 8px var(--radius-lg) 8px; background: var(--canvas); box-shadow: var(--shadow-sm); overflow: hidden; }
 .part-panel-1 { --part-colour: var(--green); }
 .part-panel-2 { --part-colour: var(--coral); }
 .part-panel-3 { --part-colour: var(--yellow); }
 .part-panel-4 { --part-colour: var(--blue); }
 .part-panel-5 { --part-colour: var(--purple); }
 .part-panel-6 { --part-colour: var(--teal); }
-.part-panel-header { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 30px; padding: 26px 28px; border-bottom: 1px solid color-mix(in srgb, var(--part-colour) 22%, var(--line)); background: color-mix(in srgb, var(--part-colour) 8%, var(--surface-strong)); }
-.part-panel-header::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 3px; background: var(--part-colour); }
-.part-panel-header span { color: var(--part-colour); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.part-panel-header h3 { margin: 5px 0 0; font-family: var(--font-serif), "Noto Serif", Georgia, serif; font-size: 32px; font-weight: 600; line-height: 1.05; }
+/* A plain surface with a top accent bar, not a full wash: "which part" now
+   reads from the badge and the bar alone. */
+.part-panel-header { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 30px; padding: 28px 28px 26px; border-bottom: 1px solid var(--line); background: var(--surface-strong); }
+.part-panel-header::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--part-colour); }
+.part-panel-header span { display: inline-block; padding: 4px 11px; border-radius: 99px; background: var(--part-colour); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.part-panel-header h3 { margin: 11px 0 0; font-family: var(--font-serif), "Noto Serif", Georgia, serif; font-size: 32px; font-weight: 600; line-height: 1.05; }
 .part-panel-header p { margin: 0; color: var(--ink-soft); font-size: 14px; }
 .unit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 12px; }
-.unit-card { contain: content; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); box-shadow: var(--shadow-sm); overflow: hidden; }
+/* The part colour lives on the left edge as a tab, the way a binder divider
+   marks a section without recolouring every page behind it. The row itself
+   stays a plain surface whether closed, hovered or open. */
+.unit-card { contain: content; border: 1px solid var(--line); border-left: 5px solid var(--part-colour); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--surface-strong); box-shadow: var(--shadow-sm); overflow: hidden; }
 .unit-card:not(.open):hover { box-shadow: var(--shadow-md); }
-.unit-card.open { grid-column: 1 / -1; border-color: color-mix(in srgb, var(--part-colour) 55%, var(--line)); box-shadow: var(--shadow-md); }
+.unit-card.open { grid-column: 1 / -1; border-left-width: 7px; box-shadow: var(--shadow-md); }
 .unit-summary { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto 30px; gap: 14px; align-items: center; width: 100%; min-height: 72px; padding: 14px 16px; border: 0; background: transparent; text-align: left; cursor: pointer; }
-.unit-summary:hover { background: color-mix(in srgb, var(--part-colour) 6%, transparent); }
-.unit-card.open .unit-summary { background: color-mix(in srgb, var(--part-colour) 9%, var(--surface-strong)); color: var(--ink); }
+.unit-summary:hover { background: var(--canvas); }
+.unit-card.open .unit-summary { background: var(--canvas); color: var(--ink); border-bottom: 1px solid var(--line); }
 .unit-number { color: var(--part-colour); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .unit-title { overflow: hidden; font-size: 16px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .unit-state { padding: 5px 9px; border-radius: 99px; background: var(--canvas-deep); color: var(--ink-soft); font-size: 10px; font-weight: 700; white-space: nowrap; }
@@ -394,15 +413,22 @@ h1 .accent::after {
 /* The detail panel unrolls rather than appearing, so opening a unit reads as one
    continuous movement instead of a jump in page height. */
 .unit-detail { padding: 16px; }
-.weekly-note { display: grid; grid-template-columns: 115px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 16px 18px; border: 1px solid color-mix(in srgb, var(--part-colour) 26%, var(--line)); border-radius: var(--radius); background: color-mix(in srgb, var(--part-colour) 6%, var(--surface-strong)); }
-.weekly-note a:hover { text-decoration: underline; }
-.weekly-note a:hover svg { transform: translateX(3px); }
-.weekly-note > span { color: var(--part-colour); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+/* A dashed, part-neutral note rather than another part-coloured field, so it
+   reads as its own kind of thing: a standing reminder, not a subsection. The
+   link that used to be small coloured text is now the one filled, high-
+   contrast button in the row, because this is the thing most worth tapping. */
+.weekly-note { display: grid; grid-template-columns: 115px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 16px 18px; border: 1.5px dashed var(--line-strong); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--canvas); }
+.weekly-note > span { color: var(--ink-soft); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .weekly-note p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
-.weekly-note a { display: flex; align-items: center; gap: 6px; color: var(--part-colour); font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.weekly-note a { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 10px 16px; border-radius: 99px; background: var(--part-colour); color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.weekly-note a:hover { background: color-mix(in srgb, var(--part-colour) 82%, black); }
+.weekly-note a:hover svg { transform: translateX(3px); }
 .weekly-note svg { width: 16px; }
 .session-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
-.session-card { contain: content; --session-colour: var(--blue); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); box-shadow: var(--shadow-sm); overflow: hidden; }
+/* Session identity (A/B/C/D) lives on the left tab, same language as the unit
+   row above it. Learning status is a separate signal, a ring around the whole
+   card, so the two never have to fight over the same border. */
+.session-card { contain: content; --session-colour: var(--blue); border: 1px solid var(--line); border-left: 5px solid var(--session-colour); border-radius: var(--radius) 6px var(--radius) 6px; background: var(--surface-strong); box-shadow: var(--shadow-sm); overflow: hidden; }
 .session-card:hover { box-shadow: var(--shadow-md); }
 /* Each session in a unit gets its own hue, so A and B are never mistaken for one
    another. These stay clear of the yellow and green that carry learning status. */
@@ -410,14 +436,12 @@ h1 .accent::after {
 .session-slot-b { --session-colour: #7449d6; }
 .session-slot-c { --session-colour: #c03559; }
 .session-slot-d { --session-colour: #10786f; }
-/* Status rides on the card edge and a bar above the header, since the header
-   now carries its own tint for the session colour and would cover an inset. */
-.session-card.session-practising { border-color: var(--yellow); }
-.session-card.session-mastered { border-color: var(--green); }
-.session-card.session-practising .session-header { box-shadow: inset 0 4px var(--yellow); }
-.session-card.session-mastered .session-header { box-shadow: inset 0 4px var(--green); }
-.session-header { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 82px; padding: 16px 18px; border-bottom: 3px solid var(--session-colour); background: color-mix(in srgb, var(--session-colour) 6%, var(--surface-strong)); }
-.session-letter { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--session-colour); color: #fff; font-size: 15px; font-weight: 900; box-shadow: 0 2px 8px color-mix(in srgb, var(--session-colour) 40%, transparent); }
+.session-card.session-practising { box-shadow: 0 0 0 2.5px var(--yellow), var(--shadow-sm); }
+.session-card.session-mastered { box-shadow: 0 0 0 2.5px var(--green), var(--shadow-sm); }
+.session-header { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 82px; padding: 16px 18px; background: var(--surface-strong); }
+/* A rounded tag, not a circle avatar: the same corner pairing as the cards
+   themselves, at a small enough scale to read as a mark rather than a badge. */
+.session-letter { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px 4px 11px 4px; background: var(--session-colour); color: #fff; font-family: var(--font-serif), "Noto Serif", Georgia, serif; font-size: 18px; font-weight: 700; }
 .session-header > div > span { color: var(--session-colour); font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 .session-header h4 { margin: 3px 0 0; font-size: 18px; line-height: 1.15; }
 .kind { padding: 5px 8px; border-radius: 99px; font-size: 9px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
@@ -427,7 +451,9 @@ h1 .accent::after {
 .instruction-list { padding: 0 18px; }
 .instruction-list > div { display: grid; grid-template-columns: 100px 1fr; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
 .instruction-list > div:last-child { border-bottom: 0; }
-.instruction-list span { color: var(--green-dark); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+/* Matches the session's own colour rather than a fixed green, so a blue
+   session's fields read as part of the blue card, not a stray accent. */
+.instruction-list span { color: var(--session-colour); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .instruction-list p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
 .session-resources { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 14px 18px; border-top: 1px solid var(--line); }
 .session-resources a { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 13px; border: 1px solid var(--line-strong); border-radius: 99px; background: var(--surface-strong); color: var(--ink); font-size: 12px; font-weight: 700; text-decoration: none; }
