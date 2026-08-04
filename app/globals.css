@@ -303,14 +303,15 @@ h1 .accent::after {
    used to be blank, and it is the first thing that says the programme has a
    shape rather than being an undifferentiated pile of lessons. */
 .part-ribbon { display: flex; gap: 6px; margin-top: 34px; }
-.part-ribbon a { flex: 1; text-decoration: none; }
+.part-ribbon button { flex: 1; padding: 0; border: 0; background: transparent; cursor: pointer; font: inherit; }
 /* Each segment doubles as that part's progress bar: the track is the part colour
    held back, the fill is the same colour at full strength. */
 .part-ribbon i { display: block; height: 7px; border-radius: 99px; background: color-mix(in srgb, var(--part-colour) 26%, transparent); overflow: hidden; }
 .part-ribbon b { display: block; height: 100%; border-radius: inherit; background: var(--part-colour); }
-.part-ribbon a:hover i { transform: scaleY(1.7); }
+.part-ribbon button:hover i { transform: scaleY(1.7); }
 .part-ribbon span { display: block; margin-top: 9px; color: var(--ink-soft); font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
-.part-ribbon a:hover span { color: var(--ink); }
+.part-ribbon button:hover span,
+.part-ribbon button[aria-pressed="true"] span { color: var(--ink); }
 
 .next-lesson-card { position: relative; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-md); overflow: hidden; }
 .next-lesson-card::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--green), var(--blue), var(--purple)); pointer-events: none; }
