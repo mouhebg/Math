@@ -376,30 +376,6 @@ export default function Home() {
           <p className="today-lede">
             A calm mathematics programme built around understanding. Short sessions, clear parent guidance, and no pressure to rush.
           </p>
-          <div className="programme-summary" aria-label="Programme summary">
-            <span><strong>{weeklyUnits.length}</strong> units</span>
-            <span><strong>{sessions.length}</strong> sessions</span>
-            <span><strong>20</strong> min each</span>
-          </div>
-          <nav className="part-ribbon" aria-label="Programme parts">
-            {phases.map((phase, index) => {
-              const partSessions = weeklyUnits.slice(index * 4, index * 4 + 4).flatMap((unit) => unit.sessions);
-              const partMastered = partSessions.filter((session) => getStatus(session.id) === "mastered").length;
-              return (
-                <a
-                  className={`part-${index + 1}`}
-                  href="#programme"
-                  onClick={() => choosePart(index)}
-                  key={phase.name}
-                  aria-label={`${phase.name}, ${partMastered} of ${partSessions.length} sessions mastered`}
-                  title={phase.name}
-                >
-                  <i aria-hidden="true"><b style={{ width: `${(partMastered / partSessions.length) * 100}%` }} /></i>
-                  <span>Part {index + 1}</span>
-                </a>
-              );
-            })}
-          </nav>
         </div>
 
         <article className="next-lesson-card" aria-label="Today's lesson">
@@ -435,7 +411,25 @@ export default function Home() {
 
         <div className={`part-panel part-panel-${activePart + 1}`}>
           <header className="part-panel-header">
-            <div><span>Part {activePart + 1} of {phases.length}</span><h3>{phases[activePart].name}</h3></div>
+            <div>
+              {/* The hero's part ribbon is gone, so this is the only way left to
+                  reach another part. It sits on the label that already named the
+                  one you are looking at. */}
+              <div className="part-stepper">
+                <button
+                  onClick={() => choosePart(activePart - 1)}
+                  disabled={activePart === 0}
+                  aria-label="Previous part"
+                >&#8249;</button>
+                <span>Part {activePart + 1} of {phases.length}</span>
+                <button
+                  onClick={() => choosePart(activePart + 1)}
+                  disabled={activePart === phases.length - 1}
+                  aria-label="Next part"
+                >&#8250;</button>
+              </div>
+              <h3>{phases[activePart].name}</h3>
+            </div>
             <p>{phases[activePart].note}</p>
           </header>
 
