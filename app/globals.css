@@ -145,10 +145,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 
 /* One motion contract for everything that responds to a pointer, so a hover
    never feels quicker in one section than in another. */
-a, button, summary, details, .part-tab, .unit-card, .session-card {
+a:not(.site-header nav a), button:not(.next-actions .primary-action), summary, details, .part-tab, .unit-card, .session-card {
   transition: color var(--speed) var(--ease), background-color var(--speed) var(--ease),
-    border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease),
-    transform var(--speed) var(--ease);
+    border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease);
+}
+.site-header nav a, .next-actions .primary-action {
+  transition: color var(--speed) var(--ease), background-color var(--speed) var(--ease),
+    border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease);
 }
 
 .noscript-banner { padding: 14px 22px; border-bottom: 1px solid var(--coral); background: var(--coral-soft); color: var(--ink); text-align: center; }
@@ -172,6 +175,7 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
   background: var(--surface);
   will-change: scroll-position;
   contain: layout style;
+  isolation: isolate;
 }
 
 .brand { display: flex; align-items: center; gap: 9px; margin-right: auto; color: var(--navy); text-decoration: none; }
@@ -185,7 +189,7 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
 /* The underline grows from the centre on hover rather than a filled pill, so the
    nav stays quiet while still answering the pointer. */
 .site-header nav a { position: relative; padding: 9px 11px; border-radius: var(--radius-sm); color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; will-change: color; }
-.site-header nav a::after { content: ""; position: absolute; bottom: 4px; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--blue); transform: scaleX(0); transition: transform var(--speed) var(--ease); will-change: transform; backface-visibility: hidden; }
+.site-header nav a::after { content: ""; position: absolute; bottom: 4px; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--blue); transform: scaleX(0); transition: transform var(--speed) var(--ease); will-change: transform; backface-visibility: hidden; pointer-events: none; }
 .site-header nav a:hover { color: var(--blue-dark); }
 .site-header nav a:hover::after { transform: scaleX(1); }
 
@@ -209,7 +213,7 @@ a, button, summary, details, .part-tab, .unit-card, .session-card {
 .sync-trigger.sync-error > i { background: var(--coral); }
 .sync-panel { position: absolute; top: calc(100% + 13px); right: 0; z-index: 50; width: min(390px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-lift); animation: panel-in .22s var(--ease) both; }
 @keyframes panel-in { from { opacity: 0; transform: translateY(-8px) scale(.98); } }
-.sync-panel::before { content: ""; position: absolute; top: -7px; right: 28px; width: 12px; height: 12px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--surface-strong); transform: rotate(45deg); }
+.sync-panel::before { content: ""; position: absolute; top: -7px; right: 28px; width: 12px; height: 12px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--surface-strong); transform: rotate(45deg); pointer-events: none; }
 .sync-panel-kicker { color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .sync-panel h2 { margin: 8px 0 10px; font-size: 28px; font-weight: 700; line-height: 1.1; }
 .sync-panel > p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
@@ -290,6 +294,7 @@ h1 .accent::after {
   opacity: .42;
   transform-origin: left;
   animation: underline-in .9s .35s var(--ease) both;
+  pointer-events: none;
 }
 @keyframes underline-in { from { transform: scaleX(0); } }
 
@@ -314,7 +319,7 @@ h1 .accent::after {
 .part-ribbon a:hover span { color: var(--ink); }
 
 .next-lesson-card { position: relative; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-strong); box-shadow: var(--shadow-md); overflow: hidden; }
-.next-lesson-card::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--green), var(--blue), var(--purple)); }
+.next-lesson-card::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--green), var(--blue), var(--purple)); pointer-events: none; }
 .next-lesson-card::after { content: ""; position: absolute; right: -60px; bottom: -60px; width: 170px; height: 170px; border: 28px solid var(--blue-soft); border-radius: 50%; opacity: .8; pointer-events: none; }
 .next-lesson-card > header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .today-label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
@@ -344,7 +349,7 @@ h1 .accent::after {
 /* The tab carries its own part colour instead of turning blue when selected.
    Blue everywhere meant the six parts were only distinguishable by their number. */
 .part-tab { --part-colour: var(--green); position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; min-height: 88px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-strong); text-align: left; cursor: pointer; box-shadow: var(--shadow-sm); overflow: hidden; }
-.part-tab::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 4px; background: var(--part-colour); opacity: 0; transition: opacity var(--speed) var(--ease); }
+.part-tab::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 4px; background: var(--part-colour); opacity: 0; transition: opacity var(--speed) var(--ease); pointer-events: none; }
 .part-tab:hover { border-color: color-mix(in srgb, var(--part-colour) 45%, var(--line)); transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .part-tab:hover::before { opacity: .5; }
 .part-tab.active { border-color: var(--part-colour); background: color-mix(in srgb, var(--part-colour) 7%, var(--surface-strong)); color: var(--ink); box-shadow: var(--shadow-md); }

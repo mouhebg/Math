@@ -1,56 +1,50 @@
-```
-# Dependencies
-node_modules/
+# Examples
 
-# Build outputs
+## Example 1:
+**Input:**
+- Added files: `[src/main.py, README.md, config.json]`
+- Deleted files: `[old/unused.py]`
+- Modified files: `[utils.py]`
+- Current .gitignore: `(empty)`
+
+**Output:** `(empty — output nothing)`
+
+## Example 2:
+**Input:**
+- Added files: `[pycache/main.cpython-310.pyc, dist/app.js, .env.local, .vscode/settings.json]`
+- Deleted files: `[]`
+- Modified files: `[]`
+- Current .gitignore: `*.log`
+
+**Output:**
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
 dist/
 build/
-.next/
-out/
 
-# Logs
+# Dependencies
+.venv/
+venv/
+node_modules/
+
+# Logs and temp files
 *.log
+*.tmp
+*.swp
 
-# Environment variables
+# Environment
 .env
 .env.local
-*.env.*
+.env.*
 
-# Editor files
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
+# Original rules preserved
 *.log
-.git/modules/
-.pytest_cache/
-.mypy_cache/
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 ```
