@@ -142,6 +142,26 @@ footer{margin-top:56px;padding-top:20px;border-top:1.5px solid var(--ink);font-f
 .q{font-family:var(--font-sans),ui-monospace,monospace;font-size:15px;padding:7px 0;border-bottom:1px dotted var(--rule);}
 .bl{display:inline-block;min-width:46px;border-bottom:1.5px solid var(--ink);}
 .bl.w{min-width:96px;} .bl.xw{min-width:170px;} .bl.s{min-width:30px;}
+
+/* One problem, one card: each field gets its own row instead of running the
+   whole problem together as a single sentence that wraps wherever the
+   viewport happens to break it, splitting a label from its own blank. */
+.regroup-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px;}
+.regroup-card{border:1.5px solid var(--ink);border-radius:10px;padding:12px 16px 14px;background:#fff;}
+.regroup-sum{font-family:var(--font-sans),ui-monospace,monospace;font-variant-numeric:tabular-nums;font-weight:800;font-size:22px;letter-spacing:.01em;margin:0 0 8px;padding-bottom:8px;border-bottom:1.5px solid var(--ink);}
+.regroup-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;font-family:var(--font-sans),ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:15px;}
+.regroup-row+.regroup-row{border-top:1px dotted var(--rule);}
+.regroup-label{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;white-space:nowrap;}
+.regroup-value{white-space:nowrap;}
+.regroup-final{font-weight:800;}
+.regroup-final .regroup-label{color:var(--teal);}
+/* Two ovals to circle by hand, the way a printed page actually asks for a
+   yes/no answer, rather than the word "YES" sitting there for a pencil to
+   land on or miss. */
+.opt{display:inline-block;min-width:34px;margin-left:5px;padding:4px 11px;border:1.5px solid var(--ink);border-radius:99px;text-align:center;font-weight:700;}
+body.answers-visible [data-trade="yes"] .opt-yes,
+body.answers-visible [data-trade="no"] .opt-no{background:#eef1e8;border-color:#788c5d;color:#126a4d;}
+@media(max-width:640px){.regroup-grid{grid-template-columns:1fr;}}
 .wp{font-family:var(--font-text),Georgia,serif;font-size:.96rem;padding:9px 0;border-bottom:1px dotted var(--rule);}
 .wp .n{font-family:var(--font-sans),ui-monospace,monospace;color:var(--teal);margin-right:7px;}
 .pw{width:250px;margin:0 0 12px;}
@@ -315,20 +335,48 @@ body{padding:18px;background:#f5f4ef;}
   <div class="q">Now 52 is <b>4</b> tens and <b>12</b> ones.</div>
   <div class="q">12 minus 7 = <b>5</b>. &nbsp; 4 tens minus 2 tens = <b>2</b> tens. &nbsp; Answer: <b>25</b></div></div>
  <div class="ex"><p class="ex-t"><span class="n">2</span>Build it, break a bundle, then fill in.</p>
-  <div class="q">63 minus 48 &nbsp;&nbsp; 63 becomes <span class="bl s"></span> tens and <span class="bl s"></span> ones &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">71 minus 35 &nbsp;&nbsp; 71 becomes <span class="bl s"></span> tens and <span class="bl s"></span> ones &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">45 minus 19 &nbsp;&nbsp; 45 becomes <span class="bl s"></span> tens and <span class="bl s"></span> ones &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">84 minus 26 &nbsp;&nbsp; 84 becomes <span class="bl s"></span> tens and <span class="bl s"></span> ones &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">60 minus 34 &nbsp;&nbsp; 60 becomes <span class="bl s"></span> tens and <span class="bl s"></span> ones &nbsp; Answer <span class="bl"></span></div>
-  <div class="q">92 minus 57 &nbsp;&nbsp; 92 becomes <span class="bl s"></span> tens and <span class="bl s"></span> ones &nbsp; Answer <span class="bl"></span></div></div>
+  <div class="regroup-grid">
+   <div class="regroup-card">
+    <p class="regroup-sum">63 minus 48</p>
+    <div class="regroup-row"><span class="regroup-label">Becomes</span><span class="regroup-value"><span class="bl s"></span> tens, <span class="bl s"></span> ones</span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card">
+    <p class="regroup-sum">71 minus 35</p>
+    <div class="regroup-row"><span class="regroup-label">Becomes</span><span class="regroup-value"><span class="bl s"></span> tens, <span class="bl s"></span> ones</span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card">
+    <p class="regroup-sum">45 minus 19</p>
+    <div class="regroup-row"><span class="regroup-label">Becomes</span><span class="regroup-value"><span class="bl s"></span> tens, <span class="bl s"></span> ones</span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card">
+    <p class="regroup-sum">84 minus 26</p>
+    <div class="regroup-row"><span class="regroup-label">Becomes</span><span class="regroup-value"><span class="bl s"></span> tens, <span class="bl s"></span> ones</span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card">
+    <p class="regroup-sum">60 minus 34</p>
+    <div class="regroup-row"><span class="regroup-label">Becomes</span><span class="regroup-value"><span class="bl s"></span> tens, <span class="bl s"></span> ones</span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+   <div class="regroup-card">
+    <p class="regroup-sum">92 minus 57</p>
+    <div class="regroup-row"><span class="regroup-label">Becomes</span><span class="regroup-value"><span class="bl s"></span> tens, <span class="bl s"></span> ones</span></div>
+    <div class="regroup-row regroup-final"><span class="regroup-label">Answer</span><span class="regroup-value"><span class="bl"></span></span></div>
+   </div>
+  </div></div>
  <div class="ex"><p class="ex-t"><span class="n">3</span>Do you need to break a bundle? Circle YES or NO. Do not work them out.</p>
   <div class="qg c2">
-   <div class="q">76 minus 34 &nbsp;&nbsp; YES / NO</div><div class="q">52 minus 28 &nbsp;&nbsp; YES / NO</div>
-   <div class="q">89 minus 45 &nbsp;&nbsp; YES / NO</div><div class="q">41 minus 17 &nbsp;&nbsp; YES / NO</div>
+   <div class="q" data-trade="no">76 minus 34 &nbsp; <span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></div>
+   <div class="q" data-trade="yes">52 minus 28 &nbsp; <span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></div>
+   <div class="q" data-trade="no">89 minus 45 &nbsp; <span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></div>
+   <div class="q" data-trade="yes">41 minus 17 &nbsp; <span class="opt opt-yes">YES</span><span class="opt opt-no">NO</span></div>
   </div></div>
  <div class="ex"><p class="ex-t"><span class="n">4</span>Finish the sentence.</p>
   <div class="q" style="line-height:2.6">When there are not enough ones, I trade <span class="bl s"></span> ten for <span class="bl s"></span> ones.</div></div>
- <div class="answers"><b>2.</b> 5/13=15; 6/11=36; 3/15=26; 7/14=58; 5/10=26; 8/12=35 &nbsp; <b>3.</b> NO, YES, NO, YES &nbsp; <b>4.</b> 1 ten for 10 ones</div>
+ <div class="answers"><b>2.</b> 5,13,15; 6,11,36; 3,15,26; 7,14,58; 5,10,26; 8,12,35 &nbsp; <b>3.</b> NO, YES, NO, YES &nbsp; <b>4.</b> 1 ten for 10 ones</div>
 </div>
 </div>
 <script>
