@@ -82,6 +82,19 @@ test("keeps homepage scrolling interruptible on mobile browsers", async () => {
     page,
     /function choosePartAndJump\(part: number\) \{\s*choosePart\(part\);\s*window\.requestAnimationFrame\(\(\) => \{\s*document\.getElementById\("programme"\)\?\.scrollIntoView\(\{ block: "start" \}\);/,
   );
+
+  // The same bug, the same fix: every href="#today" (the logo, "Back to
+  // top", and the mobile nav's "Today" link) must intercept its click and
+  // scroll itself rather than let a native hash-navigation click hand Chrome
+  // a URL change right before the next scroll gesture.
+  const todayHrefs = page.match(/<a[^>]*href="#today"[^>]*>/g) ?? [];
+  const todayHandledHrefs = todayHrefs.filter((tag) => /onClick=\{scrollToToday\}/.test(tag));
+  assert.equal(todayHrefs.length, todayHandledHrefs.length, "every href=\"#today\" must have onClick={scrollToToday}");
+  assert.ok(todayHrefs.length >= 3, "expected the logo, footer and mobile nav to all point at #today");
+  assert.match(
+    page,
+    /function scrollToToday\(event: MouseEvent<HTMLAnchorElement>\) \{\s*event\.preventDefault\(\);\s*document\.getElementById\("today"\)\?\.scrollIntoView\(\{ block: "start" \}\);/,
+  );
 });
 
 test("keeps the homepage scrolling at frame rate", async () => {
