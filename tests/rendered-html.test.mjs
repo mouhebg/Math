@@ -85,6 +85,27 @@ test("keeps the homepage scrolling at frame rate", async () => {
   assert.doesNotMatch(declarations(css), /will-change/);
 });
 
+test("keeps the page free of transitions and animations", async () => {
+  // Nothing on this page moves. A transition or a keyframe that is live during
+  // an interaction repaints its element every frame for its whole duration, and
+  // one click here changes state on many elements at once: a part tab restyles
+  // four tabs and rebuilds the unit grid, and marking a session restyles the
+  // card, its header, the unit counter, the part score and the progress meter.
+  // On a 20x-throttled CPU one status click cost 1105ms of main thread with the
+  // motion present and 410ms without it. Reported as the page freezing on click.
+  const css = declarations(await readFile(new URL("../app/globals.css", import.meta.url), "utf8"));
+
+  assert.doesNotMatch(css, /\btransition\s*:/);
+  assert.doesNotMatch(css, /\btransition-(duration|property|delay|timing-function)\s*:/);
+  assert.doesNotMatch(css, /\banimation\s*:/);
+  assert.doesNotMatch(css, /\banimation-(name|duration|delay|iteration-count)\s*:/);
+  assert.doesNotMatch(css, /@keyframes/);
+
+  // With no durations anywhere, prefers-reduced-motion is satisfied by
+  // construction and needs no media query of its own.
+  assert.doesNotMatch(css, /prefers-reduced-motion/);
+});
+
 test("keeps the menu bar cheap to paint", async () => {
   // The menu bar sits over the page for the whole visit, so anything it does on
   // hover is paid for on top of whatever else is on screen. An animated
