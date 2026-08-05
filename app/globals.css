@@ -428,6 +428,16 @@ h1 .accent::after {
 .session-resources .open-resource:hover { background: color-mix(in srgb, var(--session-colour) 82%, black); color: #fff; transform: translateY(-1px); }
 .session-resources svg { width: 17px; height: 17px; }
 
+/* A second worksheet for the same skill, offered next to the first rather
+   than folded into it, since a shaky first attempt calls for fresh numbers
+   on their own page, not more rows tacked onto the original. */
+.extra-practice { margin: 0 18px 16px; padding: 13px 14px; border: 1px solid var(--coral); border-left-width: 4px; border-radius: 8px; background: var(--coral-soft); }
+.extra-practice span { display: block; margin-bottom: 4px; color: var(--coral-dark); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.extra-practice p { margin: 0 0 10px; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+.extra-practice a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 99px; background: var(--coral); color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; }
+.extra-practice a:hover { background: var(--coral-dark); }
+.extra-practice svg { width: 15px; height: 15px; }
+
 /* The three status buttons are the control a child presses most, so each state
    answers in its own colour rather than all three turning the same blue. */
 .status-control { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 0; padding: 0 18px 18px; border: 0; }
