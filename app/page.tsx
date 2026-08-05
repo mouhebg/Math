@@ -9,6 +9,7 @@ import { ArrowIcon, BookIcon, DownloadIcon, GuideIcon, MathNestMark, RouteIcon }
 
 type SessionStatus = "not-started" | "practising" | "mastered";
 type StatusMap = Record<string, SessionStatus>;
+type DateMap = Record<string, string>;
 
 const statusLabels: Record<SessionStatus, string> = {
   "not-started": "Not started",
@@ -21,6 +22,7 @@ const storageKeys = {
   progress: "mathnest-math-progress",
   pending: "mathnest-math-sync-pending",
   location: "mathnest-math-location",
+  masteredDates: "mathnest-math-mastered-dates",
 } as const;
 
 // Progress saved under the previous site name is still read once, then rewritten under the current keys.
@@ -39,8 +41,13 @@ function worksheetName(session: Session) {
   return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
 }
 
+function formatMasteredDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
 export default function Home() {
   const [statuses, setStatuses] = useState<StatusMap>({});
+  const [masteredDates, setMasteredDates] = useState<DateMap>({});
   const [activePart, setActivePart] = useState(0);
   // Units the reader has expanded. A list rather than a single value, so opening
   // one unit never collapses another; closing is always a deliberate act.
@@ -55,6 +62,7 @@ export default function Home() {
   const [cloudLoaded, setCloudLoaded] = useState(false);
   const openUnit = openUnits.length ? openUnits[openUnits.length - 1] : 0;
   const statusesRef = useRef<StatusMap>({});
+  const masteredDatesRef = useRef<DateMap>({});
   const pendingSyncRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -78,6 +86,18 @@ export default function Home() {
 
         statusesRef.current = nextStatuses;
         setStatuses(nextStatuses);
+
+        const storedMasteredDates = window.localStorage.getItem(storageKeys.masteredDates);
+        if (storedMasteredDates) {
+          const savedDates = JSON.parse(storedMasteredDates) as DateMap;
+          const nextDates: DateMap = {};
+          for (const session of sessions) {
+            if (typeof savedDates[session.id] === "string") nextDates[session.id] = savedDates[session.id];
+          }
+          masteredDatesRef.current = nextDates;
+          setMasteredDates(nextDates);
+        }
+
         const savedPending = readStored("pending");
         if (savedPending) {
           pendingSyncRef.current = new Set(JSON.parse(savedPending) as string[]);
@@ -166,18 +186,25 @@ export default function Home() {
       }
 
       const localStatuses = statusesRef.current;
+      const localDates = masteredDatesRef.current;
       const pending = pendingSyncRef.current;
       const merged: StatusMap = { ...localStatuses };
+      const mergedDates: DateMap = { ...localDates };
       const remoteIds = new Set<string>();
 
       for (const row of progressResult.data ?? []) {
         if (!["not-started", "practising", "mastered"].includes(row.status)) continue;
         remoteIds.add(row.session_id);
-        if (!pending.has(row.session_id)) merged[row.session_id] = row.status as SessionStatus;
+        if (!pending.has(row.session_id)) {
+          merged[row.session_id] = row.status as SessionStatus;
+          if (row.status === "mastered" && row.updated_at) mergedDates[row.session_id] = row.updated_at;
+        }
       }
 
       statusesRef.current = merged;
       setStatuses(merged);
+      masteredDatesRef.current = mergedDates;
+      setMasteredDates(mergedDates);
 
       const rowsToUpload = Object.entries(merged)
         .filter(([id]) => pending.has(id) || !remoteIds.has(id))
@@ -185,7 +212,7 @@ export default function Home() {
           user_id: user!.id,
           session_id: sessionId,
           status,
-          updated_at: new Date().toISOString(),
+          updated_at: status === "mastered" ? (mergedDates[sessionId] ?? new Date().toISOString()) : new Date().toISOString(),
         }));
 
       if (rowsToUpload.length) {
@@ -229,6 +256,7 @@ export default function Home() {
     if (!ready) return;
     try {
       window.localStorage.setItem(storageKeys.statuses, JSON.stringify(statuses));
+      window.localStorage.setItem(storageKeys.masteredDates, JSON.stringify(masteredDates));
       window.localStorage.setItem(
         storageKeys.progress,
         JSON.stringify(sessions.filter((session) => statuses[session.id] === "mastered").map((session) => session.id)),
@@ -236,7 +264,7 @@ export default function Home() {
     } catch {
       // Local progress remains available for this visit when storage is unavailable.
     }
-  }, [statuses, ready]);
+  }, [statuses, masteredDates, ready]);
 
   useEffect(() => {
     if (!ready || openUnit === 0) return;
@@ -273,9 +301,17 @@ export default function Home() {
   }
 
   function setStatus(id: string, status: SessionStatus) {
+    const now = new Date().toISOString();
     const next = { ...statusesRef.current, [id]: status };
     statusesRef.current = next;
     setStatuses(next);
+
+    if (status === "mastered") {
+      const nextDates = { ...masteredDatesRef.current, [id]: now };
+      masteredDatesRef.current = nextDates;
+      setMasteredDates(nextDates);
+    }
+
     pendingSyncRef.current.add(id);
     try {
       window.localStorage.setItem(storageKeys.pending, JSON.stringify([...pendingSyncRef.current]));
@@ -289,7 +325,7 @@ export default function Home() {
         user_id: user.id,
         session_id: id,
         status,
-        updated_at: new Date().toISOString(),
+        updated_at: now,
       }, { onConflict: "user_id,session_id" }).then(({ error }) => {
         if (error) {
           setSyncState("error");
@@ -588,6 +624,9 @@ export default function Home() {
                                   </button>
                                 ))}
                               </fieldset>
+                              {currentStatus === "mastered" && masteredDates[session.id] && (
+                                <p className="mastered-date">Mastered {formatMasteredDate(masteredDates[session.id])}</p>
+                              )}
                             </section>
                           );
                         })}
