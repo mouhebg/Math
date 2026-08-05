@@ -41,6 +41,10 @@ function worksheetName(session: Session) {
   return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
 }
 
+function extraWorksheetName(session: Session) {
+  return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}-extra.html`;
+}
+
 function formatMasteredDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
@@ -610,6 +614,14 @@ export default function Home() {
                                 <a className="open-resource" href={`worksheets/${worksheetName(session)}`} target="_blank" rel="noreferrer"><BookIcon />Open worksheet</a>
                                 <a href={`worksheets/${worksheetName(session)}`} download aria-label={`Download Unit ${unit.week}, Session ${session.letter}`}><DownloadIcon /><span>Download</span></a>
                               </div>
+
+                              {session.extraPractice && (
+                                <div className="extra-practice">
+                                  <span>Still shaky? Try another set</span>
+                                  <p>{session.extraPractice.focus}</p>
+                                  <a href={`worksheets/${extraWorksheetName(session)}`} target="_blank" rel="noreferrer"><BookIcon />Open extra practice</a>
+                                </div>
+                              )}
 
                               <fieldset className="status-control">
                                 <legend>Learning status</legend>
