@@ -171,7 +171,7 @@ body.answers-visible .bl{border-bottom-color:#788c5d;}
   .worksheet-shell{max-width:none;}
   .ws{display:block!important;border:0!important;padding:0!important;}
   .ex-h{color:var(--ink);font-size:.95rem;font-style:normal;}
-  @page{size:letter;margin:12mm;}
+  @page{size:letter;margin:12mm 12mm 16mm;@bottom-center{content:"Page " counter(page) " of " counter(pages);font-family:ui-monospace,monospace;font-size:9pt;color:#9a9a9a;}}
   body.answers-visible .inline-answer-value,body.answers-visible .inline-answer-card{color:#788c5d!important;}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
