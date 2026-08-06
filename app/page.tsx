@@ -23,6 +23,7 @@ const storageKeys = {
   pending: "mathnest-math-sync-pending",
   location: "mathnest-math-location",
   masteredDates: "mathnest-math-mastered-dates",
+  extraMasteredDates: "mathnest-math-extra-mastered-dates",
 } as const;
 
 // Progress saved under the previous site name is still read once, then rewritten under the current keys.
@@ -52,6 +53,7 @@ function formatMasteredDate(iso: string) {
 export default function Home() {
   const [statuses, setStatuses] = useState<StatusMap>({});
   const [masteredDates, setMasteredDates] = useState<DateMap>({});
+  const [extraMasteredDates, setExtraMasteredDates] = useState<DateMap>({});
   const [activePart, setActivePart] = useState(0);
   // Units the reader has expanded. A list rather than a single value, so opening
   // one unit never collapses another; closing is always a deliberate act.
@@ -67,6 +69,7 @@ export default function Home() {
   const openUnit = openUnits.length ? openUnits[openUnits.length - 1] : 0;
   const statusesRef = useRef<StatusMap>({});
   const masteredDatesRef = useRef<DateMap>({});
+  const extraMasteredDatesRef = useRef<DateMap>({});
   const pendingSyncRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -100,6 +103,19 @@ export default function Home() {
           }
           masteredDatesRef.current = nextDates;
           setMasteredDates(nextDates);
+        }
+
+        const storedExtraMasteredDates = window.localStorage.getItem(storageKeys.extraMasteredDates);
+        if (storedExtraMasteredDates) {
+          const savedExtraDates = JSON.parse(storedExtraMasteredDates) as DateMap;
+          const nextExtraDates: DateMap = {};
+          for (const session of sessions) {
+            if (session.extraPractice && typeof savedExtraDates[session.id] === "string") {
+              nextExtraDates[session.id] = savedExtraDates[session.id];
+            }
+          }
+          extraMasteredDatesRef.current = nextExtraDates;
+          setExtraMasteredDates(nextExtraDates);
         }
 
         const savedPending = readStored("pending");
@@ -261,6 +277,7 @@ export default function Home() {
     try {
       window.localStorage.setItem(storageKeys.statuses, JSON.stringify(statuses));
       window.localStorage.setItem(storageKeys.masteredDates, JSON.stringify(masteredDates));
+      window.localStorage.setItem(storageKeys.extraMasteredDates, JSON.stringify(extraMasteredDates));
       window.localStorage.setItem(
         storageKeys.progress,
         JSON.stringify(sessions.filter((session) => statuses[session.id] === "mastered").map((session) => session.id)),
@@ -268,7 +285,7 @@ export default function Home() {
     } catch {
       // Local progress remains available for this visit when storage is unavailable.
     }
-  }, [statuses, masteredDates, ready]);
+  }, [statuses, masteredDates, extraMasteredDates, ready]);
 
   useEffect(() => {
     if (!ready || openUnit === 0) return;
@@ -340,6 +357,20 @@ export default function Home() {
         setSyncState("synced");
       });
     }
+  }
+
+  // Extra-practice worksheets sit outside the main pathway, so they get their
+  // own local timestamp rather than a full three-state status synced to the
+  // cloud: math_session_progress only accepts the site's own session ids.
+  function toggleExtraMastered(id: string) {
+    const next = { ...extraMasteredDatesRef.current };
+    if (next[id]) {
+      delete next[id];
+    } else {
+      next[id] = new Date().toISOString();
+    }
+    extraMasteredDatesRef.current = next;
+    setExtraMasteredDates(next);
   }
 
   // The menu bar's callbacks keep a stable identity, so a status change three
@@ -619,7 +650,20 @@ export default function Home() {
                                 <div className="extra-practice">
                                   <span>Still shaky? Try another set</span>
                                   <p>{session.extraPractice.focus}</p>
-                                  <a href={`worksheets/${extraWorksheetName(session)}`} target="_blank" rel="noreferrer"><BookIcon />Open extra practice</a>
+                                  <div className="extra-practice-row">
+                                    <a href={`worksheets/${extraWorksheetName(session)}`} target="_blank" rel="noreferrer"><BookIcon />Open extra practice</a>
+                                    <button
+                                      type="button"
+                                      className={`extra-mastered-toggle${extraMasteredDates[session.id] ? " on" : ""}`}
+                                      aria-pressed={Boolean(extraMasteredDates[session.id])}
+                                      onClick={() => toggleExtraMastered(session.id)}
+                                    >
+                                      {extraMasteredDates[session.id] ? <><span aria-hidden="true">✓</span> Mastered</> : "Mark mastered"}
+                                    </button>
+                                  </div>
+                                  {extraMasteredDates[session.id] && (
+                                    <p className="extra-mastered-date">Mastered {formatMasteredDate(extraMasteredDates[session.id])}</p>
+                                  )}
                                 </div>
                               )}
 
