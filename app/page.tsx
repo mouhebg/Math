@@ -42,8 +42,13 @@ function worksheetName(session: Session) {
   return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}.html`;
 }
 
-function extraWorksheetName(session: Session) {
-  return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}-extra.html`;
+function extraWorksheetName(session: Session, roundIndex: number) {
+  const suffix = roundIndex === 0 ? "" : `-${roundIndex + 1}`;
+  return `mathnest-unit-${String(session.unit).padStart(2, "0")}-session-${session.letter.toLowerCase()}-extra${suffix}.html`;
+}
+
+function extraMasteredKey(sessionId: string, roundIndex: number) {
+  return `${sessionId}::${roundIndex}`;
 }
 
 function formatMasteredDate(iso: string) {
@@ -110,9 +115,10 @@ export default function Home() {
           const savedExtraDates = JSON.parse(storedExtraMasteredDates) as DateMap;
           const nextExtraDates: DateMap = {};
           for (const session of sessions) {
-            if (session.extraPractice && typeof savedExtraDates[session.id] === "string") {
-              nextExtraDates[session.id] = savedExtraDates[session.id];
-            }
+            session.extraPractice?.forEach((_round, roundIndex) => {
+              const key = extraMasteredKey(session.id, roundIndex);
+              if (typeof savedExtraDates[key] === "string") nextExtraDates[key] = savedExtraDates[key];
+            });
           }
           extraMasteredDatesRef.current = nextExtraDates;
           setExtraMasteredDates(nextExtraDates);
@@ -646,26 +652,29 @@ export default function Home() {
                                 <a href={`worksheets/${worksheetName(session)}`} download aria-label={`Download Unit ${unit.week}, Session ${session.letter}`}><DownloadIcon /><span>Download</span></a>
                               </div>
 
-                              {session.extraPractice && (
-                                <div className="extra-practice">
-                                  <span>Still shaky? Try another set</span>
-                                  <p>{session.extraPractice.focus}</p>
+                              {session.extraPractice?.map((round, roundIndex) => {
+                                const key = extraMasteredKey(session.id, roundIndex);
+                                return (
+                                <div className="extra-practice" key={key}>
+                                  <span>{session.extraPractice!.length > 1 ? `Extra practice, round ${roundIndex + 1}` : "Still shaky? Try another set"}</span>
+                                  <p>{round.focus}</p>
                                   <div className="extra-practice-row">
-                                    <a href={`worksheets/${extraWorksheetName(session)}`} target="_blank" rel="noreferrer"><BookIcon />Open extra practice</a>
+                                    <a href={`worksheets/${extraWorksheetName(session, roundIndex)}`} target="_blank" rel="noreferrer"><BookIcon />Open extra practice</a>
                                     <button
                                       type="button"
-                                      className={`extra-mastered-toggle${extraMasteredDates[session.id] ? " on" : ""}`}
-                                      aria-pressed={Boolean(extraMasteredDates[session.id])}
-                                      onClick={() => toggleExtraMastered(session.id)}
+                                      className={`extra-mastered-toggle${extraMasteredDates[key] ? " on" : ""}`}
+                                      aria-pressed={Boolean(extraMasteredDates[key])}
+                                      onClick={() => toggleExtraMastered(key)}
                                     >
-                                      {extraMasteredDates[session.id] ? <><span aria-hidden="true">✓</span> Mastered</> : "Mark mastered"}
+                                      {extraMasteredDates[key] ? <><span aria-hidden="true">✓</span> Mastered</> : "Mark mastered"}
                                     </button>
                                   </div>
-                                  {extraMasteredDates[session.id] && (
-                                    <p className="extra-mastered-date">Mastered {formatMasteredDate(extraMasteredDates[session.id])}</p>
+                                  {extraMasteredDates[key] && (
+                                    <p className="extra-mastered-date">Mastered {formatMasteredDate(extraMasteredDates[key])}</p>
                                   )}
                                 </div>
-                              )}
+                                );
+                              })}
 
                               <fieldset className="status-control">
                                 <legend>Learning status</legend>

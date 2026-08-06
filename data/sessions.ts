@@ -24,12 +24,15 @@ export type Session = {
    */
   expectations: string[];
   /**
-   * A second, standalone worksheet for the same skill, offered for a student
-   * who needs another pass before moving on. Present only on sessions where
-   * one has been written; its file follows the session's own worksheet name
-   * with an "-extra" suffix.
+   * Standalone extra worksheets for the same skill, offered for a student who
+   * needs another pass before moving on. Rounds accumulate: a session that
+   * has already needed extra practice once keeps that worksheet when a
+   * second round is added rather than losing it, so this is a list, appended
+   * to, never replaced. The first round's file follows the session's own
+   * worksheet name with an "-extra" suffix; round two is "-extra-2", and so
+   * on, matching this array's order.
    */
-  extraPractice?: { focus: string };
+  extraPractice?: { focus: string }[];
 };
 
 export const phases = [
@@ -44,7 +47,10 @@ export const phases = [
 export const sessions: Session[] = [
   // ------------------------------------------------------- Part 1, Number foundations
   { id: "1A", unit: 1, letter: "A", title: "Bonds to ten", focus: "See ten as two parts and learn every partner pair.", activity: "Use ten frames, part-whole bars, and the rainbow of ten.", success: "The student gives the partner of any number to 10 without counting up.", kind: "Core", expectations: ["B2.2"] },
-  { id: "1B", unit: 1, letter: "B", title: "Three story shapes", focus: "Find a missing whole, missing part, or missing start.", activity: "Draw the same part-whole box for six different stories.", success: "The student decides what is missing without relying on keywords.", kind: "Core", expectations: ["B2.1", "B2.4"], extraPractice: { focus: "Thirteen extra stories across two rounds, weighted toward the missing-start type, for a student who guessed at keywords instead of reasoning from the box." } },
+  { id: "1B", unit: 1, letter: "B", title: "Three story shapes", focus: "Find a missing whole, missing part, or missing start.", activity: "Draw the same part-whole box for six different stories.", success: "The student decides what is missing without relying on keywords.", kind: "Core", expectations: ["B2.1", "B2.4"], extraPractice: [
+    { focus: "Six more stories, for a student who guessed at keywords instead of reasoning from the box." },
+    { focus: "Seven more stories with the household's own names, weighted further toward the missing-start type." },
+  ] },
   { id: "1C", unit: 1, letter: "C", title: "Doubles and near doubles", focus: "Use a known double to reach the pair beside it.", activity: "Build equal rows, learn the doubles to 10, then add or take away one.", success: "The student names the double before giving the answer.", kind: "Core", expectations: ["B2.2"] },
   { id: "1D", unit: 1, letter: "D", title: "Cross the ten", focus: "Add past ten by making the ten first.", activity: "Move counters into a ten frame, then read the answer as ten and some ones.", success: "The student says the total, not the leftover.", kind: "Core", materials: "About 20 small identical things: dried beans, nickels, buttons, or pasta. No objects? Draw dots in the squares and rub them out as they move.", expectations: ["B2.2", "B2.3"] },
 
