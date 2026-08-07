@@ -52,7 +52,9 @@ export const sessions: Session[] = [
     { focus: "Seven more stories with the household's own names, weighted further toward the missing-start type." },
   ] },
   { id: "1C", unit: 1, letter: "C", title: "Doubles and near doubles", focus: "Use a known double to reach the pair beside it.", activity: "Build equal rows, learn the doubles to 10, then add or take away one.", success: "The student names the double before giving the answer.", kind: "Core", expectations: ["B2.2"] },
-  { id: "1D", unit: 1, letter: "D", title: "Cross the ten", focus: "Add past ten by making the ten first.", activity: "Move counters into a ten frame, then read the answer as ten and some ones.", success: "The student says the total, not the leftover.", kind: "Core", materials: "About 20 small identical things: dried beans, nickels, buttons, or pasta. No objects? Draw dots in the squares and rub them out as they move.", expectations: ["B2.2", "B2.3"] },
+  { id: "1D", unit: 1, letter: "D", title: "Cross the ten", focus: "Add past ten by making the ten first.", activity: "Move counters into a ten frame, then read the answer as ten and some ones.", success: "The student says the total, not the leftover.", kind: "Core", materials: "About 20 small identical things: dried beans, nickels, buttons, or pasta. No objects? Draw dots in the squares and rub them out as they move.", expectations: ["B2.2", "B2.3"], extraPractice: [
+    { focus: "A short second pass on 9 + 7, 8 + 5, 8 + 8, and nearby facts, choosing make ten or a known double." },
+  ] },
 
   { id: "2A", unit: 2, letter: "A", title: "Tens and ones", focus: "Compose and decompose numbers to 200.", activity: "Build two-digit numbers and trade one ten for ten ones.", success: "The student represents one number in two different ways.", kind: "Core", expectations: ["B1.1"] },
   { id: "2B", unit: 2, letter: "B", title: "Charts and order", focus: "Compare, order, and locate numbers to 200.", activity: "Explore neighbours on 100 and 200 charts.", success: "The student explains why one number is greater than another.", kind: "Core", expectations: ["B1.2"] },
