@@ -10,7 +10,7 @@ nested routes, no dynamic segments, and no API endpoints.
 | --- | --- |
 | Rendered routes | 1 |
 | In-page sections | 3 |
-| Static HTML pages | 85 |
+| Static HTML pages | 88 |
 | Parts | 6 |
 | Units | 24 |
 | Sessions | 60 |
@@ -27,6 +27,9 @@ nested routes, no dynamic segments, and no API endpoints.
   mathnest-unit-NN-session-X.html     60 session exercises
   mathnest-unit-NN-warm-up-card.html  24 warm-up cards, one per unit
   mathnest-glossary-card.html
+  mathnest-unit-01-session-b-extra-2.html
+  mathnest-unit-01-session-b-extra.html
+  mathnest-unit-01-session-d-extra.html
   mathnest-math-exercises.zip       every exercise in one download
 
 public/
@@ -125,7 +128,7 @@ Units 21 to 24, 12 sessions. Arrays, sharing, data, chance, and review.
 ## Notes
 
 - Every session resolves to a worksheet that exists on disk. `scripts/check-coverage.mjs` enforces this in CI.
-- There is no `sitemap.xml` and no `robots.txt`. For a one-route site the crawl benefit is small, but the 85 worksheet pages are indexable HTML that nothing currently points a crawler at.
+- There is no `sitemap.xml` and no `robots.txt`. For a one-route site the crawl benefit is small, but the 88 worksheet pages are indexable HTML that nothing currently points a crawler at.
 - Every unit links to its own warm-up card, 24 in total. Unit 01 drills the facts; the rest revisit expectations taught in earlier units, which is the only place the programme deliberately returns to old ground.
 - Anything first taught in the final unit has no later card to appear on, so D2.1 and D2.2 are taught once and never revisited. That is the running order, not a gap in the schedule.
 
