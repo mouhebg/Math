@@ -183,6 +183,16 @@ test("uses the Thmanyah type system across the homepage", async () => {
   assert.doesNotMatch(layout, /next\/font\/google/);
 });
 
+test("uses the green success colour for completed extra practice", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+
+  assert.match(
+    css,
+    /\.extra-mastered-toggle\.on\s*\{[^}]*background:\s*var\(--green\)[^}]*border-color:\s*var\(--green\)/,
+  );
+  assert.match(css, /\.extra-mastered-date\s*\{[^}]*color:\s*var\(--green-dark\)/);
+});
+
 test("uses Thmanyah typography on the worksheets as well as the site", async () => {
   const directory = new URL("../public/worksheets/", import.meta.url);
   const sheets = (await readdir(directory)).filter((name) => name.endsWith(".html"));
@@ -197,4 +207,3 @@ test("uses Thmanyah typography on the worksheets as well as the site", async () 
     assert.match(html, /--font-sans:"Thmanyah Sans"/, `${name} is missing the Thmanyah variables`);
   }
 });
-
