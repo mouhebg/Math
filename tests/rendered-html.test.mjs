@@ -193,6 +193,17 @@ test("uses the green success colour for completed extra practice", async () => {
   assert.match(css, /\.extra-mastered-date\s*\{[^}]*color:\s*var\(--green-dark\)/);
 });
 
+test("opens extra practice reliably in the current mobile tab", async () => {
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+
+  const extraPracticeLink = page.match(
+    /<a href=\{`\/worksheets\/\$\{extraWorksheetName\(session, roundIndex\)\}`\}[^>]*>/,
+  )?.[0];
+
+  assert.ok(extraPracticeLink, "expected a root-safe extra-practice link");
+  assert.doesNotMatch(extraPracticeLink, /target=["']_blank["']/);
+});
+
 test("uses Thmanyah typography on the worksheets as well as the site", async () => {
   const directory = new URL("../public/worksheets/", import.meta.url);
   const sheets = (await readdir(directory)).filter((name) => name.endsWith(".html"));
