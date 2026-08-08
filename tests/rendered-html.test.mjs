@@ -197,10 +197,10 @@ test("opens extra practice reliably in the current mobile tab", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
 
   const extraPracticeLink = page.match(
-    /<a href=\{`\/worksheets\/\$\{extraWorksheetName\(session, roundIndex\)\}`\}[^>]*>/,
+    /<a href=\{`\.\/worksheets\/\$\{extraWorksheetName\(session, roundIndex\)\}`\}[^>]*>/,
   )?.[0];
 
-  assert.ok(extraPracticeLink, "expected a root-safe extra-practice link");
+  assert.ok(extraPracticeLink, "expected a Pages-safe extra-practice link");
   assert.doesNotMatch(extraPracticeLink, /target=["']_blank["']/);
 });
 
