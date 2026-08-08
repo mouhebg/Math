@@ -659,7 +659,7 @@ export default function Home() {
                                   <span>{session.extraPractice!.length > 1 ? `Extra practice, round ${roundIndex + 1}` : "Still shaky? Try another set"}</span>
                                   <p>{round.focus}</p>
                                   <div className="extra-practice-row">
-                                    <a href={`/worksheets/${extraWorksheetName(session, roundIndex)}`}><BookIcon />Open extra practice</a>
+                                    <a href={`./worksheets/${extraWorksheetName(session, roundIndex)}`}><BookIcon />Open extra practice</a>
                                     <button
                                       type="button"
                                       className={`extra-mastered-toggle${extraMasteredDates[key] ? " on" : ""}`}
