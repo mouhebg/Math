@@ -212,6 +212,7 @@ test("uses Thmanyah typography on the worksheets as well as the site", async () 
 
   for (const name of sheets) {
     const html = await readFile(new URL(name, directory), "utf8");
+    assert.match(html, /<\/style>\s*<\/head>\s*<body\b/i, `${name} does not close its stylesheet and head before the body`);
     assert.doesNotMatch(html, /fonts\.(googleapis|gstatic)\.com/, `${name} still loads Google Fonts`);
     assert.doesNotMatch(html, /Poppins|Lora|IBM Plex Mono|DM Mono|Newsreader|Archivo/, `${name} still names a replaced family`);
     assert.match(html, /font-family:"Thmanyah Sans"/, `${name} is missing the Thmanyah faces`);
