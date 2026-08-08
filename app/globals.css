@@ -440,8 +440,9 @@ h1 .accent::after {
 .extra-practice-row svg { width: 15px; height: 15px; }
 .extra-mastered-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border: 1.5px solid var(--coral); border-radius: 99px; background: transparent; color: var(--coral-dark); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .extra-mastered-toggle:hover { background: var(--coral-soft); }
-.extra-mastered-toggle.on { background: var(--coral); border-color: var(--coral); color: #fff; }
-.extra-mastered-date { margin: 8px 0 0; color: var(--coral-dark); font-size: 12px; font-weight: 700; }
+.extra-mastered-toggle.on { background: var(--green); border-color: var(--green); color: #fff; }
+.extra-mastered-toggle.on:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.extra-mastered-date { margin: 8px 0 0; color: var(--green-dark); font-size: 12px; font-weight: 700; }
 
 /* The three status buttons are the control a child presses most, so each state
    answers in its own colour rather than all three turning the same blue. */
@@ -594,4 +595,3 @@ footer > p { margin: 0; color: #c8d3d9; font-size: 14px; text-align: center; }
    no durations left to clamp, so the preference is honoured by construction. */
 
 .session-codes { font-family: var(--font-mono, ui-monospace), ui-monospace, monospace; font-size: 12px; letter-spacing: .04em; color: var(--ink-soft); }
-
