@@ -193,15 +193,16 @@ test("uses the green success colour for completed extra practice", async () => {
   assert.match(css, /\.extra-mastered-date\s*\{[^}]*color:\s*var\(--green-dark\)/);
 });
 
-test("opens extra practice reliably in the current mobile tab", async () => {
+test("opens extra practice in a new tab like the regular worksheets", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
 
   const extraPracticeLink = page.match(
-    /<a href=\{`\.\/worksheets\/\$\{extraWorksheetName\(session, roundIndex\)\}`\}[^>]*>/,
+    /<a href=\{`worksheets\/\$\{extraWorksheetName\(session, roundIndex\)\}`\}[^>]*>/,
   )?.[0];
 
   assert.ok(extraPracticeLink, "expected a Pages-safe extra-practice link");
-  assert.doesNotMatch(extraPracticeLink, /target=["']_blank["']/);
+  assert.match(extraPracticeLink, /target=["']_blank["']/);
+  assert.match(extraPracticeLink, /rel=["']noreferrer["']/);
 });
 
 test("uses Thmanyah typography on the worksheets as well as the site", async () => {
